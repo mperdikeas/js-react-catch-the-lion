@@ -13,8 +13,7 @@ import Game from './game.js';
 function doStuff(): void {
 
     ReactDOM.render( (
-                <Game x={3} y={5}>
-            </Game>
+            <Game/>
     ) , $('#app')[0]);
 
 }

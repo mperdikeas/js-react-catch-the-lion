@@ -92,6 +92,7 @@ function evaluateLeaves(moveTree: Node<GameBoard, string>, evalModel: Evaluation
 
 function pullEvaluationsUp(sideA: boolean, currentNode: Node<GameBoard, string>, assertNoRecursion: boolean = false): void {
     if (false)
+        // $SuppressFlowFinding: access of computed property/element. Indexable signature not found in ...
         console.log(`call to PEU at node: ${currentNode[Symbol.for(TREE_NODE_ID_SYMBOL_KEY)]}`);
     function isAdorned(n: Node<GameBoard,string>): boolean {
         return n.isAdorned();

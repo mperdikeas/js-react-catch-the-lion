@@ -5,16 +5,26 @@ const     _ = require('lodash');
 const React = require('react');
 var      cx = require('classnames');
 
-import {GameBoard} from '../modules/block-optimization/es5/index.js';
+import {Geometry, geometry}  from './geometry.js';
+import Board     from './board.js';
 
 const Game = React.createClass({
-    propTypes: {
-        x: React.PropTypes.number.isRequired,
-        y: React.PropTypes.number.isRequired
-    },
     render: function() {
+        console.log('rendering game');
+        const style = {
+            position: 'absolute',
+            padding: 0,
+            margin: 0,
+            left: geometry.gameXOffset,
+            top: geometry.gameYOffset,
+            width : geometry.gameWidth,
+            height: geometry.gameHeight,
+            background: 'white'
+        };
         return (
-                <b>this is going to be awesome</b>
+            <div style={style}>
+                <Board geometry={geometry}/>
+            </div>                
         );
     }
 });

@@ -25,6 +25,7 @@ class Node<V, E> {
     isAdorned(): boolean {
         const v = this.adornment!==null;
         if (false)
+            // $SuppressFlowFinding: access of computed property/element. Indexable signature not found in ...
             console.log(`isAdorned called on node [${this[Symbol.for(TREE_NODE_ID_SYMBOL_KEY)]}], returning: ${v}`);
         return v;
     }
@@ -142,11 +143,13 @@ class Node<V, E> {
         const printerVisitor: F<V,E> = function printNode(n: Node<V,E>, parentN: ?Node<V,E>, birthEdge: ?E) {
             assert( ((parentN==null) && (birthEdge==null)) || ((parentN!=null) && (birthEdge!=null)) );
             if (!n.hasOwnProperty(s))
+                // $SuppressFlowFinding: access of computed property/element. Indexable signature not found in ...
                 n[s] = i++;
             if (parentN==null) {
                 assert(parentN===null);
                 assert(birthEdge===null);
                 assert(_.isEmpty(lines));
+                // $SuppressFlowFinding: access of computed property/element. Indexable signature not found in ...
                 let line: string = `ROOT node #${n[s]} with value: ${valuePrinter(n.value)}`;
                 if (printAdornment)
                     line+=`, adornment: ${n.adornment}`;
@@ -154,6 +157,7 @@ class Node<V, E> {
             } else {
                 if (birthEdge!=null) {
                     assert(birthEdge!==null);
+                    // $SuppressFlowFinding: access of computed property/element. Indexable signature not found in ...                    
                     let line: string = `node #${parentN[s]} ~~[${birthEdge}]~~> node #${n[s]} with value: ${valuePrinter(n.value)}`;
                     if (printAdornment)
                         line+=`, adornment: ${n.adornment}`;
