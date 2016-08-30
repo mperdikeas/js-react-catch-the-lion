@@ -1,6 +1,5 @@
 /* @flow */
 'use strict';
-require('./css/style.css');
 const     _ = require('lodash');
 const React = require('react');
 var      cx = require('classnames');

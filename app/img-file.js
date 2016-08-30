@@ -1,6 +1,5 @@
 /* @flow */
 'use strict';
-require('./css/style.css');
 const     _ = require('lodash');
 var      cx = require('classnames');
 
