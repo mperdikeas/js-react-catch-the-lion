@@ -12,6 +12,7 @@ import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
 import {inRange, Point}     from 'geometry-2d';
+import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
 
 const BoardGrid = React.createClass({
     propTypes: {
@@ -30,15 +31,17 @@ const BoardGrid = React.createClass({
     cellsFromBoard(board: Map<string, IConcretePieceOnSide>): Array<React.Element> {
         const cells: Array<React.Element> = [];
         console.log(board);
-        for (let i: number = 0 ; i < this.props.X ; i++) {
-            for (let j: number = 0; j < this.props.Y ; j++) {
+        for (let j: number = 0; j < this.props.Y ; j++) {      // it is important that we scan along the X-direction first, then along the Y-direction as this is how the 'static' layout will work
+            for (let i: number = 0 ; i < this.props.X ; i++) {
                 const point = new Point(i,j);
-                console.log(point.toString());
-                const imgFname: ?string = (()=>{
+                console.log(`${point.toString()}:${board.has( point.toString() )}`);
+                const imgFnameOrnt: ?ImageFilenameAndOrientation = (()=>{
                     if (board.has( point.toString() )) {
                         const p: ?IConcretePieceOnSide = board.get(point.toString());
                         if (p!=null)
-                            return imgFile(p.piece.code.toLowerCase());
+                            return new ImageFilenameAndOrientation(
+                                imgFile(p.piece.code.toLowerCase()),
+                                p.isSideA);
                         else
                             return 'bug';
                     } else {
@@ -56,8 +59,7 @@ const BoardGrid = React.createClass({
                     pieceWidth={this.props.pieceWidth}
                     pieceHeight={this.props.pieceHeight}
                     pieceBorder={this.props.pieceBorder} 
-                    // $SuppressFlowFinding:
-                    imgFname={imgFname}
+                    imgFnameOrnt={imgFnameOrnt}
                         />
                 ));
             }
@@ -75,7 +77,7 @@ const BoardGrid = React.createClass({
             width : this.props.width,
             height: this.props.height,
             border: 'none',
-            background: 'brown',
+            background: 'transparent',
             fontSize: 0
         };
         const cells: Array<React.Element> = this.cellsFromBoard(this.props.board);

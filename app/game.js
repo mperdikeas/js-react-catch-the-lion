@@ -19,7 +19,7 @@ import Board     from './board.js';
 
 function createStartingBoard() {
     const pieceSet = createPieceSet([Chick, Hen, Elephant, Giraffe, Lion]);
-    const notation = 'c@0~0, l@1~0, h@1~2, e@2~1 * g@2~4, l@0~4, c@1~4';
+    const notation: string  = 'c@1~3, e@0~4, l@1~4, g@2~4 * g@0~0, l@1~0, e@2~0, c@1~1';
     const cb = new CaptureBag();
     cb.capture(new PieceOnSide(Elephant, true));
     cb.capture(new PieceOnSide(Giraffe, false));                            

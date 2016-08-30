@@ -17,6 +17,10 @@ const config = {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js'
     },
+    resolve: {
+        root: path.resolve('./build'),
+        extensions: ['', '.js']
+    },
     module: {
         loaders: [
             {

@@ -85,9 +85,9 @@ class Geometry {
     }
 }
 
-const geometry = new Geometry(1, 30, 300, 300,       // game* params
-                              100, 100, 5, 5, 3, 5,  // board* params
-                              50, 30, 3,             // cell params
+const geometry = new Geometry(1, 30, 300, 300,       //  game params
+                              100, 100, 5, 5, 3, 5,  // board params
+                              50, 30, 1,             //  cell params
                               40, 20, 3
                              );
 
