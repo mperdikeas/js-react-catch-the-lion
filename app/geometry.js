@@ -104,8 +104,15 @@ class Geometry {
     
     assert(): void {
         const gameBox  : Rectangle  =  new Rectangle(new Point(0,0), new Point(this.gameWidth, -this.gameHeight));
-        const tableBox : Rectangle =  Rectangle.topLeftWidthHeight(new Point(this.tableXOffset, -this.tableYOffset), this.tableWidthWithBorder(), this.tableHeightWithBorder());
-        const boardBox : Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft.add(new Point(this.boardXOffset, -this.boardYOffset)), this.boardWidthWithBorder(), this.boardHeightWithBorder());
+        const tableBox : Rectangle =  Rectangle.topLeftWidthHeight(new Point(this.tableXOffset, -this.tableYOffset)
+                                                                   , this.tableWidthWithBorder()
+                                                                   , this.tableHeightWithBorder());
+        console.log(tableBox);
+        const boardBox : Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft
+                                                                  .add(new Point(this.tableBorder, -this.tableBorder))
+                                                                  .add(new Point(this.boardXOffset, -this.boardYOffset))
+                                                                  , this.boardWidthWithBorder()
+                                                                  , this.boardHeightWithBorder());
         console.log(boardBox);
         assert(gameBox .containsRectangle(tableBox, false));
         assert(tableBox.containsRectangle(boardBox, false));        
@@ -118,8 +125,8 @@ class Geometry {
 const geometry = new Geometry(15, 30, 300, 300,       //  game params
                               10, 10, 250, 250, 3, // table params
                               20, 20, 5, 5, 3, 5,  // board params
-                              75, 42, 1,             //  cell params
-                              40, 20, 3
+                              55, 40, 1,             //  cell params
+                              50, 37, 3
                              );
 
 exports.Geometry = Geometry;
