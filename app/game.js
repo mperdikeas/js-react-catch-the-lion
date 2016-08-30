@@ -15,7 +15,7 @@ const {CaptureBag}                          = require('../modules/block-optimiza
 
 
 
-import Board     from './board.js';
+import TableTop     from './tabletop.js';
 
 function createStartingBoard() {
     const pieceSet = createPieceSet([Chick, Hen, Elephant, Giraffe, Lion]);
@@ -48,7 +48,7 @@ const Game = React.createClass({
         };
         return (
             <div style={style}>
-                <Board
+                <TableTop
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
                 />

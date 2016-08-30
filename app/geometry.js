@@ -10,8 +10,14 @@ class Geometry {
     gameYOffset: number;
     gameWidth: number;
     gameHeight: number;
-    
-    boardXOffset: number; // offsets from game box
+
+    tableXOffset: number; // offsets from game box
+    tableYOffset: number;
+    tableWidth: number;
+    tableHeight: number;
+    tableBorder: number;
+
+    boardXOffset: number; // offsets from table box
     boardYOffset: number;
     boardBorderHoriz: number;
     boardBorderVertic: number;
@@ -28,10 +34,18 @@ class Geometry {
                 gameYOffset: number,
                 gameWidth: number,
                 gameHeight: number,
-                boardXOffset: number, // offsets from game box
+
+                tableXOffset: number, // offsets from table box
+                tableYOffset: number,
+                tableWidth: number,
+                tableHeight: number,
+                tableBorder: number,
+
+                boardXOffset: number, // offsets from table box
                 boardYOffset: number,
                 boardBorderHoriz: number,
                 boardBorderVertic: number,
+
                 X: number,
                 Y: number,
                 cellWidth: number,
@@ -45,6 +59,12 @@ class Geometry {
                    this.gameYOffset = gameYOffset;
                    this.gameWidth = gameWidth;
                    this.gameHeight = gameHeight;
+
+                   this.tableXOffset = tableXOffset;
+                   this.tableYOffset = tableYOffset;
+                   this.tableWidth = tableWidth;
+                   this.tableHeight = tableHeight;
+                   this.tableBorder = tableBorder;
                    
                    this.boardXOffset = boardXOffset;
                    this.boardYOffset = boardYOffset;
@@ -61,6 +81,14 @@ class Geometry {
                    this.pieceBorder = pieceBorder;
                    this.assert();
                }
+    tableWidthWithBorder(): number {
+        console.log(`returning: ${this.tableWidth + 2*this.tableBorder}`);
+        return this.tableWidth + 2*this.tableBorder;
+    }
+    tableHeightWithBorder(): number {
+        console.log(`returning: ${this.tableHeight + 2*this.tableBorder}`);
+        return this.tableHeight + 2*this.tableBorder;
+    }
     boardWidthWithBorder(): number {
         return this.boardWidthWithoutBorder() + 2*this.boardBorderHoriz;
     }
@@ -75,10 +103,12 @@ class Geometry {
     }    
     
     assert(): void {
-        const gameBox: Rectangle = new Rectangle(new Point(0,0), new Point(this.gameWidth, -this.gameHeight));
-        const board  : Rectangle = Rectangle.topLeftWidthHeight(new Point(this.boardXOffset, -this.boardYOffset), this.boardWidthWithBorder(), this.boardHeightWithBorder());
-        console.log(board);
-        assert(gameBox.containsRectangle(board, false));
+        const gameBox  : Rectangle  =  new Rectangle(new Point(0,0), new Point(this.gameWidth, -this.gameHeight));
+        const tableBox : Rectangle =  Rectangle.topLeftWidthHeight(new Point(this.tableXOffset, -this.tableYOffset), this.tableWidthWithBorder(), this.tableHeightWithBorder());
+        const boardBox : Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft.add(new Point(this.boardXOffset, -this.boardYOffset)), this.boardWidthWithBorder(), this.boardHeightWithBorder());
+        console.log(boardBox);
+        assert(gameBox .containsRectangle(tableBox, false));
+        assert(tableBox.containsRectangle(boardBox, false));        
         assert(this.pieceWidth <=this.cellWidth -2*this.cellBorder);
         assert(this.pieceHeight<=this.cellHeight-2*this.cellBorder);        
                      
@@ -86,8 +116,9 @@ class Geometry {
 }
 
 const geometry = new Geometry(15, 30, 300, 300,       //  game params
-                              100, 100, 5, 5, 3, 5,  // board params
-                              50, 30, 1,             //  cell params
+                              10, 10, 250, 250, 3, // table params
+                              20, 20, 5, 5, 3, 5,  // board params
+                              75, 42, 1,             //  cell params
                               40, 20, 3
                              );
 
