@@ -6,7 +6,7 @@ var      cx = require('classnames');
 
 import assert from 'assert';
 
-const {PieceOnSide} = require('../modules/block-optimization/es6/piece.js');
+const {PieceOnSide} = require('../modules/block-optimization/es5/piece.js');
 
 class CellOccupiedState {
     v: string;

@@ -33,14 +33,17 @@ const Board = React.createClass({
         return (
                 <div style={style}>
                 <BoardGrid
-            board= {this.props.gameBoard.board}
-            width={this.props.geometry.boardWidthWithoutBorder()}
-            height={this.props.geometry.boardHeightWithoutBorder()}
-            X={this.props.geometry.X}
-            Y={this.props.geometry.Y}
-            cellWidth={this.props.geometry.boardCellWidth}
-            cellHeight={this.props.geometry.boardCellHeight}
-            cellBorder={this.props.geometry.boardCellBorder}
+            board       = {this.props.gameBoard.board}
+            width       = {this.props.geometry.boardWidthWithoutBorder()}
+            height      = {this.props.geometry.boardHeightWithoutBorder()}
+            X           = {this.props.geometry.X}
+            Y           = {this.props.geometry.Y}
+            cellWidth   = {this.props.geometry.cellWidth}
+            cellHeight  = {this.props.geometry.cellHeight}
+            cellBorder  = {this.props.geometry.cellBorder}
+            pieceWidth  = {this.props.geometry.pieceWidth}
+            pieceHeight = {this.props.geometry.pieceHeight}
+            pieceBorder = {this.props.geometry.pieceBorder}            
                 />
                 </div>                
         );

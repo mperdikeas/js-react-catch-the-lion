@@ -15,14 +15,17 @@ import {inRange, Point}     from 'geometry-2d';
 
 const BoardGrid = React.createClass({
     propTypes: {
-        board     : React.PropTypes.instanceOf(Map).isRequired,
-        width     : React.PropTypes.number.isRequired,
-        height    : React.PropTypes.number.isRequired,
-        X         : React.PropTypes.number.isRequired,
-        Y         : React.PropTypes.number.isRequired,
-        cellWidth : React.PropTypes.number.isRequired,
-        cellHeight: React.PropTypes.number.isRequired,
-        cellBorder: React.PropTypes.number.isRequired
+        board      : React.PropTypes.instanceOf(Map).isRequired,
+        width      : React.PropTypes.number.isRequired,
+        height     : React.PropTypes.number.isRequired,
+        X          : React.PropTypes.number.isRequired,
+        Y          : React.PropTypes.number.isRequired,
+        cellWidth  : React.PropTypes.number.isRequired,
+        cellHeight : React.PropTypes.number.isRequired,
+        cellBorder : React.PropTypes.number.isRequired,
+        pieceWidth : React.PropTypes.number.isRequired,
+        pieceHeight: React.PropTypes.number.isRequired,
+        pieceBorder: React.PropTypes.number.isRequired
     },
     cellsFromBoard(board: Map<string, IConcretePieceOnSide>): Array<React.Element> {
         const cells: Array<React.Element> = [];
@@ -42,7 +45,6 @@ const BoardGrid = React.createClass({
                         return null;
                     }
                 })();
-                if (imgFname!=null)
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}
@@ -51,41 +53,15 @@ const BoardGrid = React.createClass({
                     width={this.props.cellWidth}
                     height={this.props.cellHeight}
                     border={this.props.cellBorder}
+                    pieceWidth={this.props.pieceWidth}
+                    pieceHeight={this.props.pieceHeight}
+                    pieceBorder={this.props.pieceBorder} 
+                    // $SuppressFlowFinding:
                     imgFname={imgFname}
                         />
                 ));
-                else
-                cells.push((
-                        <Cell key={ JSON.stringify(point) }
-                    x = {point.x}
-                    y = {point.y}
-                    value={`${point.x}-${point.y}`}
-                    width={this.props.cellWidth}
-                    height={this.props.cellHeight}
-                    border={this.props.cellBorder}
-                        />
-                ));                    
-                
             }
         }
-        if (false)
-        board.forEach( (p: IConcretePieceOnSide, v: string)=>{
-            const pos: Point = Point.fromString(v);
-            assert(inRange(pos.x, 0, this.props.X, true, false) &&  _.isInteger(pos.x));
-            assert(inRange(pos.y, 0, this.props.Y, true, false) &&  _.isInteger(pos.y));
-            console.log(`**************************************************************** ${p.piece.code.toLowerCase()}`);
-            cells.push((
-                    <Cell key={ JSON.stringify({x:pos.x, y: pos.y})}
-                        x = {pos.x}
-                        y = {pos.y}
-                        value={`${pos.x}-${pos.y}`}
-                        width={this.props.cellWidth}
-                        height={this.props.cellHeight}
-                        border={this.props.cellBorder}
-                        imgFname={imgFile(p.piece.code.toLowerCase())}
-                    />
-            ));
-        });
         return cells;
     },
     render: function() {
