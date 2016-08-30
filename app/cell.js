@@ -30,7 +30,8 @@ const Cell = React.createClass({
             height: this.props.height,
             border: `${this.props.border}px solid grey`,
             background: 'pink',
-            fontSize: 0
+            fontSize: 0,         // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+            verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677
         };
 
         const img = (()=>{
@@ -41,15 +42,9 @@ const Cell = React.createClass({
                 const imgSrc            = require(s);
                 const imgWidth :number  = this.props.width -2*this.props.border;
                 const imgHeight:number  = this.props.height-2*this.props.border;
-                const imgStyle = {
-                    padding: 0,
-                    margin: 0,
-                    display: 'absolute',
-                    top: 0,
-                    left: 0
-                };
+
                 return (
-                    <img style={imgStyle} width={imgWidth} height={imgHeight} src={imgSrc}/>
+                    <img width={imgWidth} height={imgHeight} src={imgSrc}/>
                 );
             } else
                 return null;
