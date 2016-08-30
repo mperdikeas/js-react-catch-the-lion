@@ -7,6 +7,7 @@ var      cx = require('classnames');
 import {Geometry}  from './geometry.js';
 
 import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
+require('./cell.css');
 const Cell = React.createClass({
     propTypes: {
         x          : React.PropTypes.number.isRequired,
@@ -41,16 +42,14 @@ const Cell = React.createClass({
                 const s:string = `./resources/${this.props.imgFnameOrnt.fname}`;
                 // $SuppressFlowFinding: The parameter passed to require() must be a literal string.
                 const imgSrc            = require(s);
-                console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'+imgSrc);
-                    
-                const imgWidth :number  = this.props.pieceWidth - 2*this.props.pieceBorder; // this.props.width -2*this.props.border;
-                const imgHeight:number  = this.props.pieceHeight - 2*this.props.pieceBorder; // this.props.height-2*this.props.border;
+                const imgWidth :number  = this.props.pieceWidth - 2*this.props.pieceBorder; 
+                const imgHeight:number  = this.props.pieceHeight - 2*this.props.pieceBorder;
                 const imgBorder:number  = this.props.pieceBorder;
                 const imgStyle = {
                     position: 'relative',
                     top: `${(this.props.height-2*this.props.border-this.props.pieceHeight)/2}px`,
                     left: `${(this.props.width-2*this.props.border-this.props.pieceWidth)/2}px`,
-                    border: `${imgBorder}px solid black`,
+                    borderWidth: `${imgBorder}px`,
                     transform: `scaleY(${this.props.imgFnameOrnt.flipped?1:-1})`
                 };
                 return (
