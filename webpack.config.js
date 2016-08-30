@@ -26,6 +26,9 @@ const config = {
             },{
                 test: /\.css$/,
                 loaders: ['style', 'css']
+            },{
+                test: /\.(png|jpg|jpeg|gif|woff)$/,
+                loader: 'url-loader?limit=9999&name=[path][name].[ext]'
             }
         ]
     },

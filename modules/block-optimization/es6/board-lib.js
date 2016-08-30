@@ -429,6 +429,8 @@ class GameBoard {
         for (let piecePosition: string of positionNotations) {
             const [piece, position] = piecePosition.split('@');
             const point = Point.fromString(position);
+            assert(_.isInteger(point.x));
+            assert(_.isInteger(point.y));            
             if (!point.x.between(0, width))
                 throw new Error(`Point ${point} does not lie on the X-axis >=0 and < ${width}`);
             if (!point.y.between(0, height))

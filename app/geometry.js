@@ -17,9 +17,9 @@ class Geometry {
     boardBorderVertic: number;
     X: number;
     Y: number;
-    boardCellWidth: number;
-    boardCellHeight: number;
-    
+    boardCellWidth: number; // includes the boardCellBorder
+    boardCellHeight: number; // includes the boardCellBorder
+    boardCellBorder: number;
     constructor(gameXOffset: number,
                 gameYOffset: number,
                 gameWidth: number,
@@ -31,7 +31,8 @@ class Geometry {
                 X: number,
                 Y: number,
                 boardCellWidth: number,
-                boardCellHeight: number) {
+                boardCellHeight: number,
+                boardCellBorder: number) {
         this.gameXOffset = gameXOffset;
         this.gameYOffset = gameYOffset;
         this.gameWidth = gameWidth;
@@ -46,6 +47,7 @@ class Geometry {
         this.Y = Y;
         this.boardCellWidth = boardCellWidth;
         this.boardCellHeight = boardCellHeight;
+        this.boardCellBorder = boardCellBorder;
         this.assert();
     }
     boardWidthWithBorder(): number {
@@ -71,7 +73,8 @@ class Geometry {
 }
 
 const geometry = new Geometry(1, 30, 300, 300,             // game* params
-                              100, 100, 5, 5, 3, 5, 50, 30 // board* params
+                              100, 100, 5, 5, 3, 5, 50, 30,  // board* params
+                              3// cell params
                              );
 
 exports.Geometry = Geometry;

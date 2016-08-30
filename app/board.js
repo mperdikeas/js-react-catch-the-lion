@@ -7,10 +7,12 @@ var      cx = require('classnames');
 
 import {Geometry}  from './geometry.js';
 import BoardGrid   from './board-grid.js';
+const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
 
 const Board = React.createClass({
     propTypes: {
-        geometry: React.PropTypes.instanceOf(Geometry).isRequired
+        geometry : React.PropTypes.instanceOf(Geometry) .isRequired,
+        gameBoard: React.PropTypes.instanceOf(GameBoard).isRequired
     },
     render: function() {
         console.log('rendering board');
@@ -31,12 +33,14 @@ const Board = React.createClass({
         return (
                 <div style={style}>
                 <BoardGrid
+            board= {this.props.gameBoard.board}
             width={this.props.geometry.boardWidthWithoutBorder()}
             height={this.props.geometry.boardHeightWithoutBorder()}
             X={this.props.geometry.X}
             Y={this.props.geometry.Y}
             cellWidth={this.props.geometry.boardCellWidth}
             cellHeight={this.props.geometry.boardCellHeight}
+            cellBorder={this.props.geometry.boardCellBorder}
                 />
                 </div>                
         );
