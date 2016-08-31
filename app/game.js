@@ -4,6 +4,8 @@ const     _ = require('lodash');
 const React = require('react');
 var      cx = require('classnames');
 
+import {Point} from 'geometry-2d';
+
 import {Geometry, geometry}  from './geometry.js';
 const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
 
@@ -27,11 +29,23 @@ function createStartingBoard() {
     return gb;
 }
 
+type StateT = {gameBoard: GameBoard, selectedPiece: ?Point};
+
 const Game = React.createClass({
-    getInitialState: function() {
+    getInitialState: function(): StateT {
         return {
-            gameBoard: createStartingBoard()
+            gameBoard: createStartingBoard(),
+            selectedPiece: null
         };
+    },
+    selectPiece: function(p: Point): void {
+        if (this.state.selectedPiece!=null) {
+            if (this.state.selectedPiece.equals(p)) {
+                this.setState({selectedPiece: null});
+                return;
+            }
+        }
+        this.setState({selectedPiece: p});
     },
     render: function() {
         console.log('rendering game');
@@ -50,6 +64,7 @@ const Game = React.createClass({
                 <TableTop
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
+                    selectPiece={this.selectPiece}
                 />
             </div>                
         );

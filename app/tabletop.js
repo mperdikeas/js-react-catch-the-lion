@@ -20,7 +20,8 @@ import Board     from './board.js';
 const TableTop = React.createClass({
     propTypes: {
         geometry : React.PropTypes.instanceOf(Geometry) .isRequired,
-        gameBoard: React.PropTypes.instanceOf(GameBoard).isRequired
+        gameBoard: React.PropTypes.instanceOf(GameBoard).isRequired,
+        selectPiece: React.PropTypes.func.isRequired
     },    
     render: function() {
         console.log('rendering tabletop');
