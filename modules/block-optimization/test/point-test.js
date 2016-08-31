@@ -3,7 +3,7 @@
 import 'babel-polyfill';
 const assert     = require('assert');
 
-import {Point}  from '../es6/point.js';
+import {Point}  from 'geometry-2d';
 
 describe('Point', function() {
 
@@ -13,12 +13,8 @@ describe('Point', function() {
             for (let {x,y} of points)
                 new Point(x,y);
         });
-        it('should baulk as expected', function() {
+        it('should work as expected #2', function() {
             const points = [{x: -1, y:2}, {x: 0, y:-1}, {x:-6, y:-7}, {x:0, y:9}, {x:0, y:19}, {x:9, y:7}, {x: 9, y:9}, {x: -234, y:-234}, {x: 23413, y:123}];
-            for (let {x,y} of points)
-                assert.throws( ()=>{
-                    new Point(x,y);
-                }, assert.AssertionError);
             for (let {x,y} of points)
                 new Point(x,y, false);
         });    

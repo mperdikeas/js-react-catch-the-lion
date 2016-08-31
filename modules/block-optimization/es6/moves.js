@@ -4,8 +4,7 @@
 import assert from 'assert';
 
 import Side           from './side.js';
-import {Point}        from './point.js';
-import {Vector}       from './vector.js';
+import {Point, Vector} from 'geometry-2d';
 import {Piece, PieceOnSide} from './piece.js';
 
 class Move {

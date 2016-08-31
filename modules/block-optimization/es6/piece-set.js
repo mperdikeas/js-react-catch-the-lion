@@ -8,7 +8,8 @@
 
 import not_used from './number-prototype.js';
 import {Piece, PieceOnSide} from './piece.js';
-import {Point} from './point.js';
+//import {Point} from './point.js';
+import {Point} from 'geometry-2d';
 
 const Chick: IConcretePiece = new (class extends Piece {
     code: string;

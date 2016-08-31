@@ -2,13 +2,13 @@
   "name": "simple-babel-serverside-node-only-archetype",
   "version": "1.0.0",
   "description": "",
-    "main": "index.js",
+  "main": "index.js",
   "scripts": {
-    "build"      : "babel es6 --out-dir es5 --source-maps",
+    "build": "babel es6 --out-dir es5 --source-maps",
     "build-watch": "babel es6 --out-dir es5 --source-maps --watch",
     "start": "node es5/index.js",
-    "test"       : "mocha --compilers js:babel-core/register",
-    "test-watch" : "mocha --compilers js:babel-core/register --watch",
+    "test": "mocha --compilers js:babel-core/register",
+    "test-watch": "mocha --compilers js:babel-core/register --watch",
     "flow": "flow; test $? -eq 0 -o $? -eq 2"
   },
   "author": "",
@@ -28,6 +28,7 @@
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-polyfill": "^6.7.4",
+    "geometry-2d": "*",
     "lodash": "^4.10.0",
     "source-map-support": "^0.4.0"
   }
