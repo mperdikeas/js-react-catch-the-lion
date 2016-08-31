@@ -4,6 +4,7 @@ const     _ = require('lodash');
 const React = require('react');
 var      cx = require('classnames');
 
+import {Point} from 'geometry-2d';
 import {Geometry}  from './geometry.js';
 const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
 
@@ -19,8 +20,9 @@ import Board     from './board.js';
 
 const TableTop = React.createClass({
     propTypes: {
-        geometry : React.PropTypes.instanceOf(Geometry) .isRequired,
-        gameBoard: React.PropTypes.instanceOf(GameBoard).isRequired,
+        geometry   : React.PropTypes.instanceOf(Geometry) .isRequired,
+        gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
+        selectedPiece: React.PropTypes.instanceOf(Point),
         selectPiece: React.PropTypes.func.isRequired
     },    
     render: function() {
@@ -41,6 +43,8 @@ const TableTop = React.createClass({
                 <Board
                     geometry={this.props.geometry}
                     gameBoard={this.props.gameBoard}
+                    selectedPiece={this.props.selectedPiece}
+                    selectPiece={this.props.selectPiece}            
                 />
             </div>                
         );

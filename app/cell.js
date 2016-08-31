@@ -5,31 +5,41 @@ const React = require('react');
 var      cx = require('classnames');
 
 import {Geometry}  from './geometry.js';
-
+import {Point}     from 'geometry-2d';
 import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
 require('./cell.css');
 const Cell = React.createClass({
     propTypes: {
-        x          : React.PropTypes.number.isRequired,
-        y          : React.PropTypes.number.isRequired,
-        value      : React.PropTypes.node,
-        width      : React.PropTypes.number.isRequired,
-        height     : React.PropTypes.number.isRequired,
-        border     : React.PropTypes.number.isRequired,
-        pieceWidth : React.PropTypes.number.isRequired,
-        pieceHeight: React.PropTypes.number.isRequired,
-        pieceBorder: React.PropTypes.number.isRequired,        
-        imgFnameOrnt: React.PropTypes.instanceOf(ImageFilenameAndOrientation)
+        x           : React.PropTypes.number.isRequired,
+        y           : React.PropTypes.number.isRequired,
+        value       : React.PropTypes.node, // TODO: I don't think this is needed anymore
+        width       : React.PropTypes.number.isRequired,
+        height      : React.PropTypes.number.isRequired,
+        border      : React.PropTypes.number.isRequired,
+        pieceWidth  : React.PropTypes.number.isRequired,
+        pieceHeight : React.PropTypes.number.isRequired,
+        pieceBorder : React.PropTypes.number.isRequired,        
+        imgFnameOrnt: React.PropTypes.instanceOf(ImageFilenameAndOrientation),
+        isSelected  : React.PropTypes.bool.isRequired,
+        selectPiece : React.PropTypes.func.isRequired
     },
     getInitialState: function() {
         return {isHovering: false};
     },
+    shouldComponentUpdate(nextProps, nextState) {
+        const b1: boolean = JSON.stringify(nextProps)!==JSON.stringify(this.props);
+        if (b1) 
+            return true;
+        const b2: boolean = JSON.stringify(nextState)!==JSON.stringify(this.state);
+        if (b2 && (this.props.imgFnameOrnt))
+            return true;
+        return false;
+    },
+        
     onMouseOver() {
-        console.log('onMouseOver');
         this.setState({isHovering: true});
     },
     onMouseOut() {
-        console.log('onMouseOut');        
         this.setState({isHovering: false});
     },
     render: function() {
@@ -64,16 +74,19 @@ const Cell = React.createClass({
                     transform: `scaleY(${this.props.imgFnameOrnt.flipped?1:-1})`
                 };
                 return (
-                    <img className={cx({hovering:this.state.isHovering})}
+                        <img className={cx({hovering:this.state.isHovering,
+                                            selected:this.props.isSelected
+                                           })}
                     style={imgStyle}
                     width={imgWidth}
                     height={imgHeight}
-                    src={imgSrc}/>
+                    src={imgSrc}
+                    onClick={()=>{this.props.selectPiece(new Point(this.props.x, this.props.y));}}
+                        />
                 );
             } else
                 return null;
         })();
-        console.log(this.state.isHovering);
         return (
                 <div
                     style={style}

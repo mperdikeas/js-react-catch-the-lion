@@ -39,6 +39,7 @@ const Game = React.createClass({
         };
     },
     selectPiece: function(p: Point): void {
+        console.log(p.toString());
         if (this.state.selectedPiece!=null) {
             if (this.state.selectedPiece.equals(p)) {
                 this.setState({selectedPiece: null});
@@ -64,6 +65,7 @@ const Game = React.createClass({
                 <TableTop
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
+                    selectedPiece={this.state.selectedPiece}
                     selectPiece={this.selectPiece}
                 />
             </div>                

@@ -25,7 +25,9 @@ const BoardGrid = React.createClass({
         cellBorder : React.PropTypes.number.isRequired,
         pieceWidth : React.PropTypes.number.isRequired,
         pieceHeight: React.PropTypes.number.isRequired,
-        pieceBorder: React.PropTypes.number.isRequired
+        pieceBorder: React.PropTypes.number.isRequired,
+        selectedPiece: React.PropTypes.instanceOf(Point),        
+        selectPiece: React.PropTypes.func.isRequired        
     },
     cellsFromBoard(board: Map<string, IConcretePieceOnSide>): Array<React.Element> {
         const cells: Array<React.Element> = [];
@@ -47,6 +49,7 @@ const BoardGrid = React.createClass({
                         return null;
                     }
                 })();
+                const isSelected: boolean = this.props.selectedPiece && this.props.selectedPiece.equals(point);
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}
@@ -59,6 +62,8 @@ const BoardGrid = React.createClass({
                     pieceHeight={this.props.pieceHeight}
                     pieceBorder={this.props.pieceBorder} 
                     imgFnameOrnt={imgFnameOrnt}
+                    isSelected={isSelected}
+                    selectPiece={this.props.selectPiece}            
                         />
                 ));
             }
