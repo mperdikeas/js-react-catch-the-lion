@@ -1,9 +1,10 @@
-img:hover {
-    border-color: blue;
-    cursor: pointer;
-}
-
 img {
     border-style: solid;
     border-color: black;
+}
+
+
+img.hovering {
+    border-color: blue;
+    cursor: pointer;
 }

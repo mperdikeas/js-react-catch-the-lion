@@ -21,6 +21,17 @@ const Cell = React.createClass({
         pieceBorder: React.PropTypes.number.isRequired,        
         imgFnameOrnt: React.PropTypes.instanceOf(ImageFilenameAndOrientation)
     },
+    getInitialState: function() {
+        return {isHovering: false};
+    },
+    onMouseOver() {
+        console.log('onMouseOver');
+        this.setState({isHovering: true});
+    },
+    onMouseOut() {
+        console.log('onMouseOut');        
+        this.setState({isHovering: false});
+    },
     render: function() {
         console.log(`rendering cell ${this.props.x}-${this.props.y}`);
         const style = {
@@ -53,13 +64,22 @@ const Cell = React.createClass({
                     transform: `scaleY(${this.props.imgFnameOrnt.flipped?1:-1})`
                 };
                 return (
-                    <img style={imgStyle} width={imgWidth} height={imgHeight} src={imgSrc}/>
+                    <img className={cx({hovering:this.state.isHovering})}
+                    style={imgStyle}
+                    width={imgWidth}
+                    height={imgHeight}
+                    src={imgSrc}/>
                 );
             } else
                 return null;
-                })();
+        })();
+        console.log(this.state.isHovering);
         return (
-                <div style={style}>
+                <div
+                    style={style}
+                    onMouseOver={this.onMouseOver}
+                    onMouseOut={this.onMouseOut}            
+                >
                 {img}
                 </div>                
         );
