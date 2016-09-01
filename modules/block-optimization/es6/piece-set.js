@@ -8,7 +8,6 @@
 
 import not_used from './number-prototype.js';
 import {Piece, PieceOnSide} from './piece.js';
-//import {Point} from './point.js';
 import {Point} from 'geometry-2d';
 
 const Chick: IConcretePiece = new (class extends Piece {
@@ -19,7 +18,7 @@ const Chick: IConcretePiece = new (class extends Piece {
         (this: IConcretePiece);
     }
     moves(): Array<Point> {
-        return [new Point(0, -1, false)];
+        return [new Point(0, -1)];
     };
     takeSides(isSideA: boolean): IConcretePieceOnSide {
             return new PieceOnSide(this, isSideA);
@@ -44,10 +43,10 @@ const Elephant: IConcretePiece = new (class extends Piece {
         (this: IConcretePiece);
     }
     moves(): Array<Point> {
-        return [new Point(1, -1, false),
-                new Point(1, 1, false),
-                new Point(-1, -1, false),
-                new Point(-1, 1, false)
+        return [new Point(1, -1),
+                new Point(1, 1),
+                new Point(-1, -1),
+                new Point(-1, 1)
                ];
     };
     takeSides(isSideA: boolean): IConcretePieceOnSide {
@@ -73,10 +72,10 @@ const Giraffe: IConcretePiece = new (class extends Piece {
         (this: IConcretePiece);
     }
     moves(): Array<Point> {
-        return [new Point(0, -1, false),
-                new Point(1, 0, false),
-                new Point(0, 1, false),
-                new Point(-1, 0, false)
+        return [new Point(0, -1),
+                new Point(1, 0),
+                new Point(0, 1),
+                new Point(-1, 0)
                ];
     };
     takeSides(isSideA: boolean): IConcretePieceOnSide {
@@ -101,7 +100,7 @@ const Hen: IConcretePiece = new (class extends Piece{
         (this: IConcretePiece);
     }    
     moves(): Array<Point> {
-        return [new Point(0, -1, false), new Point(1, -1, false), new Point(1, 0, false), new Point(0, 1, false), new Point(-1, 0, false), new Point(-1, -1, false)];
+        return [new Point(0, -1), new Point(1, -1), new Point(1, 0), new Point(0, 1), new Point(-1, 0), new Point(-1, -1)];
     };
     takeSides(isSideA: boolean): IConcretePieceOnSide {
             return new PieceOnSide(this, isSideA);
@@ -125,7 +124,7 @@ const Lion: IConcretePiece = new (class extends Piece{
         (this: IConcretePiece);
     }    
     moves(): Array<Point> {
-        return [new Point(0, -1, false), new Point(1, -1, false), new Point(1, 0, false), new Point(1, 1, false), new Point(0, 1, false), new Point(-1, 1, false), new Point(-1, 0, false), new Point(-1, -1, false)];
+        return [new Point(0, -1), new Point(1, -1), new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1), new Point(-1, 0), new Point(-1, -1)];
     };
     takeSides(isSideA: boolean): IConcretePieceOnSide {
             return new PieceOnSide(this, isSideA);

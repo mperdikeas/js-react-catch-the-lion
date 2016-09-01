@@ -33,6 +33,7 @@
     "jquery": "^2.2.2",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
+      "react-chainable-type-checker": "*",
     "react-dom": "^0.14.7",
     "reactabular": "^0.12.1"
   }

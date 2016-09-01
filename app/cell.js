@@ -26,7 +26,7 @@ const Cell = React.createClass({
     getInitialState: function() {
         return {isHovering: false};
     },
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps: any, nextState: any) {
         const b1: boolean = JSON.stringify(nextProps)!==JSON.stringify(this.props);
         if (b1) 
             return true;
@@ -60,30 +60,32 @@ const Cell = React.createClass({
 
         const img = (()=>{
             if (this.props.imgFnameOrnt!=null) {
-                const s:string = `./resources/${this.props.imgFnameOrnt.fname}`;
-                // $SuppressFlowFinding: The parameter passed to require() must be a literal string.
-                const imgSrc            = require(s);
-                const imgWidth :number  = this.props.pieceWidth - 2*this.props.pieceBorder; 
-                const imgHeight:number  = this.props.pieceHeight - 2*this.props.pieceBorder;
-                const imgBorder:number  = this.props.pieceBorder;
-                const imgStyle = {
-                    position: 'relative',
-                    top: `${(this.props.height-2*this.props.border-this.props.pieceHeight)/2}px`,
-                    left: `${(this.props.width-2*this.props.border-this.props.pieceWidth)/2}px`,
-                    borderWidth: `${imgBorder}px`,
-                    transform: `scaleY(${this.props.imgFnameOrnt.flipped?1:-1})`
-                };
-                return (
-                        <img className={cx({hovering:this.state.isHovering,
-                                            selected:this.props.isSelected
-                                           })}
-                    style={imgStyle}
-                    width={imgWidth}
-                    height={imgHeight}
-                    src={imgSrc}
-                    onClick={()=>{this.props.selectPiece(new Point(this.props.x, this.props.y));}}
-                        />
-                );
+                if (this.props.isSelected!=null) {
+                    const s:string = `./resources/${this.props.imgFnameOrnt.fname}`;
+                    // $SuppressFlowFinding: The parameter passed to require() must be a literal string.
+                    const imgSrc            = require(s);
+                    const imgWidth :number  = this.props.pieceWidth - 2*this.props.pieceBorder; 
+                    const imgHeight:number  = this.props.pieceHeight - 2*this.props.pieceBorder;
+                    const imgBorder:number  = this.props.pieceBorder;
+                    const imgStyle = {
+                        position: 'relative',
+                        top: `${(this.props.height-2*this.props.border-this.props.pieceHeight)/2}px`,
+                        left: `${(this.props.width-2*this.props.border-this.props.pieceWidth)/2}px`,
+                        borderWidth: `${imgBorder}px`,
+                        transform: `scaleY(${this.props.imgFnameOrnt.flipped?1:-1})`
+                    };
+                    return (
+                            <img className={cx({hovering:this.state.isHovering,
+                                                selected:this.props.isSelected
+                                               })}
+                        style={imgStyle}
+                        width={imgWidth}
+                        height={imgHeight}
+                        src={imgSrc}
+                        onClick={()=>{this.props.selectPiece(new Point(this.props.x, this.props.y));}}
+                            />
+                    );
+                } else throw new Error('bug: if imgFrameOrnt is not null, then isSelected must have a value');
             } else
                 return null;
         })();

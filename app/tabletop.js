@@ -5,6 +5,8 @@ const React = require('react');
 var      cx = require('classnames');
 
 import {Point} from 'geometry-2d';
+import {createChainableTypeChecker} from 'react-chainable-type-checker';
+
 import {Geometry}  from './geometry.js';
 const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
 
@@ -17,12 +19,31 @@ const {CaptureBag}                          = require('../modules/block-optimiza
 
 import Board     from './board.js';
 
+function arrayOfPoints(props, propName, componentName, location) {
+    componentName = componentName || 'anonymous';
+    const os = props[propName];
+    if (os===null)
+        return null;
+    if (!Array.isArray(os))
+        throw new Error( `${propName} passed in ${componentName} is not an array` );
+    else {
+        for (let i = 0 ; i < os.length ; i++) {
+            const o = os[i];
+            if (! (o instanceof Point))
+                throw new Error(`The ${i}-th element of the array [${propName}] passed in ${componentName} is not a Point`);
+        }
+    }
+    return null; // assume all OK
+}
+
+
 
 const TableTop = React.createClass({
     propTypes: {
         geometry   : React.PropTypes.instanceOf(Geometry) .isRequired,
         gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
-        selectedPiece: React.PropTypes.instanceOf(Point),
+        selectedPiece: React.PropTypes.instanceOf(Point).isRequired,
+        selectedPiecePossibleMovesOnBoard: arrayOfPoints,
         selectPiece: React.PropTypes.func.isRequired
     },    
     render: function() {

@@ -31,11 +31,9 @@ const BoardGrid = React.createClass({
     },
     cellsFromBoard(board: Map<string, IConcretePieceOnSide>): Array<React.Element> {
         const cells: Array<React.Element> = [];
-        console.log(board);
         for (let j: number = 0; j < this.props.Y ; j++) {      // it is important that we scan along the X-direction first, then along the Y-direction as this is how the 'static' layout will work
             for (let i: number = 0 ; i < this.props.X ; i++) {
                 const point = new Point(i,j);
-                console.log(`${point.toString()}:${board.has( point.toString() )}`);
                 const imgFnameOrnt: ?ImageFilenameAndOrientation = (()=>{
                     if (board.has( point.toString() )) {
                         const p: ?IConcretePieceOnSide = board.get(point.toString());
@@ -49,7 +47,12 @@ const BoardGrid = React.createClass({
                         return null;
                     }
                 })();
-                const isSelected: boolean = this.props.selectedPiece && this.props.selectedPiece.equals(point);
+                const isSelected: boolean = (()=>{
+                    if (this.props.selectedPiece)
+                        return this.props.selectedPiece.equals(point);
+                    else
+                        return false; // this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
+                })();
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}
