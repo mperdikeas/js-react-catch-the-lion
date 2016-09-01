@@ -20,7 +20,7 @@ const Cell = React.createClass({
         pieceHeight : React.PropTypes.number.isRequired,
         pieceBorder : React.PropTypes.number.isRequired,        
         imgFnameOrnt: React.PropTypes.instanceOf(ImageFilenameAndOrientation),
-        isSelected  : React.PropTypes.bool.isRequired,
+        imgIsSelected  : React.PropTypes.bool,
         selectPiece : React.PropTypes.func.isRequired
     },
     getInitialState: function() {
@@ -60,7 +60,7 @@ const Cell = React.createClass({
 
         const img = (()=>{
             if (this.props.imgFnameOrnt!=null) {
-                if (this.props.isSelected!=null) {
+                if (this.props.imgIsSelected!=null) {
                     const s:string = `./resources/${this.props.imgFnameOrnt.fname}`;
                     // $SuppressFlowFinding: The parameter passed to require() must be a literal string.
                     const imgSrc            = require(s);
@@ -76,7 +76,7 @@ const Cell = React.createClass({
                     };
                     return (
                             <img className={cx({hovering:this.state.isHovering,
-                                                selected:this.props.isSelected
+                                                selected:this.props.imgIsSelected
                                                })}
                         style={imgStyle}
                         width={imgWidth}
@@ -85,7 +85,7 @@ const Cell = React.createClass({
                         onClick={()=>{this.props.selectPiece(new Point(this.props.x, this.props.y));}}
                             />
                     );
-                } else throw new Error('bug: if imgFrameOrnt is not null, then isSelected must have a value');
+                } else throw new Error('bug: if imgFrameOrnt is not null, then imgIsSelected must have a value');
             } else
                 return null;
         })();

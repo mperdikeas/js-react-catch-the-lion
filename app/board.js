@@ -35,7 +35,7 @@ const Board = React.createClass({
         return (
                 <div style={style}>
                 <BoardGrid
-            board       = {this.props.gameBoard.board}
+            gameBoard   = {this.props.gameBoard}
             width       = {this.props.geometry.boardWidthWithoutBorder()}
             height      = {this.props.geometry.boardHeightWithoutBorder()}
             X           = {this.props.geometry.X}

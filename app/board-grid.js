@@ -13,9 +13,12 @@ import imgFile     from './img-file.js';
 import {inRange, Point}     from 'geometry-2d';
 import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
 
+import {arrayOfPoints} from './custom-react-validators.js';
+const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
+
 const BoardGrid = React.createClass({
     propTypes: {
-        board      : React.PropTypes.instanceOf(Map).isRequired,
+        gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
         width      : React.PropTypes.number.isRequired,
         height     : React.PropTypes.number.isRequired,
         X          : React.PropTypes.number.isRequired,
@@ -26,17 +29,26 @@ const BoardGrid = React.createClass({
         pieceWidth : React.PropTypes.number.isRequired,
         pieceHeight: React.PropTypes.number.isRequired,
         pieceBorder: React.PropTypes.number.isRequired,
-        selectedPiece: React.PropTypes.instanceOf(Point),        
+        selectedPiece: React.PropTypes.instanceOf(Point),
+        selectedPiecePossibleMovesOnBoard: arrayOfPoints,        
         selectPiece: React.PropTypes.func.isRequired        
     },
-    cellsFromBoard(board: Map<string, IConcretePieceOnSide>): Array<React.Element> {
+    cellsFromBoard(): Array<React.Element> {
+        const selectedPiecePossibleMovesOnBoard: ?Array<Point> = (()=>{
+            if (this.props.selectedPiece!=null) {
+                const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByMovingPieceOnAParticularSquare(this.props.selectedPiece);
+                // $SuppressFlowFinding: Function cannot be called on any member of intersection type
+                return Array.from(nextMoves2Boards.keys());
+            } else
+                return null;
+        })();        
         const cells: Array<React.Element> = [];
         for (let j: number = 0; j < this.props.Y ; j++) {      // it is important that we scan along the X-direction first, then along the Y-direction as this is how the 'static' layout will work
             for (let i: number = 0 ; i < this.props.X ; i++) {
                 const point = new Point(i,j);
                 const imgFnameOrnt: ?ImageFilenameAndOrientation = (()=>{
-                    if (board.has( point.toString() )) {
-                        const p: ?IConcretePieceOnSide = board.get(point.toString());
+                    if (this.props.gameBoard.board.has( point.toString() )) {
+                        const p: ?IConcretePieceOnSide = this.props.gameBoard.board.get(point.toString());
                         if (p!=null)
                             return new ImageFilenameAndOrientation(
                                 imgFile(p.piece.code.toLowerCase()),
@@ -47,11 +59,14 @@ const BoardGrid = React.createClass({
                         return null;
                     }
                 })();
-                const isSelected: boolean = (()=>{
-                    if (this.props.selectedPiece)
-                        return this.props.selectedPiece.equals(point);
-                    else
-                        return false; // this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
+                const imgIsSelected: ?boolean = (()=>{
+                    if (imgFnameOrnt) {
+                        if (this.props.selectedPiece)
+                            return this.props.selectedPiece.equals(point);
+                        else
+                            return false;
+                    } else
+                        return null;
                 })();
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
@@ -65,7 +80,8 @@ const BoardGrid = React.createClass({
                     pieceHeight={this.props.pieceHeight}
                     pieceBorder={this.props.pieceBorder} 
                     imgFnameOrnt={imgFnameOrnt}
-                    isSelected={isSelected}
+                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
+                    imgIsSelected={imgIsSelected}
                     selectPiece={this.props.selectPiece}            
                         />
                 ));
@@ -87,7 +103,7 @@ const BoardGrid = React.createClass({
             background: 'transparent',
             fontSize: 0
         };
-        const cells: Array<React.Element> = this.cellsFromBoard(this.props.board);
+        const cells: Array<React.Element> = this.cellsFromBoard();
         return (
                 <div style={style}>
                 {cells}

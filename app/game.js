@@ -50,14 +50,6 @@ const Game = React.createClass({
     },
     render: function() {
         console.log('rendering game');
-        const selectedPiecePossibleMovesOnBoard: ?Array<Point> = (()=>{
-            if (this.state.selectedPiece!=null) {
-                const nextMoves2Boards: Map<string, GameBoard> = this.state.gameBoard.nextStatesByMovingPieceOnAParticularSquare(this.state.selectedPiece);
-                // $SuppressFlowFinding: Function cannot be called on any member of intersection type
-                return Array.from(nextMoves2Boards.keys());
-            } else
-                return null;
-        })();
         const style = {
             position: 'absolute',
             padding : 0,
@@ -73,8 +65,8 @@ const Game = React.createClass({
                 <TableTop
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
-            selectedPiece={this.state.selectedPiece===null?new Point(-1,-1):this.state.selectedPiece} // this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
-                    selectedPiecePossibleMovesOnBoard={selectedPiecePossibleMovesOnBoard}
+                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
+                    selectedPiece={this.state.selectedPiece}
                     selectPiece={this.selectPiece}
                 />
             </div>                
