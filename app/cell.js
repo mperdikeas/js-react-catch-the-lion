@@ -21,6 +21,7 @@ const Cell = React.createClass({
         pieceBorder : React.PropTypes.number.isRequired,        
         imgFnameOrnt: React.PropTypes.instanceOf(ImageFilenameAndOrientation),
         imgIsSelected  : React.PropTypes.bool,
+        movableHighlight : React.PropTypes.bool.isRequired,
         selectPiece : React.PropTypes.func.isRequired
     },
     getInitialState: function() {
@@ -43,7 +44,7 @@ const Cell = React.createClass({
         this.setState({isHovering: false});
     },
     render: function() {
-        console.log(`rendering cell ${this.props.x}-${this.props.y}`);
+        console.log(`rendering cell ${this.props.x}-${this.props.y}: ${this.props.movableHighlight}`);
         const style = {
             boxSizing: 'border-box',
             position: 'static',
@@ -52,7 +53,9 @@ const Cell = React.createClass({
             margin: 0,
             width : this.props.width,
             height: this.props.height,
-            border: `${this.props.border}px solid grey`,
+            borderStyle: 'solid',
+            borderWidth: `${this.props.border}px`,
+//            border: `${this.props.border}px solid grey`,
             background: 'transparent',
             fontSize: 0,         // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
             verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677
@@ -91,6 +94,7 @@ const Cell = React.createClass({
         })();
         return (
                 <div
+                    className={cx({movableHighlight:this.props.movableHighlight})}
                     style={style}
                     onMouseOver={this.onMouseOver}
                     onMouseOut={this.onMouseOut}            

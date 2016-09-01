@@ -19,7 +19,7 @@ const {CaptureBag}                          = require('../modules/block-optimiza
 
 import Board     from './board.js';
 
-function arrayOfPoints(props, propName, componentName, location) {
+function arrayOfPoints(props: any, propName: string, componentName: string, location: any) {
     componentName = componentName || 'anonymous';
     const os = props[propName];
     if (os===null)

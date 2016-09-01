@@ -12,3 +12,12 @@ img.hovering {
 img.selected {
     border-color: red;
 }
+
+
+div {
+    border-color: grey;
+}
+
+div.movableHighlight {
+    border-color: red;
+}

@@ -7,10 +7,12 @@ import React  from 'react';
 //const React = require('react');
 var      cx = require('classnames');
 
+import {inRange, Point, Vector}     from 'geometry-2d';
+
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
-import {inRange, Point}     from 'geometry-2d';
+
 import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
 
 import {arrayOfPoints} from './custom-react-validators.js';
@@ -34,10 +36,9 @@ const BoardGrid = React.createClass({
         selectPiece: React.PropTypes.func.isRequired        
     },
     cellsFromBoard(): Array<React.Element> {
-        const selectedPiecePossibleMovesOnBoard: ?Array<Point> = (()=>{
+        const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
             if (this.props.selectedPiece!=null) {
                 const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByMovingPieceOnAParticularSquare(this.props.selectedPiece);
-                // $SuppressFlowFinding: Function cannot be called on any member of intersection type
                 return Array.from(nextMoves2Boards.keys());
             } else
                 return null;
@@ -68,6 +69,17 @@ const BoardGrid = React.createClass({
                     } else
                         return null;
                 })();
+                const movableHighlight: boolean = (()=>{
+                    if (selectedPiecePossibleMovesOnBoard!=null) {
+                        assert(this.props.selectedPiece!=null);
+                        return _.some(selectedPiecePossibleMovesOnBoard, (s)=>{
+                            const v: Vector = Vector.fromString(s);
+                            assert(v.from.equals(this.props.selectedPiece));
+                            return v.to.equals(point);
+                        });
+                    } else
+                        return false;
+                })();
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}
@@ -82,6 +94,7 @@ const BoardGrid = React.createClass({
                     imgFnameOrnt={imgFnameOrnt}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     imgIsSelected={imgIsSelected}
+                    movableHighlight={movableHighlight}
                     selectPiece={this.props.selectPiece}            
                         />
                 ));
