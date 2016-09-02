@@ -9,18 +9,23 @@ var      cx = require('classnames');
 
 import {inRange, Point, Vector}     from 'geometry-2d';
 
+const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
+//import Side      from '../modules/block-optimization/es5/side.js';
+const Side = require('../modules/block-optimization/es5/side.js');
+console.log(Side);
+
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
-
 import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
-
 import {arrayOfPoints} from './custom-react-validators.js';
-const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
+import MovingSide from './moving-side.js';
+import {PieceInformation}            from './piece-information.js';
 
 const BoardGrid = React.createClass({
     propTypes: {
         gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
+        movingSide : React.PropTypes.instanceOf(MovingSide).isRequired,
         width      : React.PropTypes.number.isRequired,
         height     : React.PropTypes.number.isRequired,
         X          : React.PropTypes.number.isRequired,
@@ -32,8 +37,17 @@ const BoardGrid = React.createClass({
         pieceHeight: React.PropTypes.number.isRequired,
         pieceBorder: React.PropTypes.number.isRequired,
         selectedPiece: React.PropTypes.instanceOf(Point),
-        selectedPiecePossibleMovesOnBoard: arrayOfPoints,        
         selectPiece: React.PropTypes.func.isRequired        
+    },
+    getMovingSide(point: Point): MovingSide {
+        if (this.props.gameBoard.board.has( point.toString() )) {
+            const p: ?IConcretePieceOnSide = this.props.gameBoard.board.get(point.toString());
+            if (p!=null)
+                return MovingSide.fromSide(p.isSideA?Side.A:Side.B);
+            else
+                throw new Error('bug');
+        } else
+            throw new Error(`getMovingSide called on point ${point.toString()} on board: ${this.props.gameBoard.toStringFancy()}`);
     },
     cellsFromBoard(): Array<React.Element> {
         const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
@@ -55,7 +69,7 @@ const BoardGrid = React.createClass({
                                 imgFile(p.piece.code.toLowerCase()),
                                 p.isSideA);
                         else
-                            return 'bug';
+                            throw new Error('bug');
                     } else {
                         return null;
                     }
@@ -69,17 +83,38 @@ const BoardGrid = React.createClass({
                     } else
                         return null;
                 })();
+                console.log(`IMG: ${imgFnameOrnt} - ${imgIsSelected}`);
+                if ((imgFnameOrnt!=null) && (imgIsSelected==null))
+                    throw new Error();
                 const movableHighlight: boolean = (()=>{
                     if (selectedPiecePossibleMovesOnBoard!=null) {
                         assert(this.props.selectedPiece!=null);
                         return _.some(selectedPiecePossibleMovesOnBoard, (s)=>{
                             const v: Vector = Vector.fromString(s);
-                            assert(v.from.equals(this.props.selectedPiece));
+                            if (this.props.selectedPiece!=null)
+                                assert(v.from.equals(this.props.selectedPiece));
+                            else
+                                throw new Error('bug');
                             return v.to.equals(point);
                         });
                     } else
                         return false;
                 })();
+                const pieceInformation: ?PieceInformation = (()=>{
+                    if (this.props.gameBoard.board.has( point.toString() )) {
+                        const p: ?IConcretePieceOnSide = this.props.gameBoard.board.get(point.toString());
+                        if (p!=null)
+                            return new PieceInformation(
+                                imgFile(p.piece.code.toLowerCase()),
+                                MovingSide.fromSide(p.isSideA?Side.A:Side.B),
+                                this.getMovingSide);
+                        else
+                            throw new Error('bug');
+                    } else {
+                        return null;
+                    }
+                })();
+                console.log(`PreIMG2: ${imgFnameOrnt} - ${imgIsSelected}`);
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}
@@ -91,9 +126,11 @@ const BoardGrid = React.createClass({
                     pieceWidth={this.props.pieceWidth}
                     pieceHeight={this.props.pieceHeight}
                     pieceBorder={this.props.pieceBorder} 
-                    imgFnameOrnt={imgFnameOrnt}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
-                    imgIsSelected={imgIsSelected}
+                    imgFnameOrnt={imgFnameOrnt}
+                    pieceInformation={pieceInformation}
+                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
+                    imgIsSelected= {imgIsSelected}
                     movableHighlight={movableHighlight}
                     selectPiece={this.props.selectPiece}            
                         />

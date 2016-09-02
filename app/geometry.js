@@ -122,8 +122,8 @@ class Geometry {
     }
 }
 
-const geometry = new Geometry(15, 30, 300, 300,       //  game params
-                              10, 10, 250, 250, 3, // table params
+const geometry = new Geometry(15, 30, 500, 500,       //  game params
+                              100, 100, 250, 250, 3, // table params
                               20, 20, 5, 5, 3, 5,  // board params
                               55, 40, 1,             //  cell params
                               50, 37, 3

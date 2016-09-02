@@ -5,16 +5,20 @@ const React = require('react');
 var      cx = require('classnames');
 
 import {Point} from 'geometry-2d';
+
+const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
+
 import {Geometry}  from './geometry.js';
 import BoardGrid   from './board-grid.js';
-const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
+import MovingSide from './moving-side.js';
 
 const Board = React.createClass({
     propTypes: {
-        geometry   : React.PropTypes.instanceOf(Geometry) .isRequired,
-        gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
-        selectedPiece: React.PropTypes.instanceOf(Point),        
-        selectPiece: React.PropTypes.func.isRequired        
+        geometry          : React.PropTypes.instanceOf(Geometry) .isRequired,
+        gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
+        movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,        
+        selectedPiece     : React.PropTypes.instanceOf(Point),        
+        selectPiece       : React.PropTypes.func.isRequired        
     },
     render: function() {
         console.log('rendering board');
@@ -35,19 +39,20 @@ const Board = React.createClass({
         return (
                 <div style={style}>
                 <BoardGrid
-            gameBoard   = {this.props.gameBoard}
-            width       = {this.props.geometry.boardWidthWithoutBorder()}
-            height      = {this.props.geometry.boardHeightWithoutBorder()}
-            X           = {this.props.geometry.X}
-            Y           = {this.props.geometry.Y}
-            cellWidth   = {this.props.geometry.cellWidth}
-            cellHeight  = {this.props.geometry.cellHeight}
-            cellBorder  = {this.props.geometry.cellBorder}
-            pieceWidth  = {this.props.geometry.pieceWidth}
-            pieceHeight = {this.props.geometry.pieceHeight}
-            pieceBorder = {this.props.geometry.pieceBorder}
-            selectedPiece={this.props.selectedPiece}            
-            selectPiece = {this.props.selectPiece}                        
+                    gameBoard   = {this.props.gameBoard}
+                    movingSide  = {this.props.movingSide}            
+                    width       = {this.props.geometry.boardWidthWithoutBorder()}
+                    height      = {this.props.geometry.boardHeightWithoutBorder()}
+                    X           = {this.props.geometry.X}
+                    Y           = {this.props.geometry.Y}
+                    cellWidth   = {this.props.geometry.cellWidth}
+                    cellHeight  = {this.props.geometry.cellHeight}
+                    cellBorder  = {this.props.geometry.cellBorder}
+                    pieceWidth  = {this.props.geometry.pieceWidth}
+                    pieceHeight = {this.props.geometry.pieceHeight}
+                    pieceBorder = {this.props.geometry.pieceBorder}
+                    selectedPiece={this.props.selectedPiece}            
+                    selectPiece = {this.props.selectPiece}                        
                 />
                 </div>                
         );

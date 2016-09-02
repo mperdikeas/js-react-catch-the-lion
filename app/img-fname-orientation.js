@@ -1,3 +1,6 @@
+// @flow
+'use strict';
+
 class ImageFilenameAndOrientation {
 
     fname: string;

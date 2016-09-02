@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
+    "scripts": {
     "build": "babel es6 --out-dir es5 --source-maps",
     "build-watch": "babel es6 --out-dir es5 --source-maps --watch",
     "start": "node es5/index.js",

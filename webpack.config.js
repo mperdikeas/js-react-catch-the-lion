@@ -17,7 +17,7 @@ const config = {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js'
     },
-    resolve: {
+    resolve_I_AM_NOT_SURE_WHY_I_HAD_THAT_IT_DOESNT_SEEM_NECESSARY: {
         root: path.resolve('./build'),
         extensions: ['', '.js']
     },
@@ -33,19 +33,16 @@ const config = {
             },{
                 test: /\.(png|jpg|jpeg|gif|woff)$/,
                 loader: 'url-loader?limit=9999&name=[path][name].[ext]'
+            },{
+                test: /\.README$/, loader: 'null'
             }
         ]
     },
     plugins: [HTMLWebpackPluginConfig],
-
-    
-    node___README___: {
-        text: `This is to account for what appears to be a bug:
-                   https://github.com/josephsavona/valuable/issues/9`
-    },
     node: {
-        fs: "empty"
-    }
+        fs: 'empty'
+    },
+    node_README: 'https://github.com/josephsavona/valuable/issues/9'
 };
 
 module.exports = config;

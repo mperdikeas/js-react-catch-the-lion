@@ -7,24 +7,25 @@ var      cx = require('classnames');
 import {Point} from 'geometry-2d';
 import {createChainableTypeChecker} from 'react-chainable-type-checker';
 
-import {Geometry}  from './geometry.js';
-const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
-
 const {Chick, Hen, Elephant, Giraffe, Lion} = require('../modules/block-optimization/es5/piece-set.js');
 const {createPieceSet}                      = require('../modules/block-optimization/es5/piece-set-factory.js');
 const {PieceOnSide}                         = require('../modules/block-optimization/es5/piece.js');
 const {CaptureBag}                          = require('../modules/block-optimization/es5/captureBag.js');
-import {arrayOfPoints} from './custom-react-validators.js';
+const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
 
+import {Geometry}  from './geometry.js';
+import {arrayOfPoints} from './custom-react-validators.js';
+import MovingSide from './moving-side.js';
 
 import Board     from './board.js';
 
 const TableTop = React.createClass({
     propTypes: {
-        geometry   : React.PropTypes.instanceOf(Geometry) .isRequired,
-        gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
-        selectedPiece: React.PropTypes.instanceOf(Point),
-        selectPiece: React.PropTypes.func.isRequired
+        geometry          : React.PropTypes.instanceOf(Geometry) .isRequired,
+        gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
+        movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
+        selectedPiece     : React.PropTypes.instanceOf(Point),
+        selectPiece       : React.PropTypes.func.isRequired
     },    
     render: function() {
         console.log('rendering tabletop');
@@ -44,6 +45,7 @@ const TableTop = React.createClass({
                 <Board
                     geometry={this.props.geometry}
                     gameBoard={this.props.gameBoard}
+                    movingSide={this.props.movingSide}
                     selectedPiece={this.props.selectedPiece}
                     selectPiece={this.props.selectPiece}
                 />

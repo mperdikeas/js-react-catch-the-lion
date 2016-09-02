@@ -7,22 +7,25 @@ var      cx = require('classnames');
 import {Geometry}  from './geometry.js';
 import {Point}     from 'geometry-2d';
 import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
+import {PieceInformation}            from './piece-information.js';
+
 require('./cell.css');
 const Cell = React.createClass({
     propTypes: {
-        x           : React.PropTypes.number.isRequired,
-        y           : React.PropTypes.number.isRequired,
-        value       : React.PropTypes.node, // TODO: I don't think this is needed anymore
-        width       : React.PropTypes.number.isRequired,
-        height      : React.PropTypes.number.isRequired,
-        border      : React.PropTypes.number.isRequired,
-        pieceWidth  : React.PropTypes.number.isRequired,
-        pieceHeight : React.PropTypes.number.isRequired,
-        pieceBorder : React.PropTypes.number.isRequired,        
-        imgFnameOrnt: React.PropTypes.instanceOf(ImageFilenameAndOrientation),
-        imgIsSelected  : React.PropTypes.bool,
+        x                : React.PropTypes.number.isRequired,
+        y                : React.PropTypes.number.isRequired,
+        value            : React.PropTypes.node, // TODO: I don't think this is needed anymore
+        width            : React.PropTypes.number.isRequired,
+        height           : React.PropTypes.number.isRequired,
+        border           : React.PropTypes.number.isRequired,
+        pieceWidth       : React.PropTypes.number.isRequired,
+        pieceHeight      : React.PropTypes.number.isRequired,
+        pieceBorder      : React.PropTypes.number.isRequired,        
+        imgFnameOrnt     : React.PropTypes.instanceOf(ImageFilenameAndOrientation),
+        pieceInformation : React.PropTypes.instanceOf(PieceInformation),
+        imgIsSelected    : React.PropTypes.bool,
         movableHighlight : React.PropTypes.bool.isRequired,
-        selectPiece : React.PropTypes.func.isRequired
+        selectPiece      : React.PropTypes.func.isRequired
     },
     getInitialState: function() {
         return {isHovering: false};
@@ -44,7 +47,7 @@ const Cell = React.createClass({
         this.setState({isHovering: false});
     },
     render: function() {
-        console.log(`rendering cell ${this.props.x}-${this.props.y}: ${this.props.movableHighlight}`);
+        console.log(`rendering cell ${this.props.x}-${this.props.y}: ${this.props.movableHighlight}, imgIsSelected=${this.props.imgIsSelected}`);
         const style = {
             boxSizing: 'border-box',
             position: 'static',
@@ -60,7 +63,6 @@ const Cell = React.createClass({
             fontSize: 0,         // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
             verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677
         };
-
         const img = (()=>{
             if (this.props.imgFnameOrnt!=null) {
                 if (this.props.imgIsSelected!=null) {

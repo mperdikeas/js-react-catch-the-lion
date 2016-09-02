@@ -6,7 +6,6 @@ var      cx = require('classnames');
 
 import {Point} from 'geometry-2d';
 
-import {Geometry, geometry}  from './geometry.js';
 const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
 
 const {Chick, Hen, Elephant, Giraffe, Lion} = require('../modules/block-optimization/es5/piece-set.js');
@@ -14,6 +13,9 @@ const {createPieceSet}                      = require('../modules/block-optimiza
 const {PieceOnSide}                         = require('../modules/block-optimization/es5/piece.js');
 const {CaptureBag}                          = require('../modules/block-optimization/es5/captureBag.js');
 
+import {Geometry, geometry}  from './geometry.js';
+import MovingSide            from './moving-side.js';
+import ControlPanel          from './control-panel.js';
 
 
 import TableTop     from './tabletop.js';
@@ -29,12 +31,13 @@ function createStartingBoard() {
     return gb;
 }
 
-type StateT = {gameBoard: GameBoard, selectedPiece: ?Point};
+type StateT = {gameBoard: GameBoard, movingSide: MovingSide, selectedPiece: ?Point};
 
 const Game = React.createClass({
     getInitialState: function(): StateT {
         return {
             gameBoard: createStartingBoard(),
+            movingSide: MovingSide.BLACK,
             selectedPiece: null
         };
     },
@@ -60,15 +63,31 @@ const Game = React.createClass({
             height  : geometry.gameHeight,
             background: 'white'
         };
+        const controlPanelStyle = {
+            position: 'absolute',
+            padding : 0,
+            margin  : 0,
+            left    : 30,
+            top     : 30,
+            width   : 100,
+            height  : 20,
+            borderWidth: 1
+        };
         return (
             <div style={style}>
                 <TableTop
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
+                    movingSide={this.state.movingSide}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     selectedPiece={this.state.selectedPiece}
                     selectPiece={this.selectPiece}
                 />
+                <div style={controlPanelStyle}>
+                <ControlPanel
+                    movingSide={this.state.movingSide}
+                />
+                </div>
             </div>                
         );
     }

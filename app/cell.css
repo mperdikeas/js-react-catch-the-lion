@@ -19,5 +19,10 @@ div {
 }
 
 div.movableHighlight {
-    border-color: red;
+    border-color: purple;
+    border-width: 3px !important;
+}
+
+div.movableHighlight:hover {
+    background:rgba(255, 0, 255, 0.35) !important;
 }
