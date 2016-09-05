@@ -32,7 +32,7 @@ function createStartingBoard() {
     return gb;
 }
 
-type StateT = {gameBoard: GameBoard, movingSide: MovingSide, selectedPiece: ?Point};
+type StateT = {gameBoard: GameBoard, movingSide: ?MovingSide, selectedPiece: ?Point};
 
 const Game = React.createClass({
     getInitialState: function(): StateT {
@@ -56,12 +56,23 @@ const Game = React.createClass({
         console.log(`Piece should now move to ${p.toString()}`);
         const selectedPiece: ?Point = this.state.selectedPiece;
         if (selectedPiece!=null) {
-            assert(this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
+            // $SuppressFlowFinding: weird that I have to suppress that
+            assert( this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
+            // $SuppressFlowFinding: weird that I have to suppress that            
             const nextBoard: ?GameBoard = this.state.gameBoard.move(selectedPiece, p);
             if (nextBoard!=null) {
-                this.setState({gameBoard: nextBoard,
-                               movingSide: this.state.movingSide.theOther(),
-                               selectedPiece: null});
+                if (nextBoard.boardImmediateWinSide()!==null) {
+                    this.setState({gameBoard: nextBoard,
+                                   movingSide: null,
+                                   selectedPiece: null});                    
+                } else {
+                    if (this.state.movingSide!=null) {
+                        this.setState({gameBoard: nextBoard,
+                                       movingSide: this.state.movingSide.theOther(),
+                                       selectedPiece: null});
+                    } else
+                        throw new Error('bug');
+                }
             } else
                 throw new Error(`bug - it should be impossible to call moveToCell on a point (${p.toString()}) that doesn't exist on the board`);
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
@@ -93,6 +104,7 @@ const Game = React.createClass({
                 <TableTop
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
+                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
                     movingSide={this.state.movingSide}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     selectedPiece={this.state.selectedPiece}
@@ -101,6 +113,7 @@ const Game = React.createClass({
                 />
                 <div style={controlPanelStyle}>
                 <ControlPanel
+                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
                     movingSide={this.state.movingSide}
                 />
                 </div>

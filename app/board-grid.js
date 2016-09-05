@@ -21,7 +21,7 @@ import {PieceInformation}            from './piece-information.js';
 const BoardGrid = React.createClass({
     propTypes: {
         gameBoard        : React.PropTypes.instanceOf(GameBoard).isRequired,
-        movingSide       : React.PropTypes.instanceOf(MovingSide).isRequired,
+        movingSide       : React.PropTypes.instanceOf(MovingSide),
         width            : React.PropTypes.number.isRequired,
         height           : React.PropTypes.number.isRequired,
         X                : React.PropTypes.number.isRequired,
@@ -40,6 +40,7 @@ const BoardGrid = React.createClass({
         const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
             const selectedPiece :?Point = this.props.selectedPiece;
             if (selectedPiece!=null) {
+                // $SuppressFlowFinding: weird that I have to suppress that
                 const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByMovingPieceOnAParticularSquare(selectedPiece);
                 return Array.from(nextMoves2Boards.keys());
             } else

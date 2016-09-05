@@ -23,7 +23,7 @@ const TableTop = React.createClass({
     propTypes: {
         geometry          : React.PropTypes.instanceOf(Geometry) .isRequired,
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
-        movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
+        movingSide        : React.PropTypes.instanceOf(MovingSide),
         selectedPiece     : React.PropTypes.instanceOf(Point),
         selectPiece       : React.PropTypes.func.isRequired,
         moveToCell       : React.PropTypes.func.isRequired                   

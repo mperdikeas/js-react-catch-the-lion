@@ -9,15 +9,24 @@ require('./control-panel.css');
 
 const ControlPanel = React.createClass({
     propTypes: {
-        movingSide: React.PropTypes.instanceOf(MovingSide).isRequired        
+        movingSide: React.PropTypes.instanceOf(MovingSide)        
     },
     render: function() {
-        const capitalizedFriendlyName = this.props.movingSide.friendlyName.charAt(0).toUpperCase()+this.props.movingSide.friendlyName.slice(1);
-        return (
-                <div>
-                {capitalizedFriendlyName} to move.
-                </div>
-        );
+        const movingSide: ?MovingSide = this.props.movingSide;
+        if (movingSide!=null) {
+            const capitalizedFriendlyName = movingSide.friendlyName.charAt(0).toUpperCase()+movingSide.friendlyName.slice(1);
+            return (
+                    <div>
+                    {capitalizedFriendlyName} to move.
+                    </div>
+            );
+        } else {
+            return (
+                    <div>
+                    Game over
+                    </div>
+            );
+        }
     }
 });
 
