@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 
-import Side           from './side.js';
+import {Side}          from './side.js';
 import {Point, Vector} from 'geometry-2d';
 import {Piece, PieceOnSide} from './piece.js';
 

@@ -8,7 +8,7 @@ import {GameBoard}             from '../es6/board-lib.js';
 import {model000}              from '../es6/eval-model-library.js';
 import {moveTreeBuilder, sideThatMovesNext, evaluateLeaves, pullEvaluationsUp, bestMove, dynamicEvaluationOfBoard} from '../es6/move-tree-builder.js';
 import {boardA, boardB, boardTwoKings, boardTwoKings1x2, boardWithSideAKingCaptured, boardWithSideBKingCaptured, board1x2_withTwoKingsFacing, board3x2_withTwoKingsFacingAndOpportunisticTargets, board3x3_withTraps, board1x3_suicideForFirstMover, board1x4_victoryForFirstMover, board2x3_manoeuveringForStandoff} from './common-test-boards.js';
-import Side from '../es6/side.js';
+import {Side} from '../es6/side.js';
 import {Chick, Hen, Elephant, Giraffe, Lion} from '../es6/piece-set.js';
 import {Move, BoardMove} from '../es6/moves.js';
 

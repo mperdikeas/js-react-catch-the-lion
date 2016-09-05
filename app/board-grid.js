@@ -10,10 +10,7 @@ var      cx = require('classnames');
 import {inRange, Point, Vector}     from 'geometry-2d';
 
 const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
-//import Side      from '../modules/block-optimization/es5/side.js';
-const Side = require('../modules/block-optimization/es5/side.js');
-console.log(Side);
-
+import {Side}      from '../modules/block-optimization/es5/side.js';
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
@@ -83,7 +80,6 @@ const BoardGrid = React.createClass({
                     } else
                         return null;
                 })();
-                console.log(`IMG: ${imgFnameOrnt} - ${imgIsSelected}`);
                 if ((imgFnameOrnt!=null) && (imgIsSelected==null))
                     throw new Error();
                 const movableHighlight: boolean = (()=>{
@@ -114,7 +110,6 @@ const BoardGrid = React.createClass({
                         return null;
                     }
                 })();
-                console.log(`PreIMG2: ${imgFnameOrnt} - ${imgIsSelected}`);
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}

@@ -21,7 +21,7 @@ import {transpose}                 from './transpose.js';
 import {CaptureBag}                from './captureBag.js';
 import {EvaluationModel}           from './eval-model.js';
 import {Node}                      from './trees.js';
-import Side                        from './side.js';
+import {Side}                      from './side.js';
 import {Move, BoardMove, DropMoveNoPieceInformation, DropMove} from './moves.js';
 
 class GameBoard {

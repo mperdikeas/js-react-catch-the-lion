@@ -7,9 +7,14 @@ class Side {
         Object.freeze(this);
     }
 
-    static A: Side;
-    static B: Side;
-    static fromWhetherIsSideA: (b: boolean)=>Side;
+    static A: Side = new Side();
+    static B: Side = new Side();
+    static fromWhetherIsSideA(isSideA: boolean): Side {
+        if (isSideA)
+            return Side.A;
+        else
+            return Side.B;
+    }
 
     theOther(): Side {
         if (this===Side.A)
@@ -20,15 +25,7 @@ class Side {
     }
 }
 
-Side.A = new Side();
-Side.B = new Side();
-Side.fromWhetherIsSideA = function(isSideA: boolean): Side { // TODO: It appears I am unable to use this static method from another module
-    if (isSideA)
-        return Side.A;
-    else
-        return Side.B;
-}
 
 Object.freeze(Side);
 
-export default Side;
+exports.Side = Side;

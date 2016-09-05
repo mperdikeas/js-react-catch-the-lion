@@ -13,7 +13,7 @@ import not_used from './number-prototype.js';
 
 import {GameBoard}                       from './board-lib.js';
 import {Node, TREE_NODE_ID_SYMBOL_KEY}   from './trees.js';
-import Side                              from './side.js';
+import {Side}                            from './side.js';
 import {theOne}                          from './utils.js';
 import {Move, BoardMove, DropMove}       from './moves.js';
 import {EvaluationModel}                 from './eval-model.js';
