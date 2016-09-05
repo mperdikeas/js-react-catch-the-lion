@@ -4,6 +4,8 @@ const     _ = require('lodash');
 const React = require('react');
 var      cx = require('classnames');
 
+import assert from 'assert';
+
 import {Point} from 'geometry-2d';
 
 const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
@@ -51,6 +53,14 @@ const Game = React.createClass({
         }
         this.setState({selectedPiece: p});
     },
+    moveToCell: function(p: Point): void {
+        console.log(`Piece should now move to ${p.toString()}`);
+        assert(this.state.selectedPiece!=null);
+        assert(this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
+        this.setState({gameBoard: this.state.gameBoard.move(this.state.selectedPiece, p),
+                       movingSide: this.state.movingSide.theOther(),
+                       selectedPiece: null});
+    },
     render: function() {
         console.log('rendering game');
         const style = {
@@ -82,6 +92,7 @@ const Game = React.createClass({
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     selectedPiece={this.state.selectedPiece}
                     selectPiece={this.selectPiece}
+                    moveToCell={this.moveToCell}
                 />
                 <div style={controlPanelStyle}>
                 <ControlPanel

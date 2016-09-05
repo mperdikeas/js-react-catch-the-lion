@@ -12,9 +12,7 @@ import PieceBlock                    from './piece-block.js';
 require('./cell.css');
 const Cell = React.createClass({
     propTypes: {
-        x                : React.PropTypes.number.isRequired,
-        y                : React.PropTypes.number.isRequired,
-        value            : React.PropTypes.node, // TODO: I don't think this is needed anymore
+        point            : React.PropTypes.instanceOf(Point).isRequired,
         width            : React.PropTypes.number.isRequired,
         height           : React.PropTypes.number.isRequired,
         border           : React.PropTypes.number.isRequired,
@@ -24,7 +22,8 @@ const Cell = React.createClass({
         pieceInformation : React.PropTypes.instanceOf(PieceInformation),
         imgIsSelected    : React.PropTypes.bool,
         movableHighlight : React.PropTypes.bool.isRequired,
-        selectPiece      : React.PropTypes.func.isRequired
+        selectPiece      : React.PropTypes.func.isRequired,
+        moveToCell       : React.PropTypes.func.isRequired
     },
     shouldComponentUpdate(nextProps: any, nextState: any) {
         const b1: boolean = JSON.stringify(nextProps)!==JSON.stringify(this.props);
@@ -35,8 +34,13 @@ const Cell = React.createClass({
             return true;
         return false;
     },
+    onClick: function() {
+        console.log(`clicked on cell: ${this.props.point.toString()}`);
+        if (this.props.movableHighlight)
+            this.props.moveToCell(this.props.point);
+    },
     render: function() {
-        console.log(`rendering cell ${this.props.x}-${this.props.y}: ${this.props.movableHighlight}, imgIsSelected=${this.props.imgIsSelected}`);
+        console.log(`rendering cell ${this.props.point.toString()}: ${this.props.movableHighlight}, imgIsSelected=${this.props.imgIsSelected}`);
         const style = {
             boxSizing: 'border-box',
             position: 'static',
@@ -56,7 +60,7 @@ const Cell = React.createClass({
                 if (this.props.imgIsSelected!=null) {
                     return (
                         <PieceBlock
-                        point={new Point(this.props.x, this.props.y)}
+                        point={this.props.point}
                         width={this.props.width}
                         height={this.props.height}
                         border={this.props.border}
@@ -76,6 +80,7 @@ const Cell = React.createClass({
                 <div
                     className={cx({movableHighlight:this.props.movableHighlight})}
                     style={style}
+                    onClick={()=>{this.onClick();}}
                 >
                 {pieceBlock}
                 </div>                

@@ -20,20 +20,21 @@ import {PieceInformation}            from './piece-information.js';
 
 const BoardGrid = React.createClass({
     propTypes: {
-        gameBoard  : React.PropTypes.instanceOf(GameBoard).isRequired,
-        movingSide : React.PropTypes.instanceOf(MovingSide).isRequired,
-        width      : React.PropTypes.number.isRequired,
-        height     : React.PropTypes.number.isRequired,
-        X          : React.PropTypes.number.isRequired,
-        Y          : React.PropTypes.number.isRequired,
-        cellWidth  : React.PropTypes.number.isRequired,
-        cellHeight : React.PropTypes.number.isRequired,
-        cellBorder : React.PropTypes.number.isRequired,
-        pieceWidth : React.PropTypes.number.isRequired,
-        pieceHeight: React.PropTypes.number.isRequired,
-        pieceBorder: React.PropTypes.number.isRequired,
-        selectedPiece: React.PropTypes.instanceOf(Point),
-        selectPiece: React.PropTypes.func.isRequired        
+        gameBoard        : React.PropTypes.instanceOf(GameBoard).isRequired,
+        movingSide       : React.PropTypes.instanceOf(MovingSide).isRequired,
+        width            : React.PropTypes.number.isRequired,
+        height           : React.PropTypes.number.isRequired,
+        X                : React.PropTypes.number.isRequired,
+        Y                : React.PropTypes.number.isRequired,
+        cellWidth        : React.PropTypes.number.isRequired,
+        cellHeight       : React.PropTypes.number.isRequired,
+        cellBorder       : React.PropTypes.number.isRequired,
+        pieceWidth       : React.PropTypes.number.isRequired,
+        pieceHeight      : React.PropTypes.number.isRequired,
+        pieceBorder      : React.PropTypes.number.isRequired,
+        selectedPiece    : React.PropTypes.instanceOf(Point),
+        selectPiece      : React.PropTypes.func.isRequired,
+        moveToCell       : React.PropTypes.func.isRequired        
     },
     cellsFromBoard(): Array<React.Element> {
         const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
@@ -89,9 +90,7 @@ const BoardGrid = React.createClass({
                 
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
-                    x = {point.x}
-                    y = {point.y}
-                    value={`${point.x}-${point.y}`}
+                    point={point}
                     width={this.props.cellWidth}
                     height={this.props.cellHeight}
                     border={this.props.cellBorder}
@@ -103,7 +102,8 @@ const BoardGrid = React.createClass({
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     imgIsSelected= {imgIsSelected}
                     movableHighlight={movableHighlight}
-                    selectPiece={this.props.selectPiece}            
+                    selectPiece={this.props.selectPiece}
+                    moveToCell={this.props.moveToCell}
                         />
                 ));
             }

@@ -25,7 +25,8 @@ const TableTop = React.createClass({
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
         selectedPiece     : React.PropTypes.instanceOf(Point),
-        selectPiece       : React.PropTypes.func.isRequired
+        selectPiece       : React.PropTypes.func.isRequired,
+        moveToCell       : React.PropTypes.func.isRequired                   
     },    
     render: function() {
         console.log('rendering tabletop');
@@ -48,6 +49,7 @@ const TableTop = React.createClass({
                     movingSide={this.props.movingSide}
                     selectedPiece={this.props.selectedPiece}
                     selectPiece={this.props.selectPiece}
+                    moveToCell    = {this.props.moveToCell}                        
                 />
             </div>                
         );

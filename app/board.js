@@ -18,7 +18,8 @@ const Board = React.createClass({
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,        
         selectedPiece     : React.PropTypes.instanceOf(Point),        
-        selectPiece       : React.PropTypes.func.isRequired        
+        selectPiece       : React.PropTypes.func.isRequired,
+        moveToCell       : React.PropTypes.func.isRequired           
     },
     render: function() {
         console.log('rendering board');
@@ -39,20 +40,21 @@ const Board = React.createClass({
         return (
                 <div style={style}>
                 <BoardGrid
-                    gameBoard   = {this.props.gameBoard}
-                    movingSide  = {this.props.movingSide}            
-                    width       = {this.props.geometry.boardWidthWithoutBorder()}
-                    height      = {this.props.geometry.boardHeightWithoutBorder()}
-                    X           = {this.props.geometry.X}
-                    Y           = {this.props.geometry.Y}
-                    cellWidth   = {this.props.geometry.cellWidth}
-                    cellHeight  = {this.props.geometry.cellHeight}
-                    cellBorder  = {this.props.geometry.cellBorder}
-                    pieceWidth  = {this.props.geometry.pieceWidth}
-                    pieceHeight = {this.props.geometry.pieceHeight}
-                    pieceBorder = {this.props.geometry.pieceBorder}
-                    selectedPiece={this.props.selectedPiece}            
-                    selectPiece = {this.props.selectPiece}                        
+                    gameBoard     = {this.props.gameBoard}
+                    movingSide    = {this.props.movingSide}            
+                    width         = {this.props.geometry.boardWidthWithoutBorder()}
+                    height        = {this.props.geometry.boardHeightWithoutBorder()}
+                    X             = {this.props.geometry.X}
+                    Y             = {this.props.geometry.Y}
+                    cellWidth     = {this.props.geometry.cellWidth}
+                    cellHeight    = {this.props.geometry.cellHeight}
+                    cellBorder    = {this.props.geometry.cellBorder}
+                    pieceWidth    = {this.props.geometry.pieceWidth}
+                    pieceHeight   = {this.props.geometry.pieceHeight}
+                    pieceBorder   = {this.props.geometry.pieceBorder}
+                    selectedPiece = {this.props.selectedPiece}            
+                    selectPiece   = {this.props.selectPiece}
+                    moveToCell    = {this.props.moveToCell}            
                 />
                 </div>                
         );
