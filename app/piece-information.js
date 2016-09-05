@@ -7,15 +7,18 @@ import {Point}     from 'geometry-2d';
 class PieceInformation {
 
     fname: string;
-    side: MovingSide;
-    getMovingSide: (p: Point)=>MovingSide;
+    sideOfThisPiece: MovingSide;
+    sideThatMovesOnBoard: MovingSide;
 
-    constructor(fname: string, side: MovingSide, getMovingSide: (p: Point)=>MovingSide) {
+
+    constructor(fname: string, sideOfThisPiece: MovingSide, sideThatMovesOnBoard: MovingSide) {
         this.fname = fname;
-        this.side = side;
-        this.getMovingSide = getMovingSide;
-        console.log(`PieceInformation::side = ${this.side.friendlyName}`);
+        this.sideOfThisPiece = sideOfThisPiece;
+        this.sideThatMovesOnBoard = sideThatMovesOnBoard;
     }
 
+    belongsToTheMovingSide(): boolean {
+        return this.sideOfThisPiece === this.sideThatMovesOnBoard;
+    }
 }
 exports.PieceInformation = PieceInformation;

@@ -35,16 +35,6 @@ const BoardGrid = React.createClass({
         selectedPiece: React.PropTypes.instanceOf(Point),
         selectPiece: React.PropTypes.func.isRequired        
     },
-    getMovingSide(point: Point): MovingSide {
-        if (this.props.gameBoard.board.has( point.toString() )) {
-            const p: ?IConcretePieceOnSide = this.props.gameBoard.board.get(point.toString());
-            if (p!=null)
-                return MovingSide.fromSide(p.isSideA?Side.A:Side.B);
-            else
-                throw new Error('bug');
-        } else
-            throw new Error(`getMovingSide called on point ${point.toString()} on board: ${this.props.gameBoard.toStringFancy()}`);
-    },
     cellsFromBoard(): Array<React.Element> {
         const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
             if (this.props.selectedPiece!=null) {
@@ -64,7 +54,7 @@ const BoardGrid = React.createClass({
                             return new PieceInformation(
                                 imgFile(p.piece.code.toLowerCase()),
                                 MovingSide.fromSide(p.isSideA?Side.A:Side.B),
-                                this.getMovingSide);
+                                this.props.movingSide);
                         else
                             throw new Error('bug');
                     } else {

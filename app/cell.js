@@ -40,7 +40,8 @@ const Cell = React.createClass({
     },
         
     onMouseOver() {
-        this.setState({isHovering: true});
+        if (this.props.pieceInformation && this.props.pieceInformation.belongsToTheMovingSide())
+            this.setState({isHovering: true});
     },
     onMouseOut() {
         this.setState({isHovering: false});
@@ -76,7 +77,7 @@ const Cell = React.createClass({
                         top: `${(this.props.height-2*this.props.border-this.props.pieceHeight)/2}px`,
                         left: `${(this.props.width-2*this.props.border-this.props.pieceWidth)/2}px`,
                         borderWidth: `${imgBorder}px`,
-                        transform: `scaleY(${this.props.pieceInformation.side===MovingSide.BLACK?1:-1})`
+                        transform: `scaleY(${this.props.pieceInformation.sideOfThisPiece===MovingSide.BLACK?1:-1})`
                     };
                     return (
                             <img className={cx({hovering:this.state.isHovering,
@@ -86,7 +87,9 @@ const Cell = React.createClass({
                         width={imgWidth}
                         height={imgHeight}
                         src={imgSrc}
-                        onClick={()=>{this.props.selectPiece(new Point(this.props.x, this.props.y));}}
+                        onClick={()=>{
+                            if (this.props.pieceInformation.belongsToTheMovingSide())
+                                this.props.selectPiece(new Point(this.props.x, this.props.y));}}
                             />
                     );
                 } else throw new Error('bug: if imgFrameOrnt is not null, then imgIsSelected must have a value');

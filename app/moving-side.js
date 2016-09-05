@@ -23,10 +23,14 @@ class MovingSide {
         throw new Error();
     }
     static fromSide(s: Side): MovingSide {
-        if (s===Side.A)
+        if (s===Side.A) {
+            console.log('MovingSide#fromSide returning BLACK');
             return MovingSide.BLACK;
-        else if (s===Side.B)
+        }
+        else if (s===Side.B) {
+            console.log('MovingSide#fromSide returning WHITE');            
             return MovingSide.WHITE;
+        }
         else throw new Error();
     }
 }
