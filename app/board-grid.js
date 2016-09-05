@@ -21,7 +21,7 @@ import {PieceInformation}            from './piece-information.js';
 const BoardGrid = React.createClass({
     propTypes: {
         gameBoard        : React.PropTypes.instanceOf(GameBoard).isRequired,
-        movingSide       : React.PropTypes.instanceOf(MovingSide),
+        movingSide       : React.PropTypes.instanceOf(MovingSide).isRequired,
         width            : React.PropTypes.number.isRequired,
         height           : React.PropTypes.number.isRequired,
         X                : React.PropTypes.number.isRequired,

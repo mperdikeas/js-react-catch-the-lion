@@ -33,6 +33,9 @@ class MovingSide {
         }
         else throw new Error();
     }
+    static fromWhetherIsSideA(isSideA: boolean): MovingSide {
+        return MovingSide.fromSide(Side.fromWhetherIsSideA(isSideA));
+    }
 }
 
 Object.freeze(MovingSide);

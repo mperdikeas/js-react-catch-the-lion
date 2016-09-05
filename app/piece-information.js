@@ -8,10 +8,10 @@ class PieceInformation {
 
     fname: string;
     sideOfThisPiece: MovingSide;
-    sideThatMovesOnBoard: ?MovingSide;
+    sideThatMovesOnBoard: MovingSide;
 
 
-    constructor(fname: string, sideOfThisPiece: MovingSide, sideThatMovesOnBoard: ?MovingSide) {
+    constructor(fname: string, sideOfThisPiece: MovingSide, sideThatMovesOnBoard: MovingSide) {
         this.fname = fname;
         this.sideOfThisPiece = sideOfThisPiece;
         this.sideThatMovesOnBoard = sideThatMovesOnBoard;
