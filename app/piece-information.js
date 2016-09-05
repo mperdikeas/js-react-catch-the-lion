@@ -16,5 +16,6 @@ class PieceInformation {
         this.getMovingSide = getMovingSide;
         console.log(`PieceInformation::side = ${this.side.friendlyName}`);
     }
+
 }
 exports.PieceInformation = PieceInformation;

@@ -14,7 +14,6 @@ import {Side}      from '../modules/block-optimization/es5/side.js';
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
-import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
 import {arrayOfPoints} from './custom-react-validators.js';
 import MovingSide from './moving-side.js';
 import {PieceInformation}            from './piece-information.js';
@@ -58,13 +57,14 @@ const BoardGrid = React.createClass({
         for (let j: number = 0; j < this.props.Y ; j++) {      // it is important that we scan along the X-direction first, then along the Y-direction as this is how the 'static' layout will work
             for (let i: number = 0 ; i < this.props.X ; i++) {
                 const point = new Point(i,j);
-                const imgFnameOrnt: ?ImageFilenameAndOrientation = (()=>{
+                const pieceInformation: ?PieceInformation = (()=>{
                     if (this.props.gameBoard.board.has( point.toString() )) {
                         const p: ?IConcretePieceOnSide = this.props.gameBoard.board.get(point.toString());
                         if (p!=null)
-                            return new ImageFilenameAndOrientation(
+                            return new PieceInformation(
                                 imgFile(p.piece.code.toLowerCase()),
-                                p.isSideA);
+                                MovingSide.fromSide(p.isSideA?Side.A:Side.B),
+                                this.getMovingSide);
                         else
                             throw new Error('bug');
                     } else {
@@ -72,7 +72,7 @@ const BoardGrid = React.createClass({
                     }
                 })();
                 const imgIsSelected: ?boolean = (()=>{
-                    if (imgFnameOrnt) {
+                    if (pieceInformation) {
                         if (this.props.selectedPiece)
                             return this.props.selectedPiece.equals(point);
                         else
@@ -80,7 +80,7 @@ const BoardGrid = React.createClass({
                     } else
                         return null;
                 })();
-                if ((imgFnameOrnt!=null) && (imgIsSelected==null))
+                if ((pieceInformation!=null) && (imgIsSelected==null))
                     throw new Error();
                 const movableHighlight: boolean = (()=>{
                     if (selectedPiecePossibleMovesOnBoard!=null) {
@@ -96,20 +96,7 @@ const BoardGrid = React.createClass({
                     } else
                         return false;
                 })();
-                const pieceInformation: ?PieceInformation = (()=>{
-                    if (this.props.gameBoard.board.has( point.toString() )) {
-                        const p: ?IConcretePieceOnSide = this.props.gameBoard.board.get(point.toString());
-                        if (p!=null)
-                            return new PieceInformation(
-                                imgFile(p.piece.code.toLowerCase()),
-                                MovingSide.fromSide(p.isSideA?Side.A:Side.B),
-                                this.getMovingSide);
-                        else
-                            throw new Error('bug');
-                    } else {
-                        return null;
-                    }
-                })();
+                
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
                     x = {point.x}
@@ -120,9 +107,8 @@ const BoardGrid = React.createClass({
                     border={this.props.cellBorder}
                     pieceWidth={this.props.pieceWidth}
                     pieceHeight={this.props.pieceHeight}
-                    pieceBorder={this.props.pieceBorder} 
-                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
-                    imgFnameOrnt={imgFnameOrnt}
+                    pieceBorder={this.props.pieceBorder}
+                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow                    
                     pieceInformation={pieceInformation}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     imgIsSelected= {imgIsSelected}

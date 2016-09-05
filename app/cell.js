@@ -6,7 +6,7 @@ var      cx = require('classnames');
 
 import {Geometry}  from './geometry.js';
 import {Point}     from 'geometry-2d';
-import {ImageFilenameAndOrientation} from './img-fname-orientation.js';
+import MovingSide                    from './moving-side.js';
 import {PieceInformation}            from './piece-information.js';
 
 require('./cell.css');
@@ -21,7 +21,6 @@ const Cell = React.createClass({
         pieceWidth       : React.PropTypes.number.isRequired,
         pieceHeight      : React.PropTypes.number.isRequired,
         pieceBorder      : React.PropTypes.number.isRequired,        
-        imgFnameOrnt     : React.PropTypes.instanceOf(ImageFilenameAndOrientation),
         pieceInformation : React.PropTypes.instanceOf(PieceInformation),
         imgIsSelected    : React.PropTypes.bool,
         movableHighlight : React.PropTypes.bool.isRequired,
@@ -35,7 +34,7 @@ const Cell = React.createClass({
         if (b1) 
             return true;
         const b2: boolean = JSON.stringify(nextState)!==JSON.stringify(this.state);
-        if (b2 && (this.props.imgFnameOrnt))
+        if (b2 && (this.props.pieceInformation))
             return true;
         return false;
     },
@@ -64,9 +63,9 @@ const Cell = React.createClass({
             verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677
         };
         const img = (()=>{
-            if (this.props.imgFnameOrnt!=null) {
+            if (this.props.pieceInformation!=null) {
                 if (this.props.imgIsSelected!=null) {
-                    const s:string = `./resources/${this.props.imgFnameOrnt.fname}`;
+                    const s:string = `./resources/${this.props.pieceInformation.fname}`;
                     // $SuppressFlowFinding: The parameter passed to require() must be a literal string.
                     const imgSrc            = require(s);
                     const imgWidth :number  = this.props.pieceWidth - 2*this.props.pieceBorder; 
@@ -77,7 +76,7 @@ const Cell = React.createClass({
                         top: `${(this.props.height-2*this.props.border-this.props.pieceHeight)/2}px`,
                         left: `${(this.props.width-2*this.props.border-this.props.pieceWidth)/2}px`,
                         borderWidth: `${imgBorder}px`,
-                        transform: `scaleY(${this.props.imgFnameOrnt.flipped?1:-1})`
+                        transform: `scaleY(${this.props.pieceInformation.side===MovingSide.BLACK?1:-1})`
                     };
                     return (
                             <img className={cx({hovering:this.state.isHovering,
