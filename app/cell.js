@@ -88,8 +88,14 @@ const Cell = React.createClass({
                         height={imgHeight}
                         src={imgSrc}
                         onClick={()=>{
-                            if (this.props.pieceInformation.belongsToTheMovingSide())
-                                this.props.selectPiece(new Point(this.props.x, this.props.y));}}
+                            if (this.props.pieceInformation!=null) {
+                                if (this.props.pieceInformation.belongsToTheMovingSide())
+                                    this.props.selectPiece(new Point(this.props.x, this.props.y));
+                            }
+                            else
+                                throw new Error('impossible for an img to not have pieceInformation');
+
+                        }}
                             />
                     );
                 } else throw new Error('bug: if imgFrameOrnt is not null, then imgIsSelected must have a value');
