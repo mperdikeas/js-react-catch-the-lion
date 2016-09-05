@@ -1,0 +1,15 @@
+img {
+    border-style: solid;
+    border-color: black;
+}
+
+
+img.hovering {
+    border-color: blue;
+    cursor: pointer;
+}
+
+img.selected {
+    border-color: red;
+}
+

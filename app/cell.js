@@ -26,9 +26,6 @@ const Cell = React.createClass({
         movableHighlight : React.PropTypes.bool.isRequired,
         selectPiece      : React.PropTypes.func.isRequired
     },
-    getInitialState: function() {
-        return {isHovering: false};
-    },
     shouldComponentUpdate(nextProps: any, nextState: any) {
         const b1: boolean = JSON.stringify(nextProps)!==JSON.stringify(this.props);
         if (b1) 
@@ -37,14 +34,6 @@ const Cell = React.createClass({
         if (b2 && (this.props.pieceInformation))
             return true;
         return false;
-    },
-        
-    onMouseOver() {
-        if (this.props.pieceInformation && this.props.pieceInformation.belongsToTheMovingSide())
-            this.setState({isHovering: true});
-    },
-    onMouseOut() {
-        this.setState({isHovering: false});
     },
     render: function() {
         console.log(`rendering cell ${this.props.x}-${this.props.y}: ${this.props.movableHighlight}, imgIsSelected=${this.props.imgIsSelected}`);
@@ -58,7 +47,6 @@ const Cell = React.createClass({
             height: this.props.height,
             borderStyle: 'solid',
             borderWidth: `${this.props.border}px`,
-//            border: `${this.props.border}px solid grey`,
             background: 'transparent',
             fontSize: 0,         // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
             verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677
@@ -68,8 +56,7 @@ const Cell = React.createClass({
                 if (this.props.imgIsSelected!=null) {
                     return (
                         <PieceBlock
-                        x={this.props.x}
-                        y={this.props.y}
+                        point={new Point(this.props.x, this.props.y)}
                         width={this.props.width}
                         height={this.props.height}
                         border={this.props.border}
@@ -89,8 +76,6 @@ const Cell = React.createClass({
                 <div
                     className={cx({movableHighlight:this.props.movableHighlight})}
                     style={style}
-                    onMouseOver={this.onMouseOver}
-                    onMouseOut={this.onMouseOut}            
                 >
                 {pieceBlock}
                 </div>                

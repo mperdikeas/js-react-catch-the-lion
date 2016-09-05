@@ -9,11 +9,10 @@ import {Point}     from 'geometry-2d';
 import MovingSide                    from './moving-side.js';
 import {PieceInformation}            from './piece-information.js';
 
-require('./cell.css');
+require('./piece-block.css');
 const PieceBlock = React.createClass({
     propTypes: {
-        x                : React.PropTypes.number.isRequired,
-        y                : React.PropTypes.number.isRequired,
+        point            : React.PropTypes.instanceOf(Point).isRequired,
         width            : React.PropTypes.number.isRequired,
         height           : React.PropTypes.number.isRequired,
         border           : React.PropTypes.number.isRequired,
@@ -66,10 +65,12 @@ const PieceBlock = React.createClass({
             width={imgWidth}
             height={imgHeight}
             src={imgSrc}
+            onMouseOver={this.onMouseOver}
+            onMouseOut={this.onMouseOut}                        
             onClick={()=>{
                 if (this.props.pieceInformation!=null) {
                     if (this.props.pieceInformation.belongsToTheMovingSide())
-                        this.props.selectPiece(new Point(this.props.x, this.props.y));
+                        this.props.selectPiece(this.props.point);
                 }
                 else
                     throw new Error('impossible for an img to not have pieceInformation');
