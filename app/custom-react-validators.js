@@ -7,17 +7,6 @@ var      cx = require('classnames');
 import {Point} from 'geometry-2d';
 import {createChainableTypeChecker} from 'react-chainable-type-checker';
 
-import {Geometry}  from './geometry.js';
-const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
-
-const {Chick, Hen, Elephant, Giraffe, Lion} = require('../modules/block-optimization/es5/piece-set.js');
-const {createPieceSet}                      = require('../modules/block-optimization/es5/piece-set-factory.js');
-const {PieceOnSide}                         = require('../modules/block-optimization/es5/piece.js');
-const {CaptureBag}                          = require('../modules/block-optimization/es5/captureBag.js');
-
-
-
-import Board     from './board.js';
 
 function arrayOfPoints(props: any, propName: string, componentName: string, location: any) {
     componentName = componentName || 'anonymous';

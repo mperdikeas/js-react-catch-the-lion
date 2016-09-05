@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
     "scripts": {
-    "build": "babel es6 --out-dir es5 --source-maps",
+        "build": "babel es6 --out-dir es5 --source-maps",
+        "prebuild__not_used": "for f in $(find es6/ -iname *.js | cut -c5-) ; do cp es6/$f es5/$f.flow; done",
     "build-watch": "babel es6 --out-dir es5 --source-maps --watch",
     "start": "node es5/index.js",
     "test": "mocha --compilers js:babel-core/register",

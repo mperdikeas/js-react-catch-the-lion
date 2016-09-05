@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-const {Side} = require('../modules/block-optimization/es5/side.js');
+import {Side} from '../modules/block-optimization/es6/side.js';
 
 
 class MovingSide {

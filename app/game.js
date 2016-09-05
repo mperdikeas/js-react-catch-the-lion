@@ -8,12 +8,11 @@ import assert from 'assert';
 
 import {Point} from 'geometry-2d';
 
-const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
-
-const {Chick, Hen, Elephant, Giraffe, Lion} = require('../modules/block-optimization/es5/piece-set.js');
-const {createPieceSet}                      = require('../modules/block-optimization/es5/piece-set-factory.js');
-const {PieceOnSide}                         = require('../modules/block-optimization/es5/piece.js');
-const {CaptureBag}                          = require('../modules/block-optimization/es5/captureBag.js');
+import {GameBoard}                           from '../modules/block-optimization/es6/board-lib.js';
+import {Chick, Hen, Elephant, Giraffe, Lion} from '../modules/block-optimization/es6/piece-set.js';
+import {createPieceSet}                      from '../modules/block-optimization/es6/piece-set-factory.js';
+import {PieceOnSide}                         from '../modules/block-optimization/es6/piece.js';
+import {CaptureBag}                          from '../modules/block-optimization/es6/captureBag.js';
 
 import {Geometry, geometry}  from './geometry.js';
 import MovingSide            from './moving-side.js';
@@ -55,11 +54,17 @@ const Game = React.createClass({
     },
     moveToCell: function(p: Point): void {
         console.log(`Piece should now move to ${p.toString()}`);
-        assert(this.state.selectedPiece!=null);
-        assert(this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
-        this.setState({gameBoard: this.state.gameBoard.move(this.state.selectedPiece, p),
-                       movingSide: this.state.movingSide.theOther(),
-                       selectedPiece: null});
+        const selectedPiece: ?Point = this.state.selectedPiece;
+        if (selectedPiece!=null) {
+            assert(this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
+            const nextBoard: ?GameBoard = this.state.gameBoard.move(selectedPiece, p);
+            if (nextBoard!=null) {
+                this.setState({gameBoard: nextBoard,
+                               movingSide: this.state.movingSide.theOther(),
+                               selectedPiece: null});
+            } else
+                throw new Error(`bug - it should be impossible to call moveToCell on a point (${p.toString()}) that doesn't exist on the board`);
+        } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
     render: function() {
         console.log('rendering game');

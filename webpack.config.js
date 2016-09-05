@@ -26,7 +26,10 @@ const config = {
             {
                 test: /\.js$/,
                 loader: 'babel',
-                include: path.resolve(__dirname, 'app/')
+                include: [
+                    path.resolve(__dirname, 'app/'),
+                    path.resolve(__dirname, 'modules/')
+                ]
             },{
                 test: /\.css$/,
                 loaders: ['style', 'css']

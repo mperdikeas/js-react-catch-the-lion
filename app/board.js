@@ -6,7 +6,7 @@ var      cx = require('classnames');
 
 import {Point} from 'geometry-2d';
 
-const {GameBoard} = require('../modules/block-optimization/es5/board-lib.js');
+import {GameBoard} from '../modules/block-optimization/es6/board-lib.js';
 
 import {Geometry}  from './geometry.js';
 import BoardGrid   from './board-grid.js';
