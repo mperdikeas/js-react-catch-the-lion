@@ -8,11 +8,11 @@ import assert from 'assert';
 
 import {Point} from 'geometry-2d';
 
-import {GameBoard}                           from '../modules/block-optimization/es6/board-lib.js';
-import {Chick, Hen, Elephant, Giraffe, Lion} from '../modules/block-optimization/es6/piece-set.js';
-import {createPieceSet}                      from '../modules/block-optimization/es6/piece-set-factory.js';
-import {PieceOnSide}                         from '../modules/block-optimization/es6/piece.js';
-import {CaptureBag}                          from '../modules/block-optimization/es6/captureBag.js';
+import {GameBoard}                           from 'ai-for-shogi-like-games';
+import {Chick, Hen, Elephant, Giraffe, Lion} from 'ai-for-shogi-like-games';
+import {createPieceSet}                      from 'ai-for-shogi-like-games';
+import {PieceOnSide}                         from 'ai-for-shogi-like-games';
+import {CaptureBag}                          from 'ai-for-shogi-like-games';
 
 import {Geometry, geometry}  from './geometry.js';
 import MovingSide            from './moving-side.js';
@@ -57,9 +57,7 @@ const Game = React.createClass({
         console.log(`Piece should now move to ${p.toString()}`);
         const selectedPiece: ?Point = this.state.selectedPiece;
         if (selectedPiece!=null) {
-            // $SuppressFlowFinding: weird that I have to suppress that
             assert( this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
-            // $SuppressFlowFinding: weird that I have to suppress that            
             const nextBoard: ?GameBoard = this.state.gameBoard.move(selectedPiece, p);
             if (nextBoard!=null) {
                 const winner: ?boolean = nextBoard.boardImmediateWinSide();

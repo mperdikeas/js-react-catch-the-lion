@@ -29,6 +29,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "ai-for-shogi-like-games": "*",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "classnames": "^2.2.5",
     "geometry-2d": "*",

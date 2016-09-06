@@ -9,8 +9,8 @@ var      cx = require('classnames');
 
 import {inRange, Point, Vector}     from 'geometry-2d';
 
-import {GameBoard} from '../modules/block-optimization/es6/board-lib.js';
-import {Side}      from '../modules/block-optimization/es6/side.js';
+import {GameBoard} from 'ai-for-shogi-like-games';
+import {Side}      from 'ai-for-shogi-like-games';
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
@@ -40,7 +40,6 @@ const BoardGrid = React.createClass({
         const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
             const selectedPiece :?Point = this.props.selectedPiece;
             if (selectedPiece!=null) {
-                // $SuppressFlowFinding: weird that I have to suppress that
                 const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByMovingPieceOnAParticularSquare(selectedPiece);
                 return Array.from(nextMoves2Boards.keys());
             } else

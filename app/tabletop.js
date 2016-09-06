@@ -7,11 +7,11 @@ var      cx = require('classnames');
 import {Point} from 'geometry-2d';
 import {createChainableTypeChecker} from 'react-chainable-type-checker';
 
-import {Chick, Hen, Elephant, Giraffe, Lion} from '../modules/block-optimization/es6/piece-set.js';
-import {createPieceSet}                      from '../modules/block-optimization/es6/piece-set-factory.js';
-import {PieceOnSide}                         from '../modules/block-optimization/es6/piece.js';
-import {CaptureBag}                          from '../modules/block-optimization/es6/captureBag.js';
-import {GameBoard}                           from '../modules/block-optimization/es6/board-lib.js';
+import {Chick, Hen, Elephant, Giraffe, Lion} from 'ai-for-shogi-like-games';
+import {createPieceSet}                      from 'ai-for-shogi-like-games';
+import {PieceOnSide}                         from 'ai-for-shogi-like-games';
+import {CaptureBag}                          from 'ai-for-shogi-like-games';
+import {GameBoard}                           from 'ai-for-shogi-like-games';
 
 import {Geometry}  from './geometry.js';
 import {arrayOfPoints} from './custom-react-validators.js';

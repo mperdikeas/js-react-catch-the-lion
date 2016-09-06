@@ -3,7 +3,7 @@
 [include]
 
 [libs]
-    ./modules/block-optimization/decls/
+    ./decls/
 
 [options]
     module.name_mapper.extension='css' -> '<PROJECT_ROOT>/flow/stub/css-modules.js'

@@ -1,8 +1,7 @@
 /* @flow */
 'use strict';
 
-import {Side} from '../modules/block-optimization/es6/side.js';
-
+import {Side} from 'ai-for-shogi-like-games';
 
 class MovingSide {
     side: Side;

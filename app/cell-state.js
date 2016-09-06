@@ -5,7 +5,7 @@ var      cx = require('classnames');
 
 import assert from 'assert';
 
-import {PieceOnSide} from '../modules/block-optimization/es6/piece.js';
+import {PieceOnSide} from 'ai-for-shogi-like-games';
 
 class CellOccupiedState {
     v: string;
