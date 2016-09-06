@@ -13,7 +13,7 @@ import not_used from './number-prototype.js';
 
 import {MAX_BOARD_DIMENSION} from './constants.js';
 
-import {Point, Vector} from 'geometry-2d';
+import {Point, Vector}             from 'geometry-2d';
 import {Piece, PieceOnSide}        from './piece.js';
 import {Chick, Hen, Lion}          from './piece-set.js';
 import {PieceSet}                  from './piece-set-factory.js';

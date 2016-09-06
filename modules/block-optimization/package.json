@@ -1,6 +1,6 @@
 {
-  "name": "simple-babel-serverside-node-only-archetype",
-  "version": "1.0.0",
+  "name": "ai-for-shogi-like-games",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
     "scripts": {
