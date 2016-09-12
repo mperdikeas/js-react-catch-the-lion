@@ -177,13 +177,13 @@ class Geometry {
 }
 
 const geometry = new Geometry(15, 30, 900, 900,       // game params
-                              100, 100, 455, 250, 3,  // table params
+                              100, 100, 455, 270, 3,  // table params
                               2, 3, 5,                // captured params
                               10, 20,                 // captured white offset
                               325, 100,               // captured black offset
-                              140, 20, 5, 5, 3, 5,     // board params
-                              55, 40, 1,              // cell params
-                              50, 37, 3
+                              140, 20, 5, 5, 3, 5,    // board params
+                              55, 44, 1,              // cell params
+                              50, 37, 3               // piece params
                              );
 
 exports.Geometry = Geometry;

@@ -39,8 +39,9 @@ const TableTop = React.createClass({
             top     : this.props.geometry.tableYOffset,
             width   : this.props.geometry.tableWidth,
             height  : this.props.geometry.tableHeight,
-            border  : `solid ${this.props.geometry.tableBorder}px blue`,
-            background: 'brown'
+            border  : `solid ${this.props.geometry.tableBorder}px brown`,
+            backgroundImage: 'url("bamboo.jpg")',
+            backgroundSize: 'cover'
         };
         return (
                 <div style={style}>
