@@ -13,11 +13,12 @@ import {PieceOnSide}                         from 'ai-for-shogi-like-games';
 import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {GameBoard}                           from 'ai-for-shogi-like-games';
 
-import {Geometry}  from './geometry.js';
+import {Geometry}      from './geometry.js';
 import {arrayOfPoints} from './custom-react-validators.js';
-import MovingSide from './moving-side.js';
+import MovingSide      from './moving-side.js';
 
-import Board     from './board.js';
+import CaptureBox      from './capture-box.js';
+import Board           from './board.js';
 
 const TableTop = React.createClass({
     propTypes: {
@@ -42,7 +43,27 @@ const TableTop = React.createClass({
             background: 'brown'
         };
         return (
-            <div style={style}>
+                <div style={style}>
+                <CaptureBox
+                    xOffset     = {this.props.geometry.capturedWhiteXOffset}
+                    yOffset     = {this.props.geometry.capturedWhiteYOffset}
+                    X           = {this.props.geometry.capturedX}
+                    Y           = {this.props.geometry.capturedY}
+                    border      = {this.props.geometry.capturedBorder}
+                    cellWidth   = {this.props.geometry.cellWidth}
+                    cellHeight  = {this.props.geometry.cellHeight}
+            
+                />
+                <CaptureBox
+                    xOffset     = {this.props.geometry.capturedBlackXOffset}
+                    yOffset     = {this.props.geometry.capturedBlackYOffset}
+                    X           = {this.props.geometry.capturedX}
+                    Y           = {this.props.geometry.capturedY}
+                    border      = {this.props.geometry.capturedBorder}
+                    cellWidth   = {this.props.geometry.cellWidth}
+                    cellHeight  = {this.props.geometry.cellHeight}
+            
+                />                
                 <Board
                     geometry={this.props.geometry}
                     gameBoard={this.props.gameBoard}

@@ -17,6 +17,15 @@ class Geometry {
     tableHeight: number;
     tableBorder: number;
 
+    capturedX: number;
+    capturedY: number;
+    capturedBorder: number;
+
+    capturedWhiteXOffset: number; // offsets from table box
+    capturedWhiteYOffset: number;    
+    capturedBlackXOffset: number; // offsets from table box
+    capturedBlackYOffset: number;
+
     boardXOffset: number; // offsets from table box
     boardYOffset: number;
     boardBorderHoriz: number;
@@ -41,11 +50,20 @@ class Geometry {
                 tableHeight: number,
                 tableBorder: number,
 
+                capturedX: number,
+                capturedY: number,
+                capturedBorder: number,
+                capturedWhiteXOffset: number,
+                capturedWhiteYOffset: number,
+                capturedBlackXOffset: number,
+                capturedBlackYOffset: number,
+
+                
+
                 boardXOffset: number, // offsets from table box
                 boardYOffset: number,
                 boardBorderHoriz: number,
                 boardBorderVertic: number,
-
                 X: number,
                 Y: number,
                 cellWidth: number,
@@ -65,6 +83,16 @@ class Geometry {
                    this.tableWidth = tableWidth;
                    this.tableHeight = tableHeight;
                    this.tableBorder = tableBorder;
+
+                   this.capturedX = capturedX;
+                   this.capturedY = capturedY;
+                   this.capturedBorder = capturedBorder;
+                   this.capturedWhiteXOffset = capturedWhiteXOffset;
+                   this.capturedWhiteYOffset = capturedWhiteYOffset;
+                   this.capturedBlackXOffset = capturedBlackXOffset;
+                   this.capturedBlackYOffset = capturedBlackYOffset;
+
+                   
                    
                    this.boardXOffset = boardXOffset;
                    this.boardYOffset = boardYOffset;
@@ -89,6 +117,18 @@ class Geometry {
         console.log(`returning: ${this.tableHeight + 2*this.tableBorder}`);
         return this.tableHeight + 2*this.tableBorder;
     }
+    captureBoxWidthWithoutBorder(): number {
+        return this.capturedX*this.cellWidth;
+    }
+    captureBoxWidthWithBorder(): number {
+        return this.captureBoxWidthWithoutBorder()+2*this.capturedBorder;
+    }
+    captureBoxHeightWithoutBorder(): number {
+        return this.capturedY*this.cellHeight;
+    }
+    captureBoxHeightWithBorder(): number {
+        return this.captureBoxHeightWithoutBorder()+2*this.capturedBorder;
+    }    
     boardWidthWithBorder(): number {
         return this.boardWidthWithoutBorder() + 2*this.boardBorderHoriz;
     }
@@ -108,6 +148,18 @@ class Geometry {
                                                                    , this.tableWidthWithBorder()
                                                                    , this.tableHeightWithBorder());
         console.log(tableBox);
+        const capturedWhite: Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft
+                                                                      .add(new Point(this.tableBorder, -this.tableBorder))
+                                                                      .add(new Point(this.capturedWhiteXOffset, -this.capturedWhiteYOffset))
+                                                                      , this.captureBoxWidthWithBorder()
+                                                                      , this.captureBoxHeightWithBorder());
+
+        const capturedBlack: Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft
+                                                                      .add(new Point(this.tableBorder, -this.tableBorder))
+                                                                      .add(new Point(this.capturedBlackXOffset, -this.capturedBlackYOffset))
+                                                                      , this.captureBoxWidthWithBorder()
+                                                                      , this.captureBoxHeightWithBorder());        
+        
         const boardBox : Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft
                                                                   .add(new Point(this.tableBorder, -this.tableBorder))
                                                                   .add(new Point(this.boardXOffset, -this.boardYOffset))
@@ -115,17 +167,22 @@ class Geometry {
                                                                   , this.boardHeightWithBorder());
         console.log(boardBox);
         assert(gameBox .containsRectangle(tableBox, false));
-        assert(tableBox.containsRectangle(boardBox, false));        
+        assert(tableBox.containsRectangle(capturedWhite, false));
+        assert(tableBox.containsRectangle(capturedBlack, false));
+        assert(tableBox.containsRectangle(boardBox, false));
         assert(this.pieceWidth <=this.cellWidth -2*this.cellBorder);
         assert(this.pieceHeight<=this.cellHeight-2*this.cellBorder);        
                      
     }
 }
 
-const geometry = new Geometry(15, 30, 500, 500,       //  game params
-                              100, 100, 250, 250, 3, // table params
-                              20, 20, 5, 5, 3, 5,  // board params
-                              55, 40, 1,             //  cell params
+const geometry = new Geometry(15, 30, 900, 900,       // game params
+                              100, 100, 455, 250, 3,  // table params
+                              2, 3, 5,                // captured params
+                              10, 20,                 // captured white offset
+                              325, 100,               // captured black offset
+                              140, 20, 5, 5, 3, 5,     // board params
+                              55, 40, 1,              // cell params
                               50, 37, 3
                              );
 
