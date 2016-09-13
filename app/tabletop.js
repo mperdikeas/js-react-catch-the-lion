@@ -57,7 +57,7 @@ const TableTop = React.createClass({
                     border      = {this.props.geometry.capturedBorder}
                     cellWidth   = {this.props.geometry.cellWidth}
                     cellHeight  = {this.props.geometry.cellHeight}
-            
+                    pieces      = {this.props.gameBoard.captured.piecesOfThisSide(false)}
                 />
                 <CaptureBox
                     xOffset     = {this.props.geometry.capturedBlackXOffset}
@@ -67,7 +67,7 @@ const TableTop = React.createClass({
                     border      = {this.props.geometry.capturedBorder}
                     cellWidth   = {this.props.geometry.cellWidth}
                     cellHeight  = {this.props.geometry.cellHeight}
-            
+                    pieces      = {this.props.gameBoard.captured.piecesOfThisSide(true)}            
                 />                
                 <Board
                     geometry={this.props.geometry}

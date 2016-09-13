@@ -40,7 +40,8 @@ const Cell = React.createClass({
             this.props.moveToCell(this.props.point);
     },
     render: function() {
-        console.log(`rendering cell ${this.props.point.toString()}: ${this.props.movableHighlight}, imgIsSelected=${this.props.imgIsSelected}`);
+        if (false)
+            console.log(`rendering cell ${this.props.point.toString()}: ${this.props.movableHighlight}, imgIsSelected=${this.props.imgIsSelected}`);
         const style = {
             boxSizing: 'border-box',
             position: 'static',
