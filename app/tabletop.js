@@ -39,7 +39,11 @@ const TableTop = React.createClass({
             top     : this.props.geometry.tableYOffset,
             width   : this.props.geometry.tableWidth,
             height  : this.props.geometry.tableHeight,
-            border  : `solid ${this.props.geometry.tableBorder}px brown`,
+            border: `${this.props.geometry.tableBorder}px solid transparent`, // http://stackoverflow.com/a/37715462/274677 https://www.chromestatus.com/feature/5542503914668032
+            borderImageSource: 'url("zebrano.jpg")',
+            borderImageSlice: `${this.props.geometry.tableBorder} ${this.props.geometry.tableBorder} ${this.props.geometry.tableBorder} ${this.props.geometry.tableBorder}`,
+            borderImageRepeat: 'round',
+            borderImageWidth: `${this.props.geometry.tableBorder}`,
             backgroundImage: 'url("bamboo.jpg")',
             backgroundSize: 'cover'
         };

@@ -177,7 +177,7 @@ class Geometry {
 }
 
 const geometry = new Geometry(15, 30, 900, 900,       // game params
-                              100, 100, 455, 270, 3,  // table params
+                              100, 100, 455, 270, 10,  // table params
                               2, 3, 5,                // captured params
                               10, 20,                 // captured white offset
                               325, 100,               // captured black offset
