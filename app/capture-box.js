@@ -28,7 +28,12 @@ const CaptureBox = React.createClass({
             top       : this.props.yOffset,
             width     : this.props.X*this.props.cellWidth,
             height    : this.props.Y*this.props.cellHeight,
-            border    : `${this.props.border}px solid DarkRed`,
+            //            border    : `${this.props.border}px solid DarkRed`,
+            border: `${this.props.border}px solid transparent`,
+            borderImageSource: 'url("mahogany.jpg")',
+            borderImageSlice: `${this.props.border} ${this.props.border}`,
+            borderImageRepeat: 'round',
+            borderImageWidth: `${this.props.border}`,
             backgroundImage: 'url("green-felt.jpg")',
             backgroundSize: 'cover',
             fontSize  : 0

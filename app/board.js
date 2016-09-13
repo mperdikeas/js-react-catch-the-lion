@@ -34,7 +34,11 @@ const Board = React.createClass({
             height: this.props.geometry.boardHeightWithoutBorder(),
             borderWidth: `${this.props.geometry.boardBorderVertic}px ${this.props.geometry.boardBorderHoriz}px`,
             borderStyle: 'solid',
-            borderColor: 'brown',
+            borderColor: 'transparent',
+            borderImageSource: 'url("brickman.jpg")',
+            borderImageSlice: `${this.props.geometry.boardBorderVertic} ${this.props.geometry.boardBorderHoriz}`,
+            borderImageRepeat: 'round',
+            borderImageWidth: `${this.props.geometry.boardBorderVertic} ${this.props.boardBorderHoriz}`,
             backgroundImage: 'url("board-background-1.jpg")' // 'brown'
         };
         return (
