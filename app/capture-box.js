@@ -17,6 +17,7 @@ import imgFile                       from './img-file.js';
 
 const CaptureBox = React.createClass({
     propTypes: {
+        movingSide       : React.PropTypes.instanceOf(MovingSide).isRequired,
         xOffset          : React.PropTypes.number.isRequired,
         yOffset          : React.PropTypes.number.isRequired,
         X                : React.PropTypes.number.isRequired,
@@ -24,6 +25,9 @@ const CaptureBox = React.createClass({
         border           : React.PropTypes.number.isRequired,
         cellWidth        : React.PropTypes.number.isRequired,
         cellHeight       : React.PropTypes.number.isRequired,
+        pieceWidth       : React.PropTypes.number.isRequired,
+        pieceHeight      : React.PropTypes.number.isRequired,
+        pieceBorder      : React.PropTypes.number.isRequired,        
         pieces           : React.PropTypes.arrayOf(React.PropTypes.object).isRequired
     },
     render: function() {
@@ -64,7 +68,7 @@ const CaptureBox = React.createClass({
                         console.log(`returning piece information for code: ${p.code}`);
                         return new PieceInformation(
                             imgFile(p.code.toLowerCase()),
-                            MovingSide.fromSide(Side.A), // TODO
+                            this.props.movingSide,
                             MovingSide.BLACK // TODO
                         );
                     } else
@@ -79,10 +83,10 @@ const CaptureBox = React.createClass({
                 point={new Point(0,0)} 
                 width={this.props.cellWidth}
                 height={this.props.cellHeight}
-                border={1}
-                pieceWidth={30}
-                pieceHeight={30}
-                pieceBorder={5}
+                border={0}
+                pieceWidth={this.props.pieceWidth}
+                pieceHeight={this.props.pieceHeight}
+                pieceBorder={this.props.pieceBorder}
                 // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow                    
                 pieceInformation={pieceInformation}
                 // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
