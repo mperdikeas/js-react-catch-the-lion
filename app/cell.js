@@ -62,8 +62,6 @@ const Cell = React.createClass({
                     return (
                         <PieceBlock
                         point={this.props.point}
-                        width={this.props.width}
-                        height={this.props.height}
                         border={this.props.border}
                         pieceWidth={this.props.pieceWidth}
                         pieceHeight={this.props.pieceHeight}

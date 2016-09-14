@@ -13,8 +13,6 @@ require('./piece-block.css');
 const PieceBlock = React.createClass({
     propTypes: {
         point            : React.PropTypes.instanceOf(Point).isRequired,
-        width            : React.PropTypes.number.isRequired,
-        height           : React.PropTypes.number.isRequired,
         border           : React.PropTypes.number.isRequired,
         pieceWidth       : React.PropTypes.number.isRequired,
         pieceHeight      : React.PropTypes.number.isRequired,
@@ -52,8 +50,11 @@ const PieceBlock = React.createClass({
         const imgBorder:number  = this.props.pieceBorder;
         const imgStyle = {
             position: 'relative',
-            top: `${(this.props.height-2*this.props.border-this.props.pieceHeight)/2}px`,
-            left: `${(this.props.width-2*this.props.border-this.props.pieceWidth)/2}px`,
+            top: '50%',
+            left: '50%',
+            maring: 'auto',
+            marginLeft: `-${this.props.pieceWidth/2}px`,
+            marginTop: `-${this.props.pieceHeight/2}px`,            
             borderWidth: `${imgBorder}px`,
             transform: `scaleY(${this.props.pieceInformation.sideOfThisPiece===MovingSide.BLACK?1:-1})`
         };
