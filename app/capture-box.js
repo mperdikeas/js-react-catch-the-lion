@@ -17,6 +17,7 @@ import imgFile                       from './img-file.js';
 
 const CaptureBox = React.createClass({
     propTypes: {
+        sideOfCaptureBox : React.PropTypes.instanceOf(MovingSide).isRequired,
         movingSide       : React.PropTypes.instanceOf(MovingSide).isRequired,
         xOffset          : React.PropTypes.number.isRequired,
         yOffset          : React.PropTypes.number.isRequired,
@@ -50,7 +51,6 @@ const CaptureBox = React.createClass({
             backgroundSize: 'cover',
             fontSize  : 0
         };
-        console.log(`TODO: I am left to display the ${this.props.pieces.length} captured pieces`);
         const cells: Array<React.Element> = this.prepareCells();
         return (
                 <div style={style}>
@@ -68,8 +68,8 @@ const CaptureBox = React.createClass({
                         console.log(`returning piece information for code: ${p.code}`);
                         return new PieceInformation(
                             imgFile(p.code.toLowerCase()),
-                            this.props.movingSide,
-                            MovingSide.BLACK // TODO
+                            this.props.sideOfCaptureBox,
+                            this.props.movingSide
                         );
                     } else
                         throw new Error('bug');
