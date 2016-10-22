@@ -80,7 +80,15 @@ const Game = React.createClass({
                 } else
                     throw new Error(`bug - it should be impossible to call moveToCell on a point (${p.toString()}) that doesn't exist on the board`);
             } else {                               // case B: drop moves
-                throw new Error('drops are not implemented yet');
+                const piece: IConcretePiece = this.refs.tableTop.getPieceInCaptureBox(selectedPiece.captureBox, selectedPiece.point);
+                const pieceOnSide: IConcretePieceOnSide = new PieceOnSide(piece, selectedPiece.captureBox.side.isSideA());
+                const nextBoard: ?GameBoard = this.state.gameBoard.drop(pieceOnSide, p);
+                console.log(`next board is: ${nextBoard}`);
+                assert(nextBoard!=null);
+                this.setState({gameBoard: nextBoard,
+                               movingSide: this.state.movingSide.theOther(),
+                               selectedPiece: null
+                              });
             }
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
@@ -108,7 +116,7 @@ const Game = React.createClass({
         };
         return (
             <div style={style}>
-                <TableTop
+                <TableTop ref='tableTop'
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
                     movingSide={this.state.movingSide}
