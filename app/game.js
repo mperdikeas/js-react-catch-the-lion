@@ -17,7 +17,7 @@ import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {Geometry, geometry}  from './geometry.js';
 import MovingSide            from './moving-side.js';
 import ControlPanel          from './control-panel.js';
-
+import {PointInBoardOrCaptureBoard} from './point-in-board-or-capture-box.js';
 
 import TableTop     from './tabletop.js';
 
@@ -32,7 +32,7 @@ function createStartingBoard() {
     return gb;
 }
 
-type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?Point};
+type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox};
 
 const Game = React.createClass({
     getInitialState: function(): StateT {
@@ -43,7 +43,7 @@ const Game = React.createClass({
             selectedPiece: null
         };
     },
-    selectPiece: function(p: Point): void {
+    selectPiece: function(p: PointInBoardOrCaptureBox): void {
         console.log(p.toString());
         if (this.state.selectedPiece!=null) {
             if (this.state.selectedPiece.equals(p)) {
@@ -55,29 +55,33 @@ const Game = React.createClass({
     },
     moveToCell: function(p: Point): void {
         console.log(`Piece should now move to ${p.toString()}`);
-        const selectedPiece: ?Point = this.state.selectedPiece;
+        const selectedPiece: ?PointInBoardOrCaptureBox = this.state.selectedPiece;
         if (selectedPiece!=null) {
             assert( this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
-            const nextBoard: ?GameBoard = this.state.gameBoard.move(selectedPiece, p);
-            if (nextBoard!=null) {
-                const winner: ?boolean = nextBoard.boardImmediateWinSide();
-                if (winner!=null) {
-                    this.setState({gameBoard: nextBoard,
-                                   movingSide: this.state.movingSide.theOther(),
-                                   selectedPiece: null,
-                                   winner: MovingSide.fromWhetherIsSideA(winner)
-                                  });
-                } else {
-                    if (this.state.movingSide!=null) {
+            if (selectedPiece.captureBox===null) { // case A: normal board move
+                const nextBoard: ?GameBoard = this.state.gameBoard.move(selectedPiece.point, p);
+                if (nextBoard!=null) {
+                    const winner: ?boolean = nextBoard.boardImmediateWinSide();
+                    if (winner!=null) {
                         this.setState({gameBoard: nextBoard,
                                        movingSide: this.state.movingSide.theOther(),
-                                       selectedPiece: null
+                                       selectedPiece: null,
+                                       winner: MovingSide.fromWhetherIsSideA(winner)
                                       });
-                    } else
-                        throw new Error('bug');
-                }
-            } else
-                throw new Error(`bug - it should be impossible to call moveToCell on a point (${p.toString()}) that doesn't exist on the board`);
+                    } else {
+                        if (this.state.movingSide!=null) {
+                            this.setState({gameBoard: nextBoard,
+                                           movingSide: this.state.movingSide.theOther(),
+                                           selectedPiece: null
+                                          });
+                        } else
+                            throw new Error('bug');
+                    }
+                } else
+                    throw new Error(`bug - it should be impossible to call moveToCell on a point (${p.toString()}) that doesn't exist on the board`);
+            } else {                               // case B: drop moves
+                throw new Error('drops are not implemented yet');
+            }
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
     render: function() {

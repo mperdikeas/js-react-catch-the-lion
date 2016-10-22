@@ -13,21 +13,29 @@ import {PieceOnSide}                         from 'ai-for-shogi-like-games';
 import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {GameBoard}                           from 'ai-for-shogi-like-games';
 
-import {Geometry}      from './geometry.js';
-import {arrayOfPoints} from './custom-react-validators.js';
-import MovingSide      from './moving-side.js';
-
-import CaptureBox      from './capture-box.js';
-import Board           from './board.js';
+import {Geometry}                 from './geometry.js';
+import {arrayOfPoints}            from './custom-react-validators.js';
+import MovingSide                 from './moving-side.js';
+import CaptureBox                 from './capture-box.js';
+import Board                      from './board.js';
+import {PointInBoardOrCaptureBox} from './point-in-board-or-capture-box.js';
 
 const TableTop = React.createClass({
     propTypes: {
         geometry          : React.PropTypes.instanceOf(Geometry) .isRequired,
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
-        selectedPiece     : React.PropTypes.instanceOf(Point),
+        selectedPiece     : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
         selectPiece       : React.PropTypes.func.isRequired,
-        moveToCell       : React.PropTypes.func.isRequired                   
+        moveToCell        : React.PropTypes.func.isRequired                   
+    },
+    getPieceInCaptureBox: function(captureBox: MovingSide, p: Point): IConcretePiece {
+        if (captureBox===MovingSide.WHITE)
+            return this.refs.whiteCaptureBox.getPieceOnPoint(p);
+        else if (captureBox===MovingSide.BLACK)
+            return this.refs.blackCaptureBox.getPieceOnPoint(p);
+        else
+            throw new Error();
     },    
     render: function() {
         console.log('rendering tabletop');
@@ -47,9 +55,10 @@ const TableTop = React.createClass({
             backgroundImage: 'url("bamboo.jpg")',
             backgroundSize: 'cover'
         };
+
         return (
                 <div style={style}>
-                <CaptureBox
+                <CaptureBox       ref = "whiteCaptureBox"
                     sideOfCaptureBox  = {MovingSide.WHITE}
                     movingSide        = {this.props.movingSide}
                     xOffset           = {this.props.geometry.capturedWhiteXOffset}
@@ -63,10 +72,10 @@ const TableTop = React.createClass({
                     pieceHeight       = {this.props.geometry.pieceHeight}
                     pieceBorder       = {this.props.geometry.pieceBorder}
                     pieces            = {this.props.gameBoard.captured.piecesOfThisSide(false)}
-                    selectedPiece     = {new Point(0,0)}
-            
+                    selectedPiece     = {this.props.selectedPiece}
+                    selectPiece       = {this.props.selectPiece}            
                 />
-                <CaptureBox
+                <CaptureBox       ref = "blackCaptureBox"
                     sideOfCaptureBox  = {MovingSide.BLACK}
                     movingSide        = {this.props.movingSide}
                     xOffset           = {this.props.geometry.capturedBlackXOffset}
@@ -80,15 +89,17 @@ const TableTop = React.createClass({
                     pieceHeight       = {this.props.geometry.pieceHeight}            
                     pieceBorder       = {this.props.geometry.pieceBorder}
                     pieces            = {this.props.gameBoard.captured.piecesOfThisSide(true)}
-                    selectedPiece     = {new Point(0,0)}            
+                    selectedPiece     = {this.props.selectedPiece}
+                    selectPiece       = {this.props.selectPiece}            
                 />                
                 <Board
-                    geometry={this.props.geometry}
-                    gameBoard={this.props.gameBoard}
-                    movingSide={this.props.movingSide}
-                    selectedPiece={this.props.selectedPiece}
-                    selectPiece={this.props.selectPiece}
-                    moveToCell    = {this.props.moveToCell}                        
+                    geometry          = {this.props.geometry}
+                    gameBoard         = {this.props.gameBoard}
+                    movingSide        = {this.props.movingSide}
+                    selectedPiece     = {this.props.selectedPiece}
+                    selectPiece       = {this.props.selectPiece}
+                    moveToCell        = {this.props.moveToCell}
+                    getPieceInCaptureBox = {this.getPieceInCaptureBox}
                 />
             </div>                
         );

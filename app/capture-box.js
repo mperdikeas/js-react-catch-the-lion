@@ -14,7 +14,7 @@ import Cell                          from './cell.js';
 import MovingSide                    from './moving-side.js';
 import {PieceInformation}            from './piece-information.js';
 import imgFile                       from './img-file.js';
-
+import {PointInBoardOrCaptureBox}    from './point-in-board-or-capture-box.js';
 
 const CaptureBox = React.createClass({
     propTypes: {
@@ -31,10 +31,19 @@ const CaptureBox = React.createClass({
         pieceHeight      : React.PropTypes.number.isRequired,
         pieceBorder      : React.PropTypes.number.isRequired,        
         pieces           : React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-        selectedPiece    : React.PropTypes.instanceOf(Point)
+        selectedPiece    : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
+        selectPiece      : React.PropTypes.func.isRequired        
     },
     linearToPoint: function(i: int): Point {
         return new Point(i % this.props.X, Math.floor(i / this.props.X));
+    },
+    pointToLinear: function(p: Point): int {
+        const rv: int = p.y*this.props.X+p.x;
+        console.log(`point ${p.toString()} is linearly translated to: ${rv}`);
+        return rv;
+    },
+    getPieceOnPoint(p: Point): IConcretePiece {
+        return this.props.pieces[this.pointToLinear(p)];
     },
     render: function() {
         console.log('rendering capture box');
@@ -86,7 +95,12 @@ const CaptureBox = React.createClass({
                 }
             })();
             const point: Point = this.linearToPoint(i);
-            const imgIsSelected: boolean = point.equals(this.props.selectedPiece);
+            const imgIsSelected: boolean = (()=>{
+                if ((this.props.selectedPiece!=null) && (this.props.selectedPiece.captureBox!=null) && (this.props.selectedPiece.captureBox===this.props.sideOfCaptureBox))
+                    return point.equals(this.props.selectedPiece.point);
+                else
+                    return false;
+            })();
             cells.push(( // many TODOs
                     <Cell key={ i }
                 point={point}
@@ -100,8 +114,8 @@ const CaptureBox = React.createClass({
                 pieceInformation={pieceInformation}
                 // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                 imgIsSelected= {imgIsSelected}
-                movableHighlight={false} // TODO
-                selectPiece={ ()=>{} }
+                movableHighlight={false} // it doesn't make sense to move inside a capture box
+                selectPiece={(p)=>{this.props.selectPiece(new PointInBoardOrCaptureBox(p, this.props.sideOfCaptureBox));}}
                 moveToCell={ ()=>{} }
                     />
             ));            

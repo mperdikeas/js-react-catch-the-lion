@@ -11,15 +11,17 @@ import {GameBoard} from 'ai-for-shogi-like-games';
 import {Geometry}  from './geometry.js';
 import BoardGrid   from './board-grid.js';
 import MovingSide from './moving-side.js';
+import {PointInBoardOrCaptureBox} from './point-in-board-or-capture-box.js';
 
 const Board = React.createClass({
     propTypes: {
         geometry          : React.PropTypes.instanceOf(Geometry) .isRequired,
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
-        selectedPiece     : React.PropTypes.instanceOf(Point),        
+        selectedPiece    : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
         selectPiece       : React.PropTypes.func.isRequired,
-        moveToCell       : React.PropTypes.func.isRequired           
+        moveToCell       : React.PropTypes.func.isRequired,
+        getPieceInCaptureBox : React.PropTypes.func.isRequired
     },
     render: function() {
         console.log('rendering board');
@@ -58,7 +60,8 @@ const Board = React.createClass({
                     pieceBorder   = {this.props.geometry.pieceBorder}
                     selectedPiece = {this.props.selectedPiece}            
                     selectPiece   = {this.props.selectPiece}
-                    moveToCell    = {this.props.moveToCell}            
+                    moveToCell    = {this.props.moveToCell}
+                    getPieceInCaptureBox = {this.props.getPieceInCaptureBox}            
                 />
                 </div>                
         );

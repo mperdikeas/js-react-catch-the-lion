@@ -9,14 +9,17 @@ var      cx = require('classnames');
 
 import {inRange, Point, Vector}     from 'geometry-2d';
 
-import {GameBoard} from 'ai-for-shogi-like-games';
-import {Side}      from 'ai-for-shogi-like-games';
+import {GameBoard}                           from 'ai-for-shogi-like-games';
+import {Side}                                from 'ai-for-shogi-like-games';
+import {Move, BoardMove, DropMove}           from 'ai-for-shogi-like-games';
+import {Chick, Hen, Elephant, Giraffe, Lion} from 'ai-for-shogi-like-games';
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
 import {arrayOfPoints} from './custom-react-validators.js';
 import MovingSide from './moving-side.js';
 import {PieceInformation}            from './piece-information.js';
+import {PointInBoardOrCaptureBox} from './point-in-board-or-capture-box.js';
 
 const BoardGrid = React.createClass({
     propTypes: {
@@ -32,16 +35,26 @@ const BoardGrid = React.createClass({
         pieceWidth       : React.PropTypes.number.isRequired,
         pieceHeight      : React.PropTypes.number.isRequired,
         pieceBorder      : React.PropTypes.number.isRequired,
-        selectedPiece    : React.PropTypes.instanceOf(Point),
+        selectedPiece    : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
         selectPiece      : React.PropTypes.func.isRequired,
-        moveToCell       : React.PropTypes.func.isRequired        
+        moveToCell       : React.PropTypes.func.isRequired,
+        getPieceInCaptureBox : React.PropTypes.func.isRequired        
     },
     cellsFromBoard(): Array<React.Element> {
         const selectedPiecePossibleMovesOnBoard: ?Array<string> = (()=>{
-            const selectedPiece :?Point = this.props.selectedPiece;
+            const selectedPiece :?PointInBoardOrCaptureBox = this.props.selectedPiece;
             if (selectedPiece!=null) {
-                const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByMovingPieceOnAParticularSquare(selectedPiece);
-                return Array.from(nextMoves2Boards.keys());
+                if (selectedPiece.captureBox===null) { // piece on board
+                    const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByMovingPieceOnAParticularSquare(selectedPiece.point);
+                    return Array.from(nextMoves2Boards.keys());
+                } else { // piece in capture box
+                    // the selected piece has to belong to the moving side:
+                    assert(this.props.movingSide===selectedPiece.captureBox);
+                    const nextMoves2Boards: Map<string, GameBoard> = this.props.gameBoard.nextStatesByDroppingAParticularCapturedPiece(
+                        this.props.getPieceInCaptureBox(selectedPiece.captureBox, selectedPiece.point)
+                        , selectedPiece.captureBox.side.isSideA());
+                    return Array.from(nextMoves2Boards.keys());
+                }
             } else
                 return null;
         })();        
@@ -65,9 +78,9 @@ const BoardGrid = React.createClass({
                 })();
                 const imgIsSelected: ?boolean = (()=>{
                     if (pieceInformation) {
-                        if (this.props.selectedPiece)
-                            return this.props.selectedPiece.equals(point);
-                        else
+                        if (this.props.selectedPiece && (this.props.selectedPiece.captureBox===null)) {
+                            return this.props.selectedPiece.point.equals(point);
+                        } else
                             return false;
                     } else
                         return null;
@@ -78,12 +91,18 @@ const BoardGrid = React.createClass({
                     if (selectedPiecePossibleMovesOnBoard!=null) {
                         assert(this.props.selectedPiece!=null);
                         return _.some(selectedPiecePossibleMovesOnBoard, (s)=>{
-                            const v: Vector = Vector.fromString(s);
-                            if (this.props.selectedPiece!=null)
-                                assert(v.from.equals(this.props.selectedPiece));
-                            else
-                                throw new Error('bug');
-                            return v.to.equals(point);
+                            const move: Move = Move.fromString([Chick, Hen, Elephant, Giraffe, Lion], s);
+                            if (move instanceof BoardMove) {
+                                assert(this.props.selectedPiece.captureBox===null);
+                                if (this.props.selectedPiece!=null)
+                                    assert(move.vector.from.equals(this.props.selectedPiece.point));
+                                else
+                                    throw new Error('bug');
+                                return move.vector.to.equals(point);
+                            } else if (move instanceof DropMove) {
+                                assert(this.props.selectedPiece.captureBox!=null);                                
+                                return move.to.equals(point);
+                            } else throw new Error();
                         });
                     } else
                         return false;
@@ -103,7 +122,7 @@ const BoardGrid = React.createClass({
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     imgIsSelected= {imgIsSelected}
                     movableHighlight={movableHighlight}
-                    selectPiece={this.props.selectPiece}
+                    selectPiece={(p)=>{this.props.selectPiece(new PointInBoardOrCaptureBox(p, null));}}
                     moveToCell={this.props.moveToCell}
                         />
                 ));
