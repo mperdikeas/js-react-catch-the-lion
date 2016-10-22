@@ -15,6 +15,7 @@ import MovingSide                    from './moving-side.js';
 import {PieceInformation}            from './piece-information.js';
 import imgFile                       from './img-file.js';
 
+
 const CaptureBox = React.createClass({
     propTypes: {
         sideOfCaptureBox : React.PropTypes.instanceOf(MovingSide).isRequired,
@@ -29,7 +30,11 @@ const CaptureBox = React.createClass({
         pieceWidth       : React.PropTypes.number.isRequired,
         pieceHeight      : React.PropTypes.number.isRequired,
         pieceBorder      : React.PropTypes.number.isRequired,        
-        pieces           : React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+        pieces           : React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+        selectedPiece    : React.PropTypes.instanceOf(Point)
+    },
+    linearToPoint: function(i: int): Point {
+        return new Point(i % this.props.X, Math.floor(i / this.props.X));
     },
     render: function() {
         console.log('rendering capture box');
@@ -60,7 +65,10 @@ const CaptureBox = React.createClass({
     },
     prepareCells() {
         const cells: Array<React.Element> = [];
-        for (let i: number = 0 ; i < 6; i++) {
+        const PIECES_IN_GAME = 8;
+        const NUM_OF_LIONS = 2;
+        const MAX_NUM_OF_CAPTURED_PIECES = PIECES_IN_GAME - NUM_OF_LIONS;
+        for (let i: number = 0 ; i < MAX_NUM_OF_CAPTURED_PIECES; i++) {
             const pieceInformation: ?PieceInformation = (()=>{
                 if (this.props.pieces.length>i) {
                     const p: ?IConcretePiece = this.props.pieces[i];
@@ -77,10 +85,11 @@ const CaptureBox = React.createClass({
                     return null;
                 }
             })();
-            const imgIsSelected: ?boolean = false;
+            const point: Point = this.linearToPoint(i);
+            const imgIsSelected: boolean = point.equals(this.props.selectedPiece);
             cells.push(( // many TODOs
                     <Cell key={ i }
-                point={new Point(0,0)} 
+                point={point}
                 width={this.props.cellWidth}
                 height={this.props.cellHeight}
                 border={0}

@@ -63,6 +63,8 @@ const TableTop = React.createClass({
                     pieceHeight       = {this.props.geometry.pieceHeight}
                     pieceBorder       = {this.props.geometry.pieceBorder}
                     pieces            = {this.props.gameBoard.captured.piecesOfThisSide(false)}
+                    selectedPiece     = {new Point(0,0)}
+            
                 />
                 <CaptureBox
                     sideOfCaptureBox  = {MovingSide.BLACK}
@@ -77,7 +79,8 @@ const TableTop = React.createClass({
                     pieceWidth        = {this.props.geometry.pieceWidth}
                     pieceHeight       = {this.props.geometry.pieceHeight}            
                     pieceBorder       = {this.props.geometry.pieceBorder}
-                    pieces            = {this.props.gameBoard.captured.piecesOfThisSide(true)}            
+                    pieces            = {this.props.gameBoard.captured.piecesOfThisSide(true)}
+                    selectedPiece     = {new Point(0,0)}            
                 />                
                 <Board
                     geometry={this.props.geometry}
