@@ -1,0 +1,10 @@
+div {
+    background-color: red;
+    color: blue;
+    padding: 0;
+    margin: 0;
+/*TODO:    text-align: right; I am left to understand why this affects the other division as well */
+}
+
+
+

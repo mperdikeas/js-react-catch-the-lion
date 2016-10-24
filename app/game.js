@@ -30,7 +30,7 @@ const pieceSet  = createPieceSet(PIECE_SET);
 function createStartingBoard() {
     const notation: string  = 'c@1~3, e@0~4, l@1~4, g@2~4 * g@0~0, l@1~0, e@2~0, c@1~1';
     const cb = new CaptureBag();
-    const gb = GameBoard.create(3, 5, true, 0, pieceSet, notation, cb);
+    const gb = GameBoard.create(3, 5, true, 1, pieceSet, notation, cb);
     if (false) console.log(gb.toStringFancy());
     return gb;
 }

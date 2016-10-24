@@ -1,3 +1,10 @@
-1. implement white / black band around pieces (they don't have to be physically the same as their electronic image can change)
-2. implement permissible drop zones
-3. implement chick promotion
+ 1. implement white / black band around pieces (they don't have to be physically the same as their electronic image can change)
+ 2. implement difficulty levels
+ 3. show who's moving
+ 4. ask AI for help
+ 5. show total thought time
+ 6. clip move tree whenever a move results in victory
+ 7. prevent drag n' drop
+ 8. the model has to be improved to encourage pieces in board
+ 9. arrows showing what was the last move made
+

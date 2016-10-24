@@ -55,6 +55,12 @@ class Geometry {
                 capturedBorder: number,
                 capturedWhiteXOffset: number,
                 capturedWhiteYOffset: number,
+
+                whiteControlXOffset : number,
+                whiteControlYOffset : number,
+                whiteControlWidth   : number,
+                whiteControlHeight  : number,
+                
                 capturedBlackXOffset: number,
                 capturedBlackYOffset: number,
 
@@ -89,6 +95,12 @@ class Geometry {
                    this.capturedBorder = capturedBorder;
                    this.capturedWhiteXOffset = capturedWhiteXOffset;
                    this.capturedWhiteYOffset = capturedWhiteYOffset;
+
+                   this.whiteControlXOffset = whiteControlXOffset;
+                   this.whiteControlYOffset = whiteControlYOffset;
+                   this.whiteControlWidth = whiteControlWidth;
+                   this.whiteControlHeight = whiteControlHeight;
+                   
                    this.capturedBlackXOffset = capturedBlackXOffset;
                    this.capturedBlackYOffset = capturedBlackYOffset;
 
@@ -176,6 +188,7 @@ const geometry = new Geometry(15, 30, 900, 900,       // game params
                               100, 100, 455, 270, 10,  // table params
                               2, 3, 5,                // captured params
                               10, 20,                 // captured white offset
+                              330, 30, 40, 20,         // white control block
                               325, 108,               // captured black offset
                               140, 20, 5, 5, 3, 5,    // board params
                               55, 44, 1,              // cell params

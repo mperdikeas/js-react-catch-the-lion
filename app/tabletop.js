@@ -19,6 +19,7 @@ import MovingSide                 from './moving-side.js';
 import CaptureBox                 from './capture-box.js';
 import Board                      from './board.js';
 import {PointInBoardOrCaptureBox} from './point-in-board-or-capture-box.js';
+import PlayerControlPanel         from './player-control-panel.js';
 
 const TableTop = React.createClass({
     propTypes: {
@@ -54,7 +55,6 @@ const TableTop = React.createClass({
             backgroundImage: 'url("bamboo.jpg")',
             backgroundSize: 'cover'
         };
-
         return (
                 <div style={style}>
                 <CaptureBox       ref = "whiteCaptureBox"
@@ -74,6 +74,13 @@ const TableTop = React.createClass({
                     selectedPiece     = {this.props.selectedPiece}
                     selectPiece       = {this.props.selectPiece}            
                 />
+                <PlayerControlPanel
+                    xOffset           = {this.props.geometry.whiteControlXOffset}
+                    yOffset           = {this.props.geometry.whiteControlYOffset}
+                    width             = {this.props.geometry.whiteControlWidth}
+                    height            = {this.props.geometry.whiteControlHeight}
+                    numOfSeconds      = {94}
+                />
                 <CaptureBox       ref = "blackCaptureBox"
                     sideOfCaptureBox  = {MovingSide.BLACK}
                     movingSide        = {this.props.movingSide}
@@ -90,7 +97,7 @@ const TableTop = React.createClass({
                     pieces            = {this.props.gameBoard.captured.piecesOfThisSide(true)}
                     selectedPiece     = {this.props.selectedPiece}
                     selectPiece       = {this.props.selectPiece}            
-                />                
+                />
                 <Board
                     geometry          = {this.props.geometry}
                     gameBoard         = {this.props.gameBoard}
