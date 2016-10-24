@@ -14,6 +14,10 @@ class MovingSide {
     static BLACK: MovingSide = new MovingSide(Side.A, 'black');
     static WHITE: MovingSide = new MovingSide(Side.B, 'white');
 
+    toString() {
+        return this.friendlyName;
+    }
+
     theOther(): MovingSide {
         if (this===MovingSide.BLACK)
             return MovingSide.WHITE;
@@ -23,11 +27,9 @@ class MovingSide {
     }
     static fromSide(s: Side): MovingSide {
         if (s===Side.A) {
-            console.log('MovingSide#fromSide returning BLACK');
             return MovingSide.BLACK;
         }
         else if (s===Side.B) {
-            console.log('MovingSide#fromSide returning WHITE');            
             return MovingSide.WHITE;
         }
         else throw new Error();

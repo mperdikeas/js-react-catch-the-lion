@@ -24,7 +24,6 @@ const Board = React.createClass({
         getPieceInCaptureBox : React.PropTypes.func.isRequired
     },
     render: function() {
-        console.log('rendering board');
         const style = {
             boxSizing: 'content-box', // this is the standard and default in all but the accursed IE
             position: 'absolute',

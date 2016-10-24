@@ -110,11 +110,9 @@ class Geometry {
                    this.assert();
                }
     tableWidthWithBorder(): number {
-        console.log(`returning: ${this.tableWidth + 2*this.tableBorder}`);
         return this.tableWidth + 2*this.tableBorder;
     }
     tableHeightWithBorder(): number {
-        console.log(`returning: ${this.tableHeight + 2*this.tableBorder}`);
         return this.tableHeight + 2*this.tableBorder;
     }
     captureBoxWidthWithoutBorder(): number {
@@ -147,7 +145,6 @@ class Geometry {
         const tableBox : Rectangle =  Rectangle.topLeftWidthHeight(new Point(this.tableXOffset, -this.tableYOffset)
                                                                    , this.tableWidthWithBorder()
                                                                    , this.tableHeightWithBorder());
-        console.log(tableBox);
         const capturedWhite: Rectangle = Rectangle.topLeftWidthHeight(tableBox.fourCorners().topLeft
                                                                       .add(new Point(this.tableBorder, -this.tableBorder))
                                                                       .add(new Point(this.capturedWhiteXOffset, -this.capturedWhiteYOffset))
@@ -165,7 +162,6 @@ class Geometry {
                                                                   .add(new Point(this.boardXOffset, -this.boardYOffset))
                                                                   , this.boardWidthWithBorder()
                                                                   , this.boardHeightWithBorder());
-        console.log(boardBox);
         assert(gameBox .containsRectangle(tableBox, false));
         assert(tableBox.containsRectangle(capturedWhite, false));
         assert(tableBox.containsRectangle(capturedBlack, false));

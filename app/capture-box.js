@@ -46,7 +46,6 @@ const CaptureBox = React.createClass({
         return this.props.pieces[this.pointToLinear(p)];
     },
     render: function() {
-        console.log('rendering capture box');
         const style = {
             position  : 'absolute',
             padding   : 0,
@@ -82,7 +81,6 @@ const CaptureBox = React.createClass({
                 if (this.props.pieces.length>i) {
                     const p: ?IConcretePiece = this.props.pieces[i];
                     if (p!=null) {
-                        console.log(`returning piece information for code: ${p.code}`);
                         return new PieceInformation(
                             imgFile(p.code.toLowerCase()),
                             this.props.sideOfCaptureBox,

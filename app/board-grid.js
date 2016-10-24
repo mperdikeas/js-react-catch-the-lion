@@ -131,7 +131,6 @@ const BoardGrid = React.createClass({
         return cells;
     },
     render: function() {
-        console.log('rendering board-grid');
         const style = {
             position: 'absolute',
             padding: 0,

@@ -38,7 +38,6 @@ const TableTop = React.createClass({
             throw new Error();
     },    
     render: function() {
-        console.log('rendering tabletop');
         const style = {
             position: 'absolute',
             padding : 0,
