@@ -1,9 +1,9 @@
-div {
-    background-color: red;
-    color: blue;
+div.mjb44-ctl-player-cpanel__div {
+    background-color: transparent;
     padding: 0;
     margin: 0;
-/*TODO:    text-align: right; I am left to understand why this affects the other division as well */
+    text-align: right;
+    box-sizing: border-box;
 }
 
 

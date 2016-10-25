@@ -1,7 +1,7 @@
-div {
+div.mjb44-ctl-cpanel__div {
     height: 100%;
-    color: white;
-    background-color: black;
+    padding: 10px;
+    box-sizing: content-box;
 }
 
 

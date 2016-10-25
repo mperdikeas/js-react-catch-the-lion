@@ -7,4 +7,4 @@
  7. prevent drag n' drop
  8. the model has to be improved to encourage pieces in board
  9. arrows showing what was the last move made
-
+10. use webw workers to maintain clock on the white side as well

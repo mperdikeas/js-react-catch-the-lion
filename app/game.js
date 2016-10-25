@@ -5,7 +5,7 @@ const React = require('react');
 var      cx = require('classnames');
 
 import assert from 'assert';
-
+import TimerMixin    from 'react-timer-mixin';
 import {Point} from 'geometry-2d';
 
 import {GameBoard}                           from 'ai-for-shogi-like-games';
@@ -38,20 +38,50 @@ function createStartingBoard() {
 type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox};
 
 const Game = React.createClass({
+    mixins: [TimerMixin],
     getInitialState: function(): StateT {
+        const gameStartedMS = (new Date()).getTime();
         return {
             gameBoard: createStartingBoard(),
             aiSide: MovingSide.WHITE, // A.I. side
             movingSide: MovingSide.BLACK,
             winner: null,
-            selectedPiece: null
+            selectedPiece: null,
+            thinkingMsBlack: 0,
+            thinkingMsWhite: 0
         };
+    },
+    componentDidMount() {
+        console.log('component did mount');
+        const intervalId = this.setInterval(
+            () => {
+                this.next100Ms();
+            }
+        ,100);
+    },
+    next100Ms() {
+        if (this.state.movingSide===this.state.aiSide.theOther()) {
+            this.setState({thinkingMsBlack: this.state.thinkingMsBlack+100});
+        }
+    },
+    shouldComponentUpdate(nextProps, nextState) {
+        assert.equal(JSON.stringify(nextProps), '{}');
+        if (nextState.gameBoard      !==    this.state.gameBoard    ) return true;
+        if (nextState.aiSide         !==    this.state.aiSide       ) return true;
+        if (nextState.movingSide     !==    this.state.movingSide   ) return true;
+        if (nextState.winner         !==    this.state.winner       ) return true;
+        if (nextState.selectedPiece  !==    this.state.selectedPiece) return true;
+        if (Math.floor(nextState.thinkingMsBlack / 1000) > Math.floor(this.state.thinkingMsBlack / 1000)) return true;
+        if (Math.floor(nextState.thinkingMsWhite / 1000) > Math.floor(this.state.thinkingMsWhite / 1000)) return true;        
+        return false;
     },
     componentDidUpdate(prevProps, prevState) {
         if ((this.state.movingSide !== prevState.movingSide) && (this.state.movingSide === this.state.aiSide)) {
             setTimeout( ()=> {
+                this.state.movingSide = this.state.aiSide;
+                const startOfThink = (new Date()).getTime();
                 console.log(`thinking ....`);
-                const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 2, model000, PIECE_SET);
+                const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 3, model000, PIECE_SET);
                 console.log(`AI response is: ${aiMove}`);
                 let nextBoard;
                 if (aiMove instanceof BoardMove) {
@@ -60,16 +90,20 @@ const Game = React.createClass({
                     nextBoard = this.state.gameBoard.drop(aiMove.pieceOnSide, aiMove.to);
                 } else throw new Error();
                 const winner: ?boolean = nextBoard.boardImmediateWinSide();
+                const endOfThink = (new Date()).getTime();
+                const aiThinkTime = endOfThink - startOfThink;
                 if (winner!=null) {
                     this.setState({gameBoard: nextBoard,
-                                   movingSide: this.state.movingSide.theOther(),
+                                   movingSide: this.state.aiSide.theOther(),
                                    selectedPiece: null,
-                                   winner: MovingSide.fromWhetherIsSideA(winner)
+                                   winner: MovingSide.fromWhetherIsSideA(winner),
+                                   thinkingMsWhite: this.state.thinkingMsWhite+aiThinkTime
                                   });
                 } else {
                     this.setState({gameBoard: nextBoard,
-                                   movingSide: this.state.movingSide.theOther(),
-                                   selectedPiece: null
+                                   movingSide: this.state.aiSide.theOther(),
+                                   selectedPiece: null,
+                                   thinkingMsWhite: this.state.thinkingMsWhite+aiThinkTime
                                   });
                 }
             }, 0);
@@ -85,6 +119,8 @@ const Game = React.createClass({
         this.setState({selectedPiece: p});
     },
     moveToCell: function(p: Point): void {
+        if (this.state.lastTimeWhite===null)
+            this.setState({lastTimeWhite: (new Date()).getTime()});
         const selectedPiece: ?PointInBoardOrCaptureBox = this.state.selectedPiece;
         if (selectedPiece!=null) {
             assert( this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
@@ -122,6 +158,7 @@ const Game = React.createClass({
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
     render: function() {
+        console.log('game render');
         const style = {
             position: 'absolute',
             padding : 0,
@@ -136,10 +173,10 @@ const Game = React.createClass({
             position: 'absolute',
             padding : 0,
             margin  : 0,
-            left    : 30,
-            top     : 30,
-            width   : 100,
-            height  : 20,
+            left    : geometry.tableXOffset,
+            top     : geometry.tableYOffset-30-20,
+            width   : geometry.tableWidth+2*geometry.tableBorder,
+            height  : 30,
             borderWidth: 1
         };
         return (
@@ -152,13 +189,16 @@ const Game = React.createClass({
                     selectedPiece={this.state.selectedPiece}
                     selectPiece={this.selectPiece}
                     moveToCell={this.moveToCell}
+                    numOfSecondsBlack={Math.floor(this.state.thinkingMsBlack / 1000)}
+                    numOfSecondsWhite={Math.floor(this.state.thinkingMsWhite / 1000)}
                 />
                 <div style={controlPanelStyle}>
-                <ControlPanel
-                    movingSide={this.state.movingSide}
-                    // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
-                    winner={this.state.winner}
-                />
+                    <ControlPanel
+                        aiSide    = {this.state.aiSide}
+                        movingSide={this.state.movingSide}
+                        // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
+                        winner={this.state.winner}
+                    />
                 </div>
             </div>                
         );

@@ -28,7 +28,9 @@ const TableTop = React.createClass({
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
         selectedPiece     : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
         selectPiece       : React.PropTypes.func.isRequired,
-        moveToCell        : React.PropTypes.func.isRequired                   
+        moveToCell        : React.PropTypes.func.isRequired,
+        numOfSecondsBlack : React.PropTypes.number.isRequired,
+        numOfSecondsWhite : React.PropTypes.number.isRequired
     },
     getPieceInCaptureBox: function(captureBox: MovingSide, p: Point): IConcretePiece {
         if (captureBox===MovingSide.WHITE)
@@ -75,11 +77,13 @@ const TableTop = React.createClass({
                     selectPiece       = {this.props.selectPiece}            
                 />
                 <PlayerControlPanel
+                    isActive          = {this.props.movingSide===MovingSide.WHITE}
+                    sideOfPlayer      = {MovingSide.WHITE}
                     xOffset           = {this.props.geometry.whiteControlXOffset}
                     yOffset           = {this.props.geometry.whiteControlYOffset}
                     width             = {this.props.geometry.whiteControlWidth}
                     height            = {this.props.geometry.whiteControlHeight}
-                    numOfSeconds      = {94}
+                    numOfSeconds      = {this.props.numOfSecondsWhite}
                 />
                 <CaptureBox       ref = "blackCaptureBox"
                     sideOfCaptureBox  = {MovingSide.BLACK}
@@ -98,6 +102,15 @@ const TableTop = React.createClass({
                     selectedPiece     = {this.props.selectedPiece}
                     selectPiece       = {this.props.selectPiece}            
                 />
+                <PlayerControlPanel
+                    isActive          = {this.props.movingSide===MovingSide.BLACK}
+                    sideOfPlayer      = {MovingSide.BLACK}            
+                    xOffset           = {this.props.geometry.blackControlXOffset}
+                    yOffset           = {this.props.geometry.blackControlYOffset}
+                    width             = {this.props.geometry.blackControlWidth}
+                    height            = {this.props.geometry.blackControlHeight}
+                    numOfSeconds      = {this.props.numOfSecondsBlack}
+                />                
                 <Board
                     geometry          = {this.props.geometry}
                     gameBoard         = {this.props.gameBoard}
