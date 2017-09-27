@@ -1,3 +1,10 @@
+To release the game:
+ 1. place white band around white pieces
+ 2. add button upon game end that allows user to play again
+ 3. make clear whose black and whose white
+ 4. add help
+
+Good to have:
  1. implement white / black band around pieces (they don't have to be physically the same as their electronic image can change)
  2. implement difficulty levels
  3. show who's moving
