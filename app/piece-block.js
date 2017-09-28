@@ -56,6 +56,7 @@ const PieceBlock = React.createClass({
             marginLeft: `-${this.props.pieceWidth/2}px`,
             marginTop: `-${this.props.pieceHeight/2}px`,            
             borderWidth: `${imgBorder}px`,
+            borderColor: this.props.pieceInformation.sideOfThisPiece===MovingSide.BLACK?'black':'white',
             transform: `scaleY(${this.props.pieceInformation.sideOfThisPiece===MovingSide.BLACK?1:-1})`
         };
         return (
