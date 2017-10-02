@@ -12,6 +12,7 @@ import {createPieceSet}                      from 'ai-for-shogi-like-games';
 import {PieceOnSide}                         from 'ai-for-shogi-like-games';
 import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {GameBoard}                           from 'ai-for-shogi-like-games';
+import {Move}                                from 'ai-for-shogi-like-games';
 
 import {Geometry}                 from './geometry.js';
 import {arrayOfPoints}            from './custom-react-validators.js';
@@ -27,6 +28,7 @@ const TableTop = React.createClass({
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
         selectedPiece     : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
+        lastMove          : React.PropTypes.instanceOf(Move),
         selectPiece       : React.PropTypes.func.isRequired,
         moveToCell        : React.PropTypes.func.isRequired,
         numOfSecondsBlack : React.PropTypes.number.isRequired,
@@ -116,6 +118,7 @@ const TableTop = React.createClass({
                     gameBoard         = {this.props.gameBoard}
                     movingSide        = {this.props.movingSide}
                     selectedPiece     = {this.props.selectedPiece}
+                    lastMove          = {this.props.lastMove}
                     selectPiece       = {this.props.selectPiece}
                     moveToCell        = {this.props.moveToCell}
                     getPieceInCaptureBox = {this.getPieceInCaptureBox}

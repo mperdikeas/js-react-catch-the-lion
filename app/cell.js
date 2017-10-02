@@ -22,6 +22,7 @@ const Cell = React.createClass({
         pieceInformation : React.PropTypes.instanceOf(PieceInformation),
         imgIsSelected    : React.PropTypes.bool,
         movableHighlight : React.PropTypes.bool.isRequired,
+        involvedInLastMove:React.PropTypes.bool.isRequired,
         selectPiece      : React.PropTypes.func.isRequired,
         moveToCell       : React.PropTypes.func.isRequired
     },
@@ -52,7 +53,7 @@ const Cell = React.createClass({
             height: this.props.height,
             borderStyle: 'solid',
             borderWidth: `${this.props.border}px`,
-            background: 'transparent',
+            background: this.props.involvedInLastMove?'rgba(54, 25, 25, .5)':'transparent',
             fontSize: 0,         // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
             verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677
         };

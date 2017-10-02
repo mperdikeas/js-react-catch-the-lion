@@ -11,8 +11,9 @@ import {inRange, Point, Vector}     from 'geometry-2d';
 
 import {GameBoard}                           from 'ai-for-shogi-like-games';
 import {Side}                                from 'ai-for-shogi-like-games';
-import {Move, BoardMove, DropMove}           from 'ai-for-shogi-like-games';
+import {Move, BoardMove, DropMove, DropMoveNoPieceInformation}  from 'ai-for-shogi-like-games';
 import {Chick, Hen, Elephant, Giraffe, Lion} from 'ai-for-shogi-like-games';
+
 import {Geometry}  from './geometry.js';
 import Cell        from './cell.js';
 import imgFile     from './img-file.js';
@@ -36,6 +37,7 @@ const BoardGrid = React.createClass({
         pieceHeight      : React.PropTypes.number.isRequired,
         pieceBorder      : React.PropTypes.number.isRequired,
         selectedPiece    : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
+        lastMove         : React.PropTypes.instanceOf(Move),                
         selectPiece      : React.PropTypes.func.isRequired,
         moveToCell       : React.PropTypes.func.isRequired,
         getPieceInCaptureBox : React.PropTypes.func.isRequired        
@@ -107,6 +109,18 @@ const BoardGrid = React.createClass({
                     } else
                         return false;
                 })();
+
+                const involvedInLastMove: boolean = (()=>{
+                    if (this.props.lastMove!==null) {
+                        if (this.props.lastMove instanceof BoardMove) {
+                            return point.equals(this.props.lastMove.vector.from) || point.equals(this.props.lastMove.vector.to);
+                        } else if (this.props.lastMove instanceof DropMoveNoPieceInformation) {
+                            return point.equals(this.props.lastMove.to); // TODO am left to highlight the capture box too
+                        }
+                        console.log(this.props.lastMove);
+                        throw new Error('unexpected - last move is: '+this.props.lastMove);
+                    } else return false;
+                })();
                 
                 cells.push((
                         <Cell key={ JSON.stringify(point) }
@@ -121,6 +135,7 @@ const BoardGrid = React.createClass({
                     pieceInformation={pieceInformation}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     imgIsSelected= {imgIsSelected}
+                    involvedInLastMove = {involvedInLastMove}
                     movableHighlight={movableHighlight}
                     selectPiece={(p)=>{this.props.selectPiece(new PointInBoardOrCaptureBox(p, null));}}
                     moveToCell={this.props.moveToCell}

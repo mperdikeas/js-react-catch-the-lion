@@ -6,7 +6,7 @@ var      cx = require('classnames');
 
 import assert from 'assert';
 import TimerMixin    from 'react-timer-mixin';
-import {Point} from 'geometry-2d';
+import {Point, Vector} from 'geometry-2d';
 
 import {GameBoard}                           from 'ai-for-shogi-like-games';
 import {Chick, Hen, Elephant, Giraffe, Lion} from 'ai-for-shogi-like-games';
@@ -15,7 +15,7 @@ import {PieceOnSide}                         from 'ai-for-shogi-like-games';
 import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {bestMove}                            from 'ai-for-shogi-like-games';
 import {model000}                            from 'ai-for-shogi-like-games';
-import {BoardMove, DropMove}                 from 'ai-for-shogi-like-games';
+import {Move, BoardMove, DropMove, DropMoveNoPieceInformation}  from 'ai-for-shogi-like-games';
 
 import {Geometry, geometry}  from './geometry.js';
 import MovingSide            from './moving-side.js';
@@ -35,7 +35,7 @@ function createStartingBoard() {
     return gb;
 }
 
-type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox};
+type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move, thinkingMsBlack: number, thinkingMsWhite: number};
 
 const Game = React.createClass({
     mixins: [TimerMixin],
@@ -47,6 +47,7 @@ const Game = React.createClass({
             movingSide: MovingSide.BLACK,
             winner: null,
             selectedPiece: null,
+            lastMove: null,
             thinkingMsBlack: 0,
             thinkingMsWhite: 0
         };
@@ -97,12 +98,14 @@ const Game = React.createClass({
                                    movingSide: this.state.aiSide.theOther(),
                                    selectedPiece: null,
                                    winner: MovingSide.fromWhetherIsSideA(winner),
+                                   lastMove: aiMove,
                                    thinkingMsWhite: this.state.thinkingMsWhite+aiThinkTime
                                   });
                 } else {
                     this.setState({gameBoard: nextBoard,
                                    movingSide: this.state.aiSide.theOther(),
                                    selectedPiece: null,
+                                   lastMove: aiMove,
                                    thinkingMsWhite: this.state.thinkingMsWhite+aiThinkTime
                                   });
                 }
@@ -132,12 +135,14 @@ const Game = React.createClass({
                         this.setState({gameBoard: nextBoard,
                                        movingSide: this.state.movingSide.theOther(),
                                        selectedPiece: null,
+                                       lastMove: new BoardMove(new Vector(selectedPiece.point, p)),
                                        winner: MovingSide.fromWhetherIsSideA(winner)
                                       });
                     } else {
                         if (this.state.movingSide!=null) {
                             this.setState({gameBoard: nextBoard,
                                            movingSide: this.state.movingSide.theOther(),
+                                           lastMove: new BoardMove(new Vector(selectedPiece.point, p)),
                                            selectedPiece: null
                                           });
                         } else
@@ -152,6 +157,7 @@ const Game = React.createClass({
                 assert(nextBoard!=null);
                 this.setState({gameBoard: nextBoard,
                                movingSide: this.state.movingSide.theOther(),
+                               lastMove: new DropMoveNoPieceInformation(this.state.movingSide, p), // TODO: I am unable for the time being to draw drop moves as I don't keep the coordinates of where the piece used to reside in the capture box - wait that shouldn't be so hard as I am simply removing the last element from the capture box
                                selectedPiece: null
                               });
             }
@@ -187,6 +193,7 @@ const Game = React.createClass({
                     movingSide={this.state.movingSide}
                     // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                     selectedPiece={this.state.selectedPiece}
+                    lastMove={this.state.lastMove}
                     selectPiece={this.selectPiece}
                     moveToCell={this.moveToCell}
                     numOfSecondsBlack={Math.floor(this.state.thinkingMsBlack / 1000)}

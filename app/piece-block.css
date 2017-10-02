@@ -4,11 +4,11 @@ img {
 
 
 img.hovering {
-    border-color: blue;
+    border-color: blue !important;
     cursor: pointer;
 }
 
 img.selected {
-    border-color: red;
+    border-color: red !important;
 }
 

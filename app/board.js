@@ -7,6 +7,7 @@ var      cx = require('classnames');
 import {Point} from 'geometry-2d';
 
 import {GameBoard} from 'ai-for-shogi-like-games';
+import {Move}      from 'ai-for-shogi-like-games';
 
 import {Geometry}  from './geometry.js';
 import BoardGrid   from './board-grid.js';
@@ -18,7 +19,8 @@ const Board = React.createClass({
         geometry          : React.PropTypes.instanceOf(Geometry) .isRequired,
         gameBoard         : React.PropTypes.instanceOf(GameBoard).isRequired,
         movingSide        : React.PropTypes.instanceOf(MovingSide).isRequired,
-        selectedPiece    : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
+        selectedPiece     : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
+        lastMove          : React.PropTypes.instanceOf(Move),        
         selectPiece       : React.PropTypes.func.isRequired,
         moveToCell       : React.PropTypes.func.isRequired,
         getPieceInCaptureBox : React.PropTypes.func.isRequired
@@ -57,7 +59,8 @@ const Board = React.createClass({
                     pieceWidth    = {this.props.geometry.pieceWidth}
                     pieceHeight   = {this.props.geometry.pieceHeight}
                     pieceBorder   = {this.props.geometry.pieceBorder}
-                    selectedPiece = {this.props.selectedPiece}            
+                    selectedPiece = {this.props.selectedPiece}
+                    lastMove      = {this.props.lastMove}
                     selectPiece   = {this.props.selectPiece}
                     moveToCell    = {this.props.moveToCell}
                     getPieceInCaptureBox = {this.props.getPieceInCaptureBox}            
