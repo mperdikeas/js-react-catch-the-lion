@@ -35,7 +35,7 @@ function createStartingBoard() {
     return gb;
 }
 
-type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move, thinkingMsBlack: number, thinkingMsWhite: number};
+type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move};
 
 const Game = React.createClass({
     mixins: [TimerMixin],
@@ -47,24 +47,26 @@ const Game = React.createClass({
             movingSide: MovingSide.BLACK,
             winner: null,
             selectedPiece: null,
-            lastMove: null,
-            thinkingMsBlack: 0,
-            thinkingMsWhite: 0
+            lastMove: null
         };
     },
     componentDidMount() {
         console.log('component did mount');
+        /* -- this is how to implement a timer
         const intervalId = this.setInterval(
             () => {
                 this.next100Ms();
             }
         ,100);
+         */
     },
+    /* -- this is how to implement a timer
     next100Ms() {
         if (this.state.movingSide===this.state.aiSide.theOther()) {
             this.setState({thinkingMsBlack: this.state.thinkingMsBlack+100});
         }
     },
+     */
     shouldComponentUpdate(nextProps, nextState) {
         assert.equal(JSON.stringify(nextProps), '{}');
         if (nextState.gameBoard      !==    this.state.gameBoard    ) return true;
@@ -72,15 +74,12 @@ const Game = React.createClass({
         if (nextState.movingSide     !==    this.state.movingSide   ) return true;
         if (nextState.winner         !==    this.state.winner       ) return true;
         if (nextState.selectedPiece  !==    this.state.selectedPiece) return true;
-        if (Math.floor(nextState.thinkingMsBlack / 1000) > Math.floor(this.state.thinkingMsBlack / 1000)) return true;
-        if (Math.floor(nextState.thinkingMsWhite / 1000) > Math.floor(this.state.thinkingMsWhite / 1000)) return true;        
         return false;
     },
     componentDidUpdate(prevProps, prevState) {
         if ((this.state.movingSide !== prevState.movingSide) && (this.state.movingSide === this.state.aiSide)) {
             setTimeout( ()=> {
                 this.state.movingSide = this.state.aiSide;
-                const startOfThink = (new Date()).getTime();
                 console.log(`thinking ....`);
                 const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 3, model000, PIECE_SET);
                 console.log(`AI response is: ${aiMove}`);
@@ -91,22 +90,18 @@ const Game = React.createClass({
                     nextBoard = this.state.gameBoard.drop(aiMove.pieceOnSide, aiMove.to);
                 } else throw new Error();
                 const winner: ?boolean = nextBoard.boardImmediateWinSide();
-                const endOfThink = (new Date()).getTime();
-                const aiThinkTime = endOfThink - startOfThink;
                 if (winner!=null) {
                     this.setState({gameBoard: nextBoard,
                                    movingSide: this.state.aiSide.theOther(),
                                    selectedPiece: null,
                                    winner: MovingSide.fromWhetherIsSideA(winner),
-                                   lastMove: aiMove,
-                                   thinkingMsWhite: this.state.thinkingMsWhite+aiThinkTime
+                                   lastMove: aiMove
                                   });
                 } else {
                     this.setState({gameBoard: nextBoard,
                                    movingSide: this.state.aiSide.theOther(),
                                    selectedPiece: null,
-                                   lastMove: aiMove,
-                                   thinkingMsWhite: this.state.thinkingMsWhite+aiThinkTime
+                                   lastMove: aiMove
                                   });
                 }
             }, 0);
@@ -196,8 +191,6 @@ const Game = React.createClass({
                     lastMove={this.state.lastMove}
                     selectPiece={this.selectPiece}
                     moveToCell={this.moveToCell}
-                    numOfSecondsBlack={Math.floor(this.state.thinkingMsBlack / 1000)}
-                    numOfSecondsWhite={Math.floor(this.state.thinkingMsWhite / 1000)}
                 />
                 <div style={controlPanelStyle}>
                     <ControlPanel

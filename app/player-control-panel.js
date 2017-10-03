@@ -19,8 +19,7 @@ const PlayerControlPanel = React.createClass({
         xOffset       : React.PropTypes.number.isRequired,
         yOffset       : React.PropTypes.number.isRequired,
         width         : React.PropTypes.number.isRequired,
-        height        : React.PropTypes.number.isRequired,
-        numOfSeconds  : React.PropTypes.number.isRequired
+        height        : React.PropTypes.number.isRequired
     },
     render: function() {
         const baseStyle = {
@@ -48,12 +47,19 @@ const PlayerControlPanel = React.createClass({
                                   , this.props.sideOfPlayer===MovingSide.BLACK?blackStyle:whiteStyle
                                   , this.props.isActive && activeStyle
                                   ,!this.props.isActive && inactiveStyle);                                  
-        const hours = Math.floor(this.props.numOfSeconds / 3600);
-        const mins  = Math.floor( (this.props.numOfSeconds - hours*3600) / 60 );
-        const secs  = this.props.numOfSeconds - hours*3600 - mins*60;
+        const nameOfPlayer   = this.props.sideOfPlayer===MovingSide.BLACK?"Human":"CPU";
+        const statusOfPlayer = this.props.isActive?"to move":null;
+        const spanStyle = {paddingLeft: '4px'};
+        const msg = statusOfPlayer===null?
+                  (
+                      <b>{nameOfPlayer}</b>
+                  ):
+                  (
+                      <span><b>{nameOfPlayer}</b><span style={spanStyle}>{statusOfPlayer}&hellip;</span></span>
+                  );
         return (
                 <div className='mjb44-ctl-player-cpanel__div' style={style}>
-                {str_pad_left(hours, '0', 2)}:{str_pad_left(mins, '0', 2)}:{str_pad_left(secs, '0', 2)}
+                {msg}
                 </div>
         );
     }

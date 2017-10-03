@@ -206,9 +206,9 @@ const geometry = new Geometry(15, 30, 900, 900,       // game params
                               100, 100, 650, 450, 10, // table params
                               2, 3, 5,                // captured params
                               10, 20,                 // captured white offset
-                              520, 30, 100, 34,       // white control block
+                              470, 30, 160, 34,       // white control block
                               465, 180,               // captured black offset
-                              20, 395, 100, 34,       // black control block                              
+                              20, 395, 160, 34,       // black control block                              
                               200, 20, 5, 5, 3, 5,    // board params
                               80, 80, 1,              // cell params
                               70, 70, 5               // piece params

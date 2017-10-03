@@ -30,9 +30,7 @@ const TableTop = React.createClass({
         selectedPiece     : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
         lastMove          : React.PropTypes.instanceOf(Move),
         selectPiece       : React.PropTypes.func.isRequired,
-        moveToCell        : React.PropTypes.func.isRequired,
-        numOfSecondsBlack : React.PropTypes.number.isRequired,
-        numOfSecondsWhite : React.PropTypes.number.isRequired
+        moveToCell        : React.PropTypes.func.isRequired
     },
     getPieceInCaptureBox: function(captureBox: MovingSide, p: Point): IConcretePiece {
         if (captureBox===MovingSide.WHITE)
@@ -85,7 +83,6 @@ const TableTop = React.createClass({
                     yOffset           = {this.props.geometry.whiteControlYOffset}
                     width             = {this.props.geometry.whiteControlWidth}
                     height            = {this.props.geometry.whiteControlHeight}
-                    numOfSeconds      = {this.props.numOfSecondsWhite}
                 />
                 <CaptureBox       ref = "blackCaptureBox"
                     sideOfCaptureBox  = {MovingSide.BLACK}
@@ -111,7 +108,6 @@ const TableTop = React.createClass({
                     yOffset           = {this.props.geometry.blackControlYOffset}
                     width             = {this.props.geometry.blackControlWidth}
                     height            = {this.props.geometry.blackControlHeight}
-                    numOfSeconds      = {this.props.numOfSecondsBlack}
                 />                
                 <Board
                     geometry          = {this.props.geometry}
