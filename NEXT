@@ -2,13 +2,12 @@ To release the game:
  1. place white band around white pieces
  2. add button upon game end that allows user to play again
  3. add help / how to play
- 4. show drop origin from capturebox
- 5. add sound
+ 4. add sound
+ 5. add resign / new game button
 
 Good to have:
- 1. clip move tree whenever a move results in victory
- 2. the model has to be improved to encourage pieces in board (sometimes the AI appears to be hoarding pieces
+ 1. the model has to be improved to encourage pieces in board (sometimes the AI appears to be hoarding pieces
     in the capturebox, there should be a penalty if there are too many of them)
- 3. log showing all the moves that were made (requires coordinates)
+ 2. log showing all the moves that were made (requires coordinates)
 
 
