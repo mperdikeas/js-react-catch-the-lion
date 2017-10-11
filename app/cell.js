@@ -36,7 +36,8 @@ const Cell = React.createClass({
         return false;
     },
     onClick: function() {
-        console.log(`clicked on cell: ${this.props.point.toString()}`);
+        if (false)
+            console.log(`clicked on cell: ${this.props.point.toString()}`);
         if (this.props.movableHighlight)
             this.props.moveToCell(this.props.point);
     },
@@ -52,7 +53,7 @@ const Cell = React.createClass({
             width : this.props.width,
             height: this.props.height,
             borderStyle: 'solid',
-            borderWidth: `${this.props.border}px`,
+            borderWidth: this.props.involvedInLastMove?'0':`${this.props.border}px`, // this is done to highlight movement hint
             background: this.props.involvedInLastMove?'rgba(54, 25, 25, .5)':'transparent',
             fontSize: 0,         // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
             verticalAlign: 'top' // http://stackoverflow.com/q/39229068/274677

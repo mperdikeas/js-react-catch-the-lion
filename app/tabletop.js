@@ -13,6 +13,7 @@ import {PieceOnSide}                         from 'ai-for-shogi-like-games';
 import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {GameBoard}                           from 'ai-for-shogi-like-games';
 import {Move}                                from 'ai-for-shogi-like-games';
+import {DropMoveNoPieceInformation}          from 'ai-for-shogi-like-games';
 
 import {Geometry}                 from './geometry.js';
 import {arrayOfPoints}            from './custom-react-validators.js';
@@ -57,6 +58,10 @@ const TableTop = React.createClass({
             backgroundImage: 'url("bamboo.jpg")',
             backgroundSize: 'cover'
         };
+        const involvedInLastMoveBlack: boolean = (this.props.lastMove instanceof DropMoveNoPieceInformation) && (this.props.lastMove.side===MovingSide.BLACK);
+        const involvedInLastMoveWhite: boolean = (this.props.lastMove instanceof DropMoveNoPieceInformation) && !involvedInLastMoveBlack;
+        /* The rather assymetrical way of the above two lines has to do with the fact that AI moves use Side
+           (from the [ai-for-shogi-like-games] package) whereas human moves use MovingSide (from this package) */
         return (
                 <div style={style}>
                 <CaptureBox       ref = "whiteCaptureBox"
@@ -74,7 +79,8 @@ const TableTop = React.createClass({
                     pieceBorder       = {this.props.geometry.pieceBorder}
                     pieces            = {this.props.gameBoard.captured.piecesOfThisSide(false)}
                     selectedPiece     = {this.props.selectedPiece}
-                    selectPiece       = {this.props.selectPiece}            
+                    selectPiece       = {this.props.selectPiece}
+                    involvedInLastMove= {involvedInLastMoveWhite}
                 />
                 <PlayerControlPanel
                     isActive          = {this.props.movingSide===MovingSide.WHITE}
@@ -99,7 +105,8 @@ const TableTop = React.createClass({
                     pieceBorder       = {this.props.geometry.pieceBorder}
                     pieces            = {this.props.gameBoard.captured.piecesOfThisSide(true)}
                     selectedPiece     = {this.props.selectedPiece}
-                    selectPiece       = {this.props.selectPiece}            
+                    selectPiece       = {this.props.selectPiece}
+                    involvedInLastMove= {involvedInLastMoveBlack}
                 />
                 <PlayerControlPanel
                     isActive          = {this.props.movingSide===MovingSide.BLACK}

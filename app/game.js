@@ -51,7 +51,6 @@ const Game = React.createClass({
         };
     },
     componentDidMount() {
-        console.log('component did mount');
         /* -- this is how to implement a timer
         const intervalId = this.setInterval(
             () => {
@@ -82,7 +81,7 @@ const Game = React.createClass({
                 this.state.movingSide = this.state.aiSide;
                 console.log(`thinking ....`);
                 const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 3, model000, PIECE_SET);
-                console.log(`AI response is: ${aiMove}`);
+                console.log(`AI response is: ${aiMove}, side is: ${aiMove.side}`);
                 let nextBoard;
                 if (aiMove instanceof BoardMove) {
                     nextBoard = this.state.gameBoard.move(aiMove.vector.from, aiMove.vector.to);
@@ -117,6 +116,7 @@ const Game = React.createClass({
         this.setState({selectedPiece: p});
     },
     moveToCell: function(p: Point): void {
+        assert(this.state.movingSide===this.state.aiSide.theOther());
         if (this.state.lastTimeWhite===null)
             this.setState({lastTimeWhite: (new Date()).getTime()});
         const selectedPiece: ?PointInBoardOrCaptureBox = this.state.selectedPiece;
@@ -149,17 +149,17 @@ const Game = React.createClass({
                 const piece: IConcretePiece = this.refs.tableTop.getPieceInCaptureBox(selectedPiece.captureBox, selectedPiece.point);
                 const pieceOnSide: IConcretePieceOnSide = new PieceOnSide(piece, selectedPiece.captureBox.side.isSideA());
                 const nextBoard: ?GameBoard = this.state.gameBoard.drop(pieceOnSide, p);
+                const lastMove: DropMoveNoPieceInformation = new DropMoveNoPieceInformation(this.state.aiSide.theOther(), p);
                 assert(nextBoard!=null);
                 this.setState({gameBoard: nextBoard,
                                movingSide: this.state.movingSide.theOther(),
-                               lastMove: new DropMoveNoPieceInformation(this.state.movingSide, p), // TODO: I am unable for the time being to draw drop moves as I don't keep the coordinates of where the piece used to reside in the capture box - wait that shouldn't be so hard as I am simply removing the last element from the capture box
+                               lastMove: lastMove,
                                selectedPiece: null
                               });
             }
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
     render: function() {
-        console.log('game render');
         const style = {
             position: 'absolute',
             padding : 0,

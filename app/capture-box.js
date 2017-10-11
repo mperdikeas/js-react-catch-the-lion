@@ -32,7 +32,8 @@ const CaptureBox = React.createClass({
         pieceBorder      : React.PropTypes.number.isRequired,        
         pieces           : React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         selectedPiece    : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
-        selectPiece      : React.PropTypes.func.isRequired        
+        selectPiece      : React.PropTypes.func.isRequired   ,
+        involvedInLastMove: React.PropTypes.bool.isRequired
     },
     linearToPoint: function(i: int): Point {
         return new Point(i % this.props.X, Math.floor(i / this.props.X));
@@ -99,7 +100,7 @@ const CaptureBox = React.createClass({
                 else
                     return false;
             })();
-            cells.push(( // many TODOs
+            cells.push((
                     <Cell key={ i }
                 point={point}
                 width={this.props.cellWidth}
@@ -112,11 +113,12 @@ const CaptureBox = React.createClass({
                 pieceInformation={pieceInformation}
                 // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
                 imgIsSelected= {imgIsSelected}
+                involvedInLastMove={this.props.involvedInLastMove && (i===this.props.pieces.length)}
                 movableHighlight={false} // it doesn't make sense to move inside a capture box
                 selectPiece={(p)=>{this.props.selectPiece(new PointInBoardOrCaptureBox(p, this.props.sideOfCaptureBox));}}
                 moveToCell={ ()=>{} }
                     />
-            ));            
+            ));
         }
         return cells;
     }
