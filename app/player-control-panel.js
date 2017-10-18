@@ -14,6 +14,7 @@ function str_pad_left(string,pad,length) {
 
 const PlayerControlPanel = React.createClass({
     propTypes: {
+        winner        : React.PropTypes.instanceOf(MovingSide),
         isActive      : React.PropTypes.bool.isRequired,
         sideOfPlayer  : React.PropTypes.instanceOf(MovingSide).isRequired,        
         xOffset       : React.PropTypes.number.isRequired,
@@ -45,10 +46,17 @@ const PlayerControlPanel = React.createClass({
         };        
         let style = Object.assign(baseStyle
                                   , this.props.sideOfPlayer===MovingSide.BLACK?blackStyle:whiteStyle
-                                  , this.props.isActive && activeStyle
-                                  ,!this.props.isActive && inactiveStyle);                                  
+                                  , (this.props.winner!= null)                         && inactiveStyle
+                                  , (this.props.winner===null) &&  this.props.isActive && activeStyle
+                                  , (this.props.winner===null) && !this.props.isActive && inactiveStyle);
         const nameOfPlayer   = this.props.sideOfPlayer===MovingSide.BLACK?"Human":"CPU";
-        const statusOfPlayer = this.props.isActive?"to move":null;
+        let statusOfPlayer;
+
+        if (this.props.winner===null)
+            statusOfPlayer= this.props.isActive?(this.props.sideOfPlayer===MovingSide.BLACK?"to move":"thinking"):null;
+        else {
+            statusOfPlayer = this.props.winner===this.props.sideOfPlayer?"radiating":"sulking";
+        }
         const spanStyle = {paddingLeft: '4px'};
         const msg = statusOfPlayer===null?
                   (

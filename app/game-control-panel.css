@@ -1,0 +1,30 @@
+div.mjb44-game-control-panel__div {
+    height: 100%;
+    padding: 10px;
+    box-sizing: content-box;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+.special-link {
+    border-radius: 5px;
+    margin: 2px;
+    height: 30px;
+    width: auto;
+    font-size: 25px;
+    background-color: #99CC00;
+    border: 2px solid white;
+    color: white;
+    transition: all 0.05s linear 0s;
+}
+
+.special-link:hover {
+    background-color: white !important;
+    color: #99CC00;
+    cursor: pointer;
+    cursor: hand;
+}
+
+

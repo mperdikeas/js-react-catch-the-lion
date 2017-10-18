@@ -10,10 +10,11 @@ $(document).ready(doStuff);
 
 import Game from './game.js';
 
-function doStuff(): void {
+let key = 0; // https://stackoverflow.com/a/21750576/274677
 
+function doStuff(): void {
     ReactDOM.render( (
-            <Game/>
+            <Game key={key++} reset={doStuff}/>
     ) , $('#app')[0]);
 
 }

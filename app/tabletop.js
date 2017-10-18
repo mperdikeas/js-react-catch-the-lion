@@ -31,7 +31,8 @@ const TableTop = React.createClass({
         selectedPiece     : React.PropTypes.instanceOf(PointInBoardOrCaptureBox),
         lastMove          : React.PropTypes.instanceOf(Move),
         selectPiece       : React.PropTypes.func.isRequired,
-        moveToCell        : React.PropTypes.func.isRequired
+        moveToCell        : React.PropTypes.func.isRequired,
+        winner            : React.PropTypes.instanceOf(MovingSide)        
     },
     getPieceInCaptureBox: function(captureBox: MovingSide, p: Point): IConcretePiece {
         if (captureBox===MovingSide.WHITE)
@@ -58,12 +59,26 @@ const TableTop = React.createClass({
             backgroundImage: 'url("bamboo.jpg")',
             backgroundSize: 'cover'
         };
+        const endOfGameDisablingPaneStyle = {
+            position: 'relative',
+            padding: 0,
+            margin: 0,
+            left    : 0,
+            top     : 0,
+            width   : this.props.geometry.tableWidth,
+            height  : this.props.geometry.tableHeight,
+            zIndex  : 99,
+            background: 'white',
+            opacity: 0.5,
+            display: this.props.winner===null?'none':'inherit'
+        };
         const involvedInLastMoveBlack: boolean = (this.props.lastMove instanceof DropMoveNoPieceInformation) && (this.props.lastMove.side===MovingSide.BLACK);
         const involvedInLastMoveWhite: boolean = (this.props.lastMove instanceof DropMoveNoPieceInformation) && !involvedInLastMoveBlack;
         /* The rather assymetrical way of the above two lines has to do with the fact that AI moves use Side
            (from the [ai-for-shogi-like-games] package) whereas human moves use MovingSide (from this package) */
         return (
                 <div style={style}>
+                <div style={endOfGameDisablingPaneStyle}/>
                 <CaptureBox       ref = "whiteCaptureBox"
                     sideOfCaptureBox  = {MovingSide.WHITE}
                     movingSide        = {this.props.movingSide}
@@ -83,6 +98,7 @@ const TableTop = React.createClass({
                     involvedInLastMove= {involvedInLastMoveWhite}
                 />
                 <PlayerControlPanel
+                    winner            = {this.props.winner}
                     isActive          = {this.props.movingSide===MovingSide.WHITE}
                     sideOfPlayer      = {MovingSide.WHITE}
                     xOffset           = {this.props.geometry.whiteControlXOffset}
@@ -109,6 +125,7 @@ const TableTop = React.createClass({
                     involvedInLastMove= {involvedInLastMoveBlack}
                 />
                 <PlayerControlPanel
+                    winner            = {this.props.winner}            
                     isActive          = {this.props.movingSide===MovingSide.BLACK}
                     sideOfPlayer      = {MovingSide.BLACK}            
                     xOffset           = {this.props.geometry.blackControlXOffset}

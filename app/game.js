@@ -19,7 +19,8 @@ import {Move, BoardMove, DropMove, DropMoveNoPieceInformation}  from 'ai-for-sho
 
 import {Geometry, geometry}  from './geometry.js';
 import MovingSide            from './moving-side.js';
-import ControlPanel          from './control-panel.js';
+import MessagePanel          from './message-panel.js';
+import GameControlPanel      from './game-control-panel.js';
 import {PointInBoardOrCaptureBoard} from './point-in-board-or-capture-box.js';
 
 import TableTop     from './tabletop.js';
@@ -38,6 +39,9 @@ function createStartingBoard() {
 type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move};
 
 const Game = React.createClass({
+    propTypes: {
+        reset        : React.PropTypes.func.isRequired
+    },    
     mixins: [TimerMixin],
     getInitialState: function(): StateT {
         const gameStartedMS = (new Date()).getTime();
@@ -160,6 +164,7 @@ const Game = React.createClass({
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
     render: function() {
+
         const style = {
             position: 'absolute',
             padding : 0,
@@ -170,7 +175,8 @@ const Game = React.createClass({
             height  : geometry.gameHeight,
             background: 'white'
         };
-        const controlPanelStyle = {
+
+        const messagePanelStyle = {
             position: 'absolute',
             padding : 0,
             margin  : 0,
@@ -180,8 +186,28 @@ const Game = React.createClass({
             height  : 30,
             borderWidth: 1
         };
+
+        const gameControlPanelStyle = {
+            position: 'absolute',
+            padding : 0,
+            margin  : 0,
+            left    : geometry.tableXOffset,
+            top     : geometry.tableYOffset+geometry.tableHeight+geometry.tableBorder*2,
+            width   : geometry.tableWidth+2*geometry.tableBorder,
+            height  : 40,
+            borderWidth: 1
+        };        
+
         return (
             <div style={style}>
+                <div style={messagePanelStyle}>
+                    <MessagePanel
+                        aiSide    = {this.state.aiSide}
+                        movingSide={this.state.movingSide}
+                        // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
+                        winner={this.state.winner}
+                    />
+                </div>
                 <TableTop ref='tableTop'
                     geometry={geometry}
                     gameBoard={this.state.gameBoard}
@@ -191,16 +217,16 @@ const Game = React.createClass({
                     lastMove={this.state.lastMove}
                     selectPiece={this.selectPiece}
                     moveToCell={this.moveToCell}
+                    winner={this.state.winner}
                 />
-                <div style={controlPanelStyle}>
-                    <ControlPanel
-                        aiSide    = {this.state.aiSide}
-                        movingSide={this.state.movingSide}
+                <div style={gameControlPanelStyle}>
+                    <GameControlPanel
                         // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
                         winner={this.state.winner}
+                        reset={this.props.reset}
                     />
                 </div>
-            </div>                
+            </div>
         );
     }
 });

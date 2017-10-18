@@ -5,9 +5,9 @@ const React = require('react');
 var      cx = require('classnames');
 
 import MovingSide from './moving-side.js';
-require('./control-panel.css');
+require('./message-panel.css');
 
-const ControlPanel = React.createClass({
+const MessagePanel = React.createClass({
     propTypes: {
         aiSide    : React.PropTypes.instanceOf(MovingSide).isRequired,        
         movingSide: React.PropTypes.instanceOf(MovingSide).isRequired,
@@ -44,7 +44,7 @@ const ControlPanel = React.createClass({
                            };
         const style = Object.assign({},
                                     ((this.props.movingSide===MovingSide.BLACK)||(this.props.winner===MovingSide.BLACK))?blackStyle:whiteStyle);
-        return (<div className='mjb44-ctl-cpanel__div' style={style}>
+        return (<div className='mjb44-msg-panel__div' style={style}>
                 {MSG}
                  </div>
                 );
@@ -52,5 +52,5 @@ const ControlPanel = React.createClass({
 });
 
 
-export default ControlPanel;
+export default MessagePanel;
 
