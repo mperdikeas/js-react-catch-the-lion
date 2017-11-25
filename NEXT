@@ -1,6 +1,4 @@
 To release the game:
- 1. replace window.alert with jquery modal dialog (see TODO in game-control-panel.js)
- 2. add help / how to play
- 3. add sound
+1. add sound
 
 

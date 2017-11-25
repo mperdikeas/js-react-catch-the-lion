@@ -202,7 +202,7 @@ class Geometry {
     }
 }
 
-const geometry = new Geometry(15, 30, 900, 900,       // game params
+const geometry = new Geometry(0, 0, 900, 900,       // game params
                               100, 100, 650, 450, 10, // table params
                               2, 3, 5,                // captured params
                               10, 20,                 // captured white offset

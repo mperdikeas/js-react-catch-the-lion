@@ -18,13 +18,21 @@ a {
     border: 2px solid white;
     color: white;
     transition: all 0.05s linear 0s;
+    user-select: none;
 }
 
-.special-link:hover {
+.special-link-disabled {
+    background-color: #C9FC30 !important;
+    pointer-events: none;
+}
+
+.special-link:not(.special-link-disabled):hover {
     background-color: white !important;
     color: #99CC00;
     cursor: pointer;
     cursor: hand;
 }
+
+
 
 

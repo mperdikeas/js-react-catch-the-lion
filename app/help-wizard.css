@@ -1,0 +1,14 @@
+.help-link {
+    text-decoration: underline;
+    color: blue;
+}
+
+.help-link:hover {
+    cursor: pointer;
+    cursor: hand;
+}
+
+
+div.help-wizard h1 {
+    font-size: 125%;
+}

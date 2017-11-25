@@ -67,7 +67,7 @@ const TableTop = React.createClass({
             top     : 0,
             width   : this.props.geometry.tableWidth,
             height  : this.props.geometry.tableHeight,
-            zIndex  : 99,
+            zIndex  : 1,
             background: 'white',
             opacity: 0.5,
             display: this.props.winner===null?'none':'inherit'

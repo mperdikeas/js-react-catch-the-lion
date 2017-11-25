@@ -9,21 +9,35 @@ require('./game-control-panel.css');
 
 const GameControlPanel = React.createClass({
     propTypes: {
-        winner    : React.PropTypes.instanceOf(MovingSide),
-        reset        : React.PropTypes.func.isRequired        
+        aiSide            : React.PropTypes.instanceOf(MovingSide),
+        movingSide        : React.PropTypes.instanceOf(MovingSide),
+        winner            : React.PropTypes.instanceOf(MovingSide),
+        showNewGameDialog : React.PropTypes.func.isRequired,
+        showHelpWizard    : React.PropTypes.func.isRequired        
     },
-    displayNewGameDialogAndResetEverything: function() {
-        window.alert('A new game will now begun'); // TODO: use a fancy jquery modal dialog instead of window.alert
-        this.props.reset();
-    },
+    i: 1,
     render: function() {
+        function styleForLinksF(enabled) {
+            return cx({
+                'special-link': true,
+                'special-link-disabled':!enabled
+            });
+        }
+        const linksEnabled = this.props.aiSide!==this.props.movingSide;
+        const styleForLinks = styleForLinksF(linksEnabled);
+        console.log(`rendering control panel with style for links: ${styleForLinks}`);
         const style = {backgroundColor: '#7f8c8d', color: 'blue', display: 'flex', flexDirection: 'row', justifyContent: 'space-around'};
         const mainGameControlText = this.props.winner===null?'Give up on this Herculean task':'new game';
-        return (<div className='mjb44-game-control-panel__div' style={style}>
-                <a className='special-link' onClick={this.displayNewGameDialogAndResetEverything}>&nbsp;{mainGameControlText}&nbsp;</a>
-                <a className='special-link'>&nbsp;Help&nbsp;</a>                
+        if (linksEnabled) // sse-1511571523
+            return (<div id={this.i++} className='mjb44-game-control-panel__div' style={style}>
+                <a className={styleForLinks} onClick={this.props.showNewGameDialog}>&nbsp;{mainGameControlText}&nbsp;</a>
+                <a className={styleForLinks} onClick={this.props.showHelpWizard}>&nbsp;Help&nbsp;</a>
                  </div>
-                );
+               );
+        else return (null); /* see sse-1511571523. For some weird reason I can't get the buttons to display with the special-link-disabled status.
+                               Accordingly, when they are disabled I don't display the component at all. Set the boolean if in 
+                               sse-1511571523 to [true] to see the bug.
+                             */
     }
 });
 

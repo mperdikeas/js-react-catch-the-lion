@@ -23,7 +23,9 @@ import MessagePanel          from './message-panel.js';
 import GameControlPanel      from './game-control-panel.js';
 import {PointInBoardOrCaptureBoard} from './point-in-board-or-capture-box.js';
 
-import TableTop     from './tabletop.js';
+import TableTop              from './tabletop.js';
+import NewGameDialog         from './new-game-dialog.js';
+import HelpWizard            from './help-wizard.js';
 
 const PIECE_SET = [Chick, Hen, Elephant, Giraffe, Lion];
 const pieceSet  = createPieceSet(PIECE_SET);
@@ -36,7 +38,7 @@ function createStartingBoard() {
     return gb;
 }
 
-type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move};
+type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move, displayNewGameDialog: boolean, showHelpWizard: boolean};
 
 const Game = React.createClass({
     propTypes: {
@@ -46,12 +48,14 @@ const Game = React.createClass({
     getInitialState: function(): StateT {
         const gameStartedMS = (new Date()).getTime();
         return {
-            gameBoard: createStartingBoard(),
-            aiSide: MovingSide.WHITE, // A.I. side
-            movingSide: MovingSide.BLACK,
-            winner: null,
-            selectedPiece: null,
-            lastMove: null
+            gameBoard            : createStartingBoard(),
+            aiSide               : MovingSide.WHITE, // A.I. side
+            movingSide           : MovingSide.BLACK,
+            winner               : null,
+            selectedPiece        : null,
+            lastMove             : null,
+            displayNewGameDialog : false,
+            showHelpWizard       : false
         };
     },
     componentDidMount() {
@@ -72,17 +76,18 @@ const Game = React.createClass({
      */
     shouldComponentUpdate(nextProps, nextState) {
         assert.equal(JSON.stringify(nextProps), '{}');
-        if (nextState.gameBoard      !==    this.state.gameBoard    ) return true;
-        if (nextState.aiSide         !==    this.state.aiSide       ) return true;
-        if (nextState.movingSide     !==    this.state.movingSide   ) return true;
-        if (nextState.winner         !==    this.state.winner       ) return true;
-        if (nextState.selectedPiece  !==    this.state.selectedPiece) return true;
+        if (nextState.gameBoard            !==  this.state.gameBoard           ) return true;
+        if (nextState.aiSide               !==  this.state.aiSide              ) return true;
+        if (nextState.movingSide           !==  this.state.movingSide          ) return true;
+        if (nextState.winner               !==  this.state.winner              ) return true;
+        if (nextState.selectedPiece        !==  this.state.selectedPiece       ) return true;
+        if (nextState.displayNewGameDialog !==  this.state.displayNewGameDialog) return true;
+        if (nextState.showHelpWizard       !==  this.state.showHelpWizard      ) return true;        
         return false;
     },
     componentDidUpdate(prevProps, prevState) {
         if ((this.state.movingSide !== prevState.movingSide) && (this.state.movingSide === this.state.aiSide)) {
             setTimeout( ()=> {
-                this.state.movingSide = this.state.aiSide;
                 console.log(`thinking ....`);
                 const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 3, model000, PIECE_SET);
                 console.log(`AI response is: ${aiMove}, side is: ${aiMove.side}`);
@@ -163,6 +168,15 @@ const Game = React.createClass({
             }
         } else throw new Error(`bug - it should be impossible to call moveToCell when there is no selected piece`);
     },
+    showNewGameDialog(): void {
+        this.setState({displayNewGameDialog: true});
+    },
+    showHelpWizard(): void {
+        this.setState({showHelpWizard: true});
+    },
+    closeHelp(): void {
+        this.setState({showHelpWizard: false});
+    },
     render: function() {
 
         const style = {
@@ -196,10 +210,17 @@ const Game = React.createClass({
             width   : geometry.tableWidth+2*geometry.tableBorder,
             height  : 40,
             borderWidth: 1
-        };        
-
+        };
         return (
             <div style={style}>
+                <NewGameDialog
+                    enabled={this.state.displayNewGameDialog}
+                    reset={this.props.reset}
+                />
+                <HelpWizard
+                    enabled={this.state.showHelpWizard}
+                    closeHelp={this.closeHelp}
+                />                
                 <div style={messagePanelStyle}>
                     <MessagePanel
                         aiSide    = {this.state.aiSide}
@@ -221,9 +242,12 @@ const Game = React.createClass({
                 />
                 <div style={gameControlPanelStyle}>
                     <GameControlPanel
-                        // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow            
+            // $SuppressFlowFinding: this is a hack because Flow 0.27 doesn't understand optional React properties. TODO: fix this in a future version of Flow
+                        aiSide={this.state.aiSide}
+                        movingSide={this.state.movingSide}
                         winner={this.state.winner}
-                        reset={this.props.reset}
+                        showNewGameDialog={this.showNewGameDialog}
+                        showHelpWizard={this.showHelpWizard}
                     />
                 </div>
             </div>

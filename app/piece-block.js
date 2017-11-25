@@ -52,7 +52,7 @@ const PieceBlock = React.createClass({
             position: 'relative',
             top: '50%',
             left: '50%',
-            maring: 'auto',
+            margin: 'auto',
             marginLeft: `-${this.props.pieceWidth/2}px`,
             marginTop: `-${this.props.pieceHeight/2}px`,            
             borderWidth: `${imgBorder}px`,
