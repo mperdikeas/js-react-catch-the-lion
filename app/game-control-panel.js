@@ -23,7 +23,7 @@ const GameControlPanel = React.createClass({
                 'special-link-disabled':!enabled
             });
         }
-        const linksEnabled = this.props.aiSide!==this.props.movingSide;
+        const linksEnabled = (this.props.aiSide!==this.props.movingSide)||(this.props.winner!==null);
         const styleForLinks = styleForLinksF(linksEnabled);
         console.log(`rendering control panel with style for links: ${styleForLinks}`);
         const style = {backgroundColor: '#7f8c8d', color: 'blue', display: 'flex', flexDirection: 'row', justifyContent: 'space-around'};
