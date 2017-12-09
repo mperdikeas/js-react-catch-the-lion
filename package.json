@@ -32,6 +32,7 @@
     "ai-for-shogi-like-games": "*",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "classnames": "^2.2.5",
+    "howler": "^1.1.29",
     "geometry-2d": "*",
     "jquery": "^2.2.2",
     "lodash": "^4.6.1",

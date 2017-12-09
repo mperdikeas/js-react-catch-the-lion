@@ -14,7 +14,10 @@ let key = 0; // https://stackoverflow.com/a/21750576/274677
 
 function doStuff(): void {
     ReactDOM.render( (
-            <Game key={key++} reset={doStuff}/>
+            <Game
+                key={key++}
+                reset={doStuff}
+            />
     ) , $('#app')[0]);
 
 }

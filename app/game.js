@@ -26,6 +26,7 @@ import {PointInBoardOrCaptureBoard} from './point-in-board-or-capture-box.js';
 import TableTop              from './tabletop.js';
 import NewGameDialog         from './new-game-dialog.js';
 import HelpWizard            from './help-wizard.js';
+import {sounds}              from './sounds.js';
 
 const PIECE_SET = [Chick, Hen, Elephant, Giraffe, Lion];
 const pieceSet  = createPieceSet(PIECE_SET);
@@ -59,6 +60,11 @@ const Game = React.createClass({
         };
     },
     componentDidMount() {
+        if (sounds.currentlyPlaying.sound!==null) {
+            sounds.currentlyPlaying.sound.stop();
+            sounds.currentlyPlaying.sound = null;
+        }
+        sounds.newGame();
         /* -- this is how to implement a timer
         const intervalId = this.setInterval(
             () => {
@@ -92,6 +98,7 @@ const Game = React.createClass({
                 const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 3, model000, PIECE_SET);
                 console.log(`AI response is: ${aiMove}, side is: ${aiMove.side}`);
                 let nextBoard;
+                sounds.moveAI();
                 if (aiMove instanceof BoardMove) {
                     nextBoard = this.state.gameBoard.move(aiMove.vector.from, aiMove.vector.to);
                 } else if (aiMove instanceof DropMove) {
@@ -105,6 +112,7 @@ const Game = React.createClass({
                                    winner: MovingSide.fromWhetherIsSideA(winner),
                                    lastMove: aiMove
                                   });
+                    sounds.defeat();
                 } else {
                     this.setState({gameBoard: nextBoard,
                                    movingSide: this.state.aiSide.theOther(),
@@ -130,6 +138,7 @@ const Game = React.createClass({
             this.setState({lastTimeWhite: (new Date()).getTime()});
         const selectedPiece: ?PointInBoardOrCaptureBox = this.state.selectedPiece;
         if (selectedPiece!=null) {
+            sounds.moveHuman();
             assert( this.state.gameBoard.isCellEmpty(p) || MovingSide.fromSide(this.state.gameBoard.sideOnCell(p))===this.state.movingSide.theOther());
             if (selectedPiece.captureBox===null) { // case A: normal board move
                 const nextBoard: ?GameBoard = this.state.gameBoard.move(selectedPiece.point, p);
@@ -142,6 +151,7 @@ const Game = React.createClass({
                                        lastMove: new BoardMove(new Vector(selectedPiece.point, p)),
                                        winner: MovingSide.fromWhetherIsSideA(winner)
                                       });
+                        sounds.victory();
                     } else {
                         if (this.state.movingSide!=null) {
                             this.setState({gameBoard: nextBoard,
