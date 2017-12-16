@@ -25,7 +25,6 @@ const GameControlPanel = React.createClass({
         }
         const linksEnabled = (this.props.aiSide!==this.props.movingSide)||(this.props.winner!==null);
         const styleForLinks = styleForLinksF(linksEnabled);
-        console.log(`rendering control panel with style for links: ${styleForLinks}`);
         const style = {backgroundColor: '#7f8c8d', color: 'blue', display: 'flex', flexDirection: 'row', justifyContent: 'space-around'};
         const mainGameControlText = this.props.winner===null?'Give up on this Herculean task':'new game';
         if (linksEnabled) // sse-1511571523

@@ -60,7 +60,7 @@ const CaptureBox = React.createClass({
             borderImageSource: 'url("mahogany.jpg")',
             borderImageSlice: `${this.props.border} ${this.props.border}`,
             borderImageRepeat: 'round',
-            borderImageWidth: `${this.props.border}`,
+            borderImageWidth: `${this.props.border}px`,
             backgroundImage: 'url("green-felt.jpg")',
             backgroundSize: 'cover',
             fontSize  : 0

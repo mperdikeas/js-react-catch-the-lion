@@ -55,7 +55,7 @@ const TableTop = React.createClass({
             borderImageSource: 'url("zebrano.jpg")',
             borderImageSlice: `${this.props.geometry.tableBorder} ${this.props.geometry.tableBorder} ${this.props.geometry.tableBorder}`,
             borderImageRepeat: 'round',
-            borderImageWidth: `${this.props.geometry.tableBorder}`,
+            borderImageWidth: `${this.props.geometry.tableBorder}px`,
             backgroundImage: 'url("bamboo.jpg")',
             backgroundSize: 'cover'
         };

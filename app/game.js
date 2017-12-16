@@ -26,6 +26,7 @@ import {PointInBoardOrCaptureBoard} from './point-in-board-or-capture-box.js';
 import TableTop              from './tabletop.js';
 import NewGameDialog         from './new-game-dialog.js';
 import HelpWizard            from './help-wizard.js';
+import ArrowsPlane           from './arrows-plane.js';
 import {sounds}              from './sounds.js';
 
 const PIECE_SET = [Chick, Hen, Elephant, Giraffe, Lion];
@@ -40,6 +41,8 @@ function createStartingBoard() {
 }
 
 type StateT = {gameBoard: GameBoard, movingSide: MovingSide, winner: ?MovingSide, selectedPiece: ?PointInBoardOrCaptureBox, lastMove: ?Move, displayNewGameDialog: boolean, showHelpWizard: boolean};
+
+
 
 const Game = React.createClass({
     propTypes: {
@@ -65,21 +68,7 @@ const Game = React.createClass({
             sounds.currentlyPlaying.sound = null;
         }
         sounds.newGame();
-        /* -- this is how to implement a timer
-        const intervalId = this.setInterval(
-            () => {
-                this.next100Ms();
-            }
-        ,100);
-         */
     },
-    /* -- this is how to implement a timer
-    next100Ms() {
-        if (this.state.movingSide===this.state.aiSide.theOther()) {
-            this.setState({thinkingMsBlack: this.state.thinkingMsBlack+100});
-        }
-    },
-     */
     shouldComponentUpdate(nextProps, nextState) {
         assert.equal(JSON.stringify(nextProps), '{}');
         if (nextState.gameBoard            !==  this.state.gameBoard           ) return true;
@@ -94,9 +83,7 @@ const Game = React.createClass({
     componentDidUpdate(prevProps, prevState) {
         if ((this.state.movingSide !== prevState.movingSide) && (this.state.movingSide === this.state.aiSide)) {
             setTimeout( ()=> {
-                console.log(`thinking ....`);
                 const aiMove = bestMove(this.state.gameBoard, this.state.aiSide===MovingSide.BLACK, 3, model000, PIECE_SET);
-                console.log(`AI response is: ${aiMove}, side is: ${aiMove.side}`);
                 let nextBoard;
                 sounds.moveAI();
                 if (aiMove instanceof BoardMove) {
@@ -226,6 +213,9 @@ const Game = React.createClass({
                 <NewGameDialog
                     enabled={this.state.displayNewGameDialog}
                     reset={this.props.reset}
+                />
+                <ArrowsPlane
+                    move={this.state.lastMove}
                 />
                 <HelpWizard
                     enabled={this.state.showHelpWizard}

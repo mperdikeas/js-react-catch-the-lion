@@ -7,7 +7,7 @@ var      cx = require('classnames');
 import {geometry}  from './geometry.js';
 require('./help-wizard.css');
 
-const HelpWizzard = React.createClass({
+const HelpWizard = React.createClass({
     propTypes: {
         enabled    : React.PropTypes.bool.isRequired,
         closeHelp  : React.PropTypes.func.isRequired        
@@ -220,5 +220,5 @@ and was promoted to a mighty Hen!
 });
 
 
-export default HelpWizzard;
+export default HelpWizard;
 
