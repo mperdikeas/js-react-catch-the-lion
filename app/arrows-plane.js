@@ -59,22 +59,10 @@ const ArrowsPlane = React.createClass({
             border: `${borderWidthPx}px solid red`,
             pointerEvents: 'none'
         };
-        console.log(this.props.move);
-        let msg = 'no move';
-        if (this.props.move!=null) {
-            if (this.props.move instanceof BoardMove)
-                msg = 'board move';
-            else if (this.props.move instanceof DropMoveNoPieceInformation)
-                msg = 'drop move';
-            else
-                throw new Error(`unrecognized type of move`);
-        }
-        console.log(msg);
         let svg = null;
         if ((this.props.move!=null) && (this.props.move instanceof BoardMove)) {
             const pA: Point = this.props.move.vector.from;
             const pB: Point = this.props.move.vector.to;
-            console.log('pA is:', pA, ' pB is: ', pB);
             let directions = prepareLineDirections(pA, pB);
             svg = (
                 <svg width="100%" height="100%">
