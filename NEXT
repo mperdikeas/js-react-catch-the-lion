@@ -1,4 +1,4 @@
-1. add arrows that show the direction of the most recent move (hard for dropped pieces)
-2. add sound controls
-
-
+1. add arrows that show the direction of the most recent move for *dropped* pieces. Use Bezier or Quadratic curves.
+2. add sound controls (increase / decrease volume and mute)
+3. see whether I can implement an overlay celebratory effect with fireworks, using Canvas and adjust message accordingly.
+   I.e. instead of "smelly mortal" say "a glorious victory"
