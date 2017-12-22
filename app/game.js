@@ -5,7 +5,6 @@ const React = require('react');
 var      cx = require('classnames');
 
 import assert from 'assert';
-import TimerMixin    from 'react-timer-mixin';
 import {Point, Vector} from 'geometry-2d';
 
 import {GameBoard}                           from 'ai-for-shogi-like-games';
@@ -21,7 +20,7 @@ import {Geometry, geometry}  from './geometry.js';
 import MovingSide            from './moving-side.js';
 import MessagePanel          from './message-panel.js';
 import GameControlPanel      from './game-control-panel.js';
-import {PointInBoardOrCaptureBoard} from './point-in-board-or-capture-box.js';
+import {PointInBoardOrCaptureBox} from './point-in-board-or-capture-box.js';
 
 import TableTop              from './tabletop.js';
 import NewGameDialog         from './new-game-dialog.js';
@@ -48,9 +47,7 @@ const Game = React.createClass({
     propTypes: {
         reset        : React.PropTypes.func.isRequired
     },    
-    mixins: [TimerMixin],
     getInitialState: function(): StateT {
-        const gameStartedMS = (new Date()).getTime();
         return {
             gameBoard            : createStartingBoard(),
             aiSide               : MovingSide.WHITE, // A.I. side
@@ -121,8 +118,6 @@ const Game = React.createClass({
     },
     moveToCell: function(p: Point): void {
         assert(this.state.movingSide===this.state.aiSide.theOther());
-        if (this.state.lastTimeWhite===null)
-            this.setState({lastTimeWhite: (new Date()).getTime()});
         const selectedPiece: ?PointInBoardOrCaptureBox = this.state.selectedPiece;
         if (selectedPiece!=null) {
             sounds.moveHuman();

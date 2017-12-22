@@ -38,7 +38,6 @@
     "lodash": "^4.6.1",
     "react": "^15.6.2",
     "react-chainable-type-checker": "*",
-    "react-dom": "^15.6.2",
-    "react-timer-mixin": "^0.13.3"
+    "react-dom": "^15.6.2"
   }
 }

@@ -10,7 +10,6 @@ import {createChainableTypeChecker} from 'react-chainable-type-checker';
 import {Chick, Hen, Elephant, Giraffe, Lion} from 'ai-for-shogi-like-games';
 import {createPieceSet}                      from 'ai-for-shogi-like-games';
 import {PieceOnSide}                         from 'ai-for-shogi-like-games';
-import {CaptureBag}                          from 'ai-for-shogi-like-games';
 import {GameBoard}                           from 'ai-for-shogi-like-games';
 import {Move}                                from 'ai-for-shogi-like-games';
 import {DropMoveNoPieceInformation}          from 'ai-for-shogi-like-games';
