@@ -74,24 +74,28 @@ const HelpWizard = React.createClass({
                         Japanese game of <i>Shogi</i>. Wikipedia has nice
                         articles on both &nbsp;<a className='help-link' target="_blank" href='https://en.wikipedia.org/wiki/Shogi'>Shogi</a>
                           &nbsp;and
-                        &nbsp;<a className='help-link' target="_blank" href='https://en.wikipedia.org/wiki/D%C5%8Dbutsu_sh%C5%8Dgi'>Let's catch the Lion</a> which lazy slobs like you are unlikely to read.
-                </p>
-                <p>
-                It's precisely because of your indolence that I now have to prepare all these boring help pages!</p>
-                <p>So let's get down to business.</p>
+                        &nbsp;<a className='help-link' target="_blank" href='https://en.wikipedia.org/wiki/D%C5%8Dbutsu_sh%C5%8Dgi'>Let's catch the Lion</a> which indolent people
+(the likes of you)
+are unlikely to read. Hence, I have to prepare all these boring help pages!</p>
+
 <p><i>Shogi</i>, as well as <i>Let's Catch the Lion</i>, are very similar to Chess with a few important differences.
                 </p>
                 <p>
                 In contrast to Chess, the captured pieces switch sides and can be used against
 their former owner. As such, pieces are not painted black or white but are rather rotated to denote side. I.e.
 their orientation is used to show which side controls them.
-                    </p>
-                    <p>
-                      One side is called "Black" and the other is called "White" (even though the pieces are
-                                                                                  not painted).
                 </p>
                 <p>
-                     In another departure from Chess, Black moves first. The idea is
+                      One side is called "Black" and the other is called "White" (even though the pieces are
+                                                                                  not painted). In a physical
+game of Shogi the pieces used by both sides are <b>identical</b>. Here, since this is a computer game,
+we can afford to have a subtle white or black border to denote sides (in addition to orientation).
+                </p>
+                <p>Also, again in contrast to Chess, the King (the Lion in this version) is allowed to blunder into suicide or simply fail to
+move in case of a non-mating attack.</p>
+
+                <p>
+                     In Shogi, Black moves first. The idea is
                       that Black is the userper or rebel, and thus gets to make the first move against
                       the lawful king (White). 
                     </p>
